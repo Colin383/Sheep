@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>地图编辑器 · 元素生成器</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <h1>地图编辑器</h1>
+      <nav class="tabs" role="tablist">
+        <button type="button" class="tab" data-tab="elements" role="tab">元素生成器</button>
+        <button type="button" class="tab active" data-tab="map" role="tab">地图编辑</button>
+      </nav>
+      <div class="topbar-workspace workspace-toolbar" aria-label="便携工作台">
+        <button type="button" id="btn-export-workspace" class="btn">导出工作台（便携）</button>
+        <label class="btn secondary file-btn">导入工作台
+          <input type="file" id="import-workspace" accept="application/json" />
+        </label>
+      </div>
+    </header>
+
+    <main class="main">
+      <!-- 元素生成器 -->
+      <section id="panel-elements" class="panel" aria-labelledby="tab-elements" hidden>
+        <div class="panel-grid">
+          <div class="card">
+            <h2>新建元素画布</h2>
+            <p class="hint">输入正方形边长 N，在格子上点选该元素占用的格子（可多格，如 2×2、L 形等）。右键一个已选格可设为该元素旋转锚点。</p>
+            <div class="row">
+              <label>画布边长 N <input type="number" id="el-grid-n" min="1" max="64" value="4" /></label>
+              <button type="button" id="btn-create-el-canvas" class="btn primary">创建 / 重置画布</button>
+            </div>
+            <div id="element-canvas-wrap" class="canvas-wrap">
+              <div id="element-canvas" class="grid-canvas" aria-label="元素格子选择"></div>
+            </div>
+            <div class="row">
+              <label>元素名称 <input type="text" id="el-name" placeholder="例如：草丛" /></label>
+              <label>元素类型（必填） <input type="text" id="el-type" placeholder="例如：装饰 / 障碍" required /></label>
+              <label>朝向（预览箭头）
+                <select id="el-direction" title="纯色预览时名称上方小箭头方向">
+                  <option value="down" selected>朝下 ↓</option>
+                  <option value="right">朝右 →</option>
+                  <option value="up">朝上 ↑</option>
+                  <option value="left">朝左 ←</option>
+                </select>
+              </label>
+            </div>
+            <div class="row">
+              <label class="file-label">元素图片（整张，可选）
+                <input type="file" id="el-image" accept="image/*" />
+              </label>
+              <label>无图时的填充色
+                <input type="color" id="el-color" value="#4488cc" title="未选图片时用此颜色显示格子与外框" />
+              </label>
+            </div>
+            <p class="hint small-hint">不选图片时：用所选颜色填充格子并描边，名称会叠在占用区域的正中央（与地图中一致）。</p>
+            <div class="live-preview-block">
+              <h3 class="live-preview-title">实时预览</h3>
+              <p class="hint live-preview-hint">与地图中放置后的效果一致；改格子、名称、颜色或图片后会立即更新。</p>
+              <div id="el-live-preview-wrap" class="el-live-preview-wrap">
+                <p id="el-live-preview-placeholder" class="el-live-preview-placeholder">请先在上方格子里至少选择一格</p>
+                <div id="el-live-preview-inner" class="el-live-preview-inner" hidden>
+                  <div class="el-live-preview-stage">
+                    <div id="el-live-preview-label" class="placement-label el-preview-label" hidden></div>
+                    <div id="el-live-preview-grid" class="grid-canvas map-grid el-preview-grid"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="el-image-preview" class="image-preview"></div>
+            <div class="row actions">
+              <button type="button" id="btn-save-element" class="btn primary">保存到列表</button>
+              <button type="button" id="btn-clear-selection" class="btn">清空格子选择</button>
+            </div>
+            <p id="el-status" class="status" role="status"></p>
+          </div>
+
+          <div class="card">
+            <h2>元素列表</h2>
+            <p class="hint list-hint">保存后会写入本机浏览器，刷新页面仍保留；亦可导出 JSON 备份。</p>
+            <div class="row file-io">
+              <button type="button" id="btn-export-elements" class="btn">导出元素库到文件</button>
+              <label class="btn secondary file-btn">从文件加载元素库
+                <input type="file" id="import-elements" accept="application/json" />
+              </label>
+            </div>
+            <ul id="element-list" class="element-list"></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 地图编辑 -->
+      <section id="panel-map" class="panel active" aria-labelledby="tab-map">
+        <div class="panel-grid map-layout">
+          <div class="card map-scene-card">
+            <h2>场景</h2>
+            <div class="row">
+              <label>地图名称 <input type="text" id="map-name" placeholder="场景1" /></label>
+            </div>
+            <div class="row map-size-row">
+              <label>宽度（列数） <input type="number" id="map-grid-w" min="1" max="128" value="14" title="横向格子数" /></label>
+              <label>高度（行数） <input type="number" id="map-grid-h" min="1" max="128" value="20" title="纵向格子数" /></label>
+              <button type="button" id="btn-create-map" class="btn primary">创建 / 重置地图</button>
+            </div>
+            <p class="hint">先选元素再放置，或选<strong>取消选择</strong>后<strong>拖拽</strong>或点击空地移动实例。<strong>R</strong> 旋转当前选中（放置预览或已选实例）。右键删除。地图列表在右侧。</p>
+            <div id="map-float-toolbar" class="map-float-toolbar">
+              <p id="map-status" class="map-float-status" role="status"></p>
+              <div class="map-float-actions">
+                <button type="button" id="btn-map-undo" class="btn" disabled title="撤销上一步编辑">返回上一步</button>
+                <button type="button" id="btn-map-redo" class="btn" disabled title="重做">回到下一步</button>
+              </div>
+              <label class="map-anchor-toggle">
+                <input type="checkbox" id="map-show-anchor-toggle" checked />
+                在场景中显示锚点
+              </label>
+            </div>
+            <div id="map-canvas-wrap" class="canvas-wrap map-canvas-wrap">
+              <div id="map-canvas" class="grid-canvas map-grid" aria-label="地图场景"></div>
+              <div id="map-hover-layer" class="hover-layer" aria-hidden="true"></div>
+              <div id="map-hover-float-label" class="map-hover-float-label" aria-hidden="true"></div>
+              <div id="map-placement-labels" class="map-placement-labels" aria-hidden="true"></div>
+            </div>
+            <div class="row file-io map-bottom-toolbar">
+              <button type="button" id="btn-save-map-library" class="btn primary" disabled title="有未保存更改时可保存到列表">保存</button>
+              <button type="button" id="btn-save-map-as-new" class="btn">另存为新地图</button>
+              <span class="map-toolbar-sep" aria-hidden="true"></span>
+              <button type="button" id="btn-save-map" class="btn primary">保存地图到文件</button>
+              <button type="button" id="btn-export-game-json" class="btn" title="仅含实例 id、行列、方向、类型，不含图片与显示用名称等">导出游戏 JSON</button>
+              <label class="btn secondary file-btn">从文件加载地图
+                <input type="file" id="import-map" accept="application/json" />
+              </label>
+            </div>
+          </div>
+
+          <div class="card map-library-card">
+            <h2>地图列表</h2>
+            <p class="hint map-library-hint">保存在本机浏览器；顶部可导出工作台备份。切换地图前若有未保存更改将提示。</p>
+            <ul id="map-list" class="map-list"></ul>
+          </div>
+
+          <div class="card map-elements-card">
+            <h2>可放置元素</h2>
+            <p class="hint map-elements-hint">横向点选一项，再到地图上点击格子放置（点击格即元素锚点格）。也可拖拽到地图上。</p>
+            <ul id="map-element-list" class="element-list map-element-list-horizontal"></ul>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <div id="element-edit-dialog" class="modal" hidden aria-modal="true" role="dialog" aria-labelledby="element-edit-title">
+    <div class="modal-backdrop" data-element-edit-dismiss="1"></div>
+    <div class="modal-box modal-box-wide element-edit-modal-box">
+      <div class="modal-header-row">
+        <h3 id="element-edit-title" class="modal-title">编辑元素</h3>
+        <button type="button" id="element-edit-close" class="modal-close" aria-label="关闭（不保存）">×</button>
+      </div>
+      <p class="hint small-hint element-edit-modal-hint">点右上角 × 或遮罩关闭将<strong>放弃修改</strong>。右键已选格可设置旋转锚点；保存后会更新元素库并同步地图列表中的内嵌定义。</p>
+      <div class="row">
+        <label>画布边长 N <input type="number" id="el-modal-grid-n" min="1" max="64" value="4" /></label>
+        <button type="button" id="btn-modal-create-el-canvas" class="btn primary">创建 / 重置画布</button>
+      </div>
+      <div id="element-modal-canvas-wrap" class="canvas-wrap">
+        <div id="element-modal-canvas" class="grid-canvas" aria-label="元素格子选择"></div>
+      </div>
+      <div class="row">
+        <label>元素名称 <input type="text" id="el-modal-name" placeholder="例如：草丛" /></label>
+        <label>元素类型（必填） <input type="text" id="el-modal-type" placeholder="例如：装饰 / 障碍" required /></label>
+        <label>朝向（预览箭头）
+          <select id="el-modal-direction" title="纯色预览时名称上方小箭头方向">
+            <option value="down" selected>朝下 ↓</option>
+            <option value="right">朝右 →</option>
+            <option value="up">朝上 ↑</option>
+            <option value="left">朝左 ←</option>
+          </select>
+        </label>
+      </div>
+      <div class="row">
+        <label class="file-label">元素图片（整张，可选）
+          <input type="file" id="el-modal-image" accept="image/*" />
+        </label>
+        <label>无图时的填充色
+          <input type="color" id="el-modal-color" value="#4488cc" title="未选图片时用此颜色显示格子与外框" />
+        </label>
+      </div>
+      <div class="live-preview-block element-edit-live-preview">
+        <h3 class="live-preview-title">实时预览</h3>
+        <div id="el-modal-live-preview-wrap" class="el-live-preview-wrap">
+          <p id="el-modal-live-preview-placeholder" class="el-live-preview-placeholder">请先在上方格子里至少选择一格</p>
+          <div id="el-modal-live-preview-inner" class="el-live-preview-inner" hidden>
+            <div class="el-live-preview-stage">
+              <div id="el-modal-live-preview-label" class="placement-label el-preview-label" hidden></div>
+              <div id="el-modal-live-preview-grid" class="grid-canvas map-grid el-preview-grid"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="el-modal-image-preview" class="image-preview"></div>
+      <div class="row actions">
+        <button type="button" id="btn-modal-save-element" class="btn primary">保存修改</button>
+        <button type="button" id="btn-modal-clear-selection" class="btn">清空格子选择</button>
+      </div>
+      <p id="el-modal-status" class="status" role="status"></p>
+    </div>
+  </div>
+
+  <div id="map-unsaved-dialog" class="modal" hidden aria-modal="true" role="dialog" aria-labelledby="map-unsaved-title">
+    <div class="modal-backdrop" data-close="1"></div>
+    <div class="modal-box">
+      <h3 id="map-unsaved-title" class="modal-title">未保存的更改</h3>
+      <p class="modal-text">当前地图有未保存到列表的更改。要继续吗？</p>
+      <div class="modal-actions">
+        <button type="button" id="map-unsaved-save" class="btn primary">保存并继续</button>
+        <button type="button" id="map-unsaved-discard" class="btn">不保存继续</button>
+        <button type="button" id="map-unsaved-cancel" class="btn">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

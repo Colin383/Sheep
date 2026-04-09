@@ -2,15 +2,17 @@ using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Bear.Logger;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 /// <summary>
 /// 读取 LevelGameConfig，在 XZ 平面按格子生成实体并缓存。
-/// 约定：json 中每个 instance 的 (row,col) 为该对象 footprint 的<strong>左上角</strong>格；
-/// 目标对齐点为 footprint 在世界空间中的<strong>几何中心</strong>。
-/// Prefab 的 pivot 往往不在模型几何中心（尤其左右朝向下更明显），开启 <see cref="alignSpawnToRendererBoundsCenter"/> 时
-/// 会在生成后平移物体，使<strong>子节点 Renderer 包围盒世界中心</strong>落在该目标点上。
+/// 网格默认左下角为原点。
 /// </summary>
-public class LevelGenerator : MonoBehaviour
+public class LevelGenerator : MonoBehaviour, IDebuger
 {
     [Header("Config")]
     [SerializeField] private TextAsset levelJson;
@@ -19,7 +21,6 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private Vector2 cellSize = Vector2.one;
     [SerializeField] private Vector2 origin = Vector2.zero;
     [SerializeField] private float spawnYOffset = 0f;
-    [SerializeField] private bool row0IsTop = true;
 
     [Header("Animal Prefabs")]
     [SerializeField] private BaseAnimal[] animalPrefabs;
@@ -28,17 +29,60 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private Transform instancesRoot;
 
     [Header("Spawn")]
-    [Tooltip("生成后平移物体，使所有子 Renderer 的合并 bounds.center 落在关卡计算出的格中心（pivot 可在尾部等任意处）")]
-    [SerializeField] private bool alignSpawnToRendererBoundsCenter = true;
+    [Tooltip("footprint（Prefab 上列×行）是否随实例 facing 在世界格上旋转展开；关闭则始终沿「行 +、列 +」轴对齐矩形")]
+    [SerializeField] private bool footprintFollowsFacing = true;
 
-    [Header("Gizmos")]
+    #region Gizmos
+    [SerializeField] private bool alignSpawnToRendererBoundsCenter = false;
+
+    [FoldoutGroup("Gizmos", Expanded = false)]
     [SerializeField] private bool drawGridGizmos = true;
+
+    [FoldoutGroup("Gizmos")]
     [SerializeField] private bool drawInstanceGizmos = true;
+
+    [FoldoutGroup("Gizmos")]
+    [SerializeField] private bool drawFootprintCellsGizmo = true;
+
+    [FoldoutGroup("Gizmos")]
+    [SerializeField] private bool drawInstanceGizmoLabels = true;
+
+    [FoldoutGroup("Gizmos")]
     [SerializeField] private Color gizmoGridColor = new Color(0f, 0.8f, 1f, 0.7f);
+
+    [FoldoutGroup("Gizmos")]
     [SerializeField] private Color gizmoBorderColor = new Color(1f, 1f, 1f, 0.9f);
+
+    [FoldoutGroup("Gizmos")]
+    [Tooltip("配置中锚点格（JSON row/col）线框")]
+    [SerializeField] private Color gizmoAnchorCellColor = new Color(0.55f, 0.95f, 1f, 0.75f);
+
+    [FoldoutGroup("Gizmos")]
+    [Tooltip("footprint 左下角格（生成 pivot 对齐）强调线框")]
+    [SerializeField] private Color gizmoBottomLeftCellWireColor = new Color(1f, 0.92f, 0.25f, 0.95f);
+
+    [FoldoutGroup("Gizmos")]
+    [Tooltip("生成目标点（footprint 左下角格中心）：球体 + 地面十字线")]
     [SerializeField] private Color gizmoInstanceColor = new Color(1f, 0.85f, 0.2f, 0.9f);
+
+    [FoldoutGroup("Gizmos")]
     [SerializeField] private float gizmoInstanceRadius = 0.08f;
 
+    [FoldoutGroup("Gizmos")]
+    [Tooltip("footprint 占用的每一格的线框（青色半透明，不含单独加粗的左下角格）")]
+    [SerializeField] private Color gizmoFootprintCellWireColor = new Color(0.25f, 0.95f, 1f, 0.55f);
+
+
+    [FoldoutGroup("Gizmos")]
+    [SerializeField] private bool drawGridCellLabels = true;
+
+    [FoldoutGroup("Gizmos")]
+    [SerializeField] private Color gizmoCellLabelColor = new Color(1f, 1f, 1f, 0.85f);
+
+    [FoldoutGroup("Gizmos")]
+    [SerializeField] private float gizmoCellLabelYOffset = 0.04f;
+
+    #endregion
     private readonly Dictionary<AnimalType, BaseAnimal> prefabByType = new();
     private readonly List<BaseAnimal> spawned = new();
     private readonly Dictionary<int, BaseAnimal> spawnedById = new();
@@ -115,17 +159,19 @@ public class LevelGenerator : MonoBehaviour
                 continue;
             }
 
-            var pos = GetFootprintCenterWorld(inst.row, inst.col, prefab, config.width, config.height);
-            // 世界朝向往：在 XZ 平面上朝 grid 的 up/right/down/left；先套美术在 prefab 根上的 localRotation，再挂到父节点并保持世界变换（避免父级旋转/缩放导致「某一朝向」偏移）
-            Quaternion worldRot = DirectionToRotation(inst.direction) * prefab.transform.localRotation;
-            var animal = Instantiate(prefab, pos, worldRot);
+            var facing = DirectionEnumUtility.ParseOrDefault(inst.direction);
+            var spawnCellCenterWorld = GetFootprintBottomLeftWorld(inst.row, inst.col, facing, prefab, config.width, config.height);
+            Quaternion worldRot = DirectionEnumUtility.ToWorldRotation(facing) * prefab.transform.localRotation;
+
+            this.Log($"index: {i}, worldRot: {worldRot} | {facing}, posX: {inst.col}, posY: {inst.row}; spawnCellCenterWorld: {spawnCellCenterWorld}");
+
+            // 先旋转再定位：无父级写世界旋转，再挂 instancesRoot，最后 pivot 落在左下角格心
+            var animal = Instantiate(prefab);
+            animal.transform.rotation = worldRot;
             animal.transform.SetParent(instancesRoot, worldPositionStays: true);
+            animal.transform.position = spawnCellCenterWorld;
 
             animal.Init(inst.id, inst.row, inst.col, inst.direction);
-
-            if (alignSpawnToRendererBoundsCenter)
-                AlignSpawnToRendererBoundsCenter(animal.transform, pos);
-
             CacheSpawned(animal, instType);
         }
     }
@@ -252,6 +298,9 @@ public class LevelGenerator : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+    private static GUIStyle s_gridCellLabelStyle;
+    private static GUIStyle s_instanceGizmoLabelStyle;
+
     private void OnDrawGizmos()
     {
         if (!drawGridGizmos)
@@ -298,6 +347,34 @@ public class LevelGenerator : MonoBehaviour
             float z = topZ - r * cellSize.y;
             Gizmos.DrawLine(new Vector3(leftX, y, z), new Vector3(rightX, y, z));
         }
+
+        if (drawGridCellLabels)
+            DrawGridCellLabels(width, height);
+    }
+
+    private void DrawGridCellLabels(int width, int height)
+    {
+        if (s_gridCellLabelStyle == null)
+        {
+            s_gridCellLabelStyle = new GUIStyle(EditorStyles.miniLabel)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = 10,
+            };
+        }
+
+        s_gridCellLabelStyle.normal.textColor = gizmoCellLabelColor;
+
+        for (int jsonRow = 0; jsonRow < height; jsonRow++)
+        {
+            for (int col = 0; col < width; col++)
+            {
+                Vector3 center = GridToWorld(jsonRow, col, width, height);
+                center.y += gizmoCellLabelYOffset;
+                int labelRow = jsonRow;
+                Handles.Label(center, $"{col},{labelRow}", s_gridCellLabelStyle);
+            }
+        }
     }
 
     private void DrawInstanceGizmos(int width, int height)
@@ -315,22 +392,122 @@ public class LevelGenerator : MonoBehaviour
 
         BuildPrefabMap();
 
-        Gizmos.color = gizmoInstanceColor;
+        if (drawInstanceGizmoLabels)
+        {
+            if (s_instanceGizmoLabelStyle == null)
+            {
+                s_instanceGizmoLabelStyle = new GUIStyle(EditorStyles.miniLabel)
+                {
+                    alignment = TextAnchor.MiddleCenter,
+                    fontSize = 11,
+                };
+            }
+
+            s_instanceGizmoLabelStyle.normal.textColor = gizmoCellLabelColor;
+        }
+
+        float footprintPrismY = 0.02f;
+        Vector3 footprintExtent = new Vector3(
+            cellSize.x * 0.88f,
+            footprintPrismY,
+            cellSize.y * 0.88f);
+        Vector3 anchorExtent = new Vector3(
+            cellSize.x * 0.96f,
+            footprintPrismY * 1.25f,
+            cellSize.y * 0.96f);
+        float crossHx = cellSize.x * 0.42f;
+        float crossHz = cellSize.y * 0.42f;
+        float labelDy = gizmoCellLabelYOffset + 0.06f;
 
         for (int i = 0; i < parsed.instances.Length; i++)
         {
             var inst = parsed.instances[i];
             var instType = AnimalTypeUtils.Parse(inst.type);
+
+            Vector3 anchorWorld = GridToWorld(inst.row, inst.col, width, height);
+            var facing = DirectionEnumUtility.ParseOrDefault(inst.direction);
+
             if (instType != AnimalType.Unknown && prefabByType.TryGetValue(instType, out var p) && p != null)
             {
-                var pos = GetFootprintCenterWorld(inst.row, inst.col, p, width, height);
-                Gizmos.DrawSphere(pos, gizmoInstanceRadius);
+                Vector3 bottomLeftWorld = GridToWorld(inst.row, inst.col, width, height);
+
+                if (drawFootprintCellsGizmo)
+                    DrawFootprintOccupiedWireGizmo(inst.row, inst.col, facing, p, width, height, footprintExtent, inst.row, inst.col);
+
+                Gizmos.color = gizmoAnchorCellColor;
+                Gizmos.DrawWireCube(anchorWorld, anchorExtent);
+
+                // 左下角格：与 GetFootprintBottomLeftWorld / 生成 pivot 一致（加粗线框 + 黄球十字）
+                Gizmos.color = gizmoBottomLeftCellWireColor;
+                Vector3 bottomLeftWireExtent = new Vector3(
+                    footprintExtent.x * 1.06f,
+                    footprintExtent.y * 1.75f,
+                    footprintExtent.z * 1.06f);
+                Gizmos.DrawWireCube(bottomLeftWorld, bottomLeftWireExtent);
+
+                Gizmos.color = gizmoInstanceColor;
+                Gizmos.DrawSphere(bottomLeftWorld, gizmoInstanceRadius);
+                Gizmos.DrawLine(bottomLeftWorld + new Vector3(-crossHx, 0f, 0f), bottomLeftWorld + new Vector3(crossHx, 0f, 0f));
+                Gizmos.DrawLine(bottomLeftWorld + new Vector3(0f, 0f, -crossHz), bottomLeftWorld + new Vector3(0f, 0f, crossHz));
+
+                if (drawInstanceGizmoLabels)
+                {
+                    Handles.Label(
+                           anchorWorld + Vector3.up * labelDy,
+                           $"锚 = 左下角（生成）\n({inst.col},{inst.row})",
+                           s_instanceGizmoLabelStyle);
+                }
             }
             else
             {
-                var pos = GridToWorld(inst.row, inst.col, width, height);
-                Gizmos.DrawSphere(pos, gizmoInstanceRadius);
+                Gizmos.color = gizmoAnchorCellColor;
+                Gizmos.DrawWireCube(anchorWorld, anchorExtent);
+
+                Vector3 bottomLeftWorld = anchorWorld;
+                Gizmos.color = gizmoBottomLeftCellWireColor;
+                Gizmos.DrawWireCube(
+                    bottomLeftWorld,
+                    new Vector3(footprintExtent.x * 1.06f, footprintExtent.y * 1.75f, footprintExtent.z * 1.06f));
+
+                Gizmos.color = gizmoInstanceColor;
+                Gizmos.DrawSphere(bottomLeftWorld, gizmoInstanceRadius);
+                Gizmos.DrawLine(bottomLeftWorld + new Vector3(-crossHx, 0f, 0f), bottomLeftWorld + new Vector3(crossHx, 0f, 0f));
+                Gizmos.DrawLine(bottomLeftWorld + new Vector3(0f, 0f, -crossHz), bottomLeftWorld + new Vector3(0f, 0f, crossHz));
+
+                if (drawInstanceGizmoLabels)
+                {
+                    Handles.Label(
+                        anchorWorld + Vector3.up * labelDy,
+                        $"锚 = 左下角（生成）\n({inst.col},{inst.row}) · 无 prefab",
+                        s_instanceGizmoLabelStyle);
+                }
             }
+        }
+    }
+
+    /// <param name="skipRow">与 <paramref name="skipCol"/> 同时为占用格索引时，跳过该格线框（由左下角强调框单独绘制）。无跳过时设为 -1。</param>
+    /// <param name="skipCol">见 <paramref name="skipRow"/>。</param>
+    private void DrawFootprintOccupiedWireGizmo(
+        int anchorRow,
+        int anchorCol,
+        DirectionEnum facing,
+        BaseAnimal prefab,
+        int gridW,
+        int gridH,
+        Vector3 cellExtent,
+        int skipRow = -1,
+        int skipCol = -1)
+    {
+        Gizmos.color = gizmoFootprintCellWireColor;
+        foreach (var o in GetWorldFootprintOffsets(prefab, facing))
+        {
+            int gr = anchorRow + o.y;
+            int gc = anchorCol + o.x;
+            if (gr < 0 || gc < 0 || gr >= gridH || gc >= gridW)
+                continue;
+            if (gr == skipRow && gc == skipCol)
+                continue;
+            Gizmos.DrawWireCube(GridToWorld(gr, gc, gridW, gridH), cellExtent);
         }
     }
 #endif
@@ -362,99 +539,50 @@ public class LevelGenerator : MonoBehaviour
         float bottomZ = rootPos.z - halfH;
 
         float x = leftX + ((col + 0.5f) * cellSize.x) + origin.x;
-        float z = (row0IsTop
-                ? (topZ - ((row + 0.5f) * cellSize.y))
-                : (bottomZ + ((row + 0.5f) * cellSize.y)))
-            + origin.y;
+        float z = (bottomZ + ((row + 0.5f) * cellSize.y)) + origin.y;
 
         float y = rootPos.y + spawnYOffset;
         return new Vector3(x, y, z);
     }
 
-    /// <summary>
-    /// (anchorRow, anchorCol) 为 footprint 左上角；取覆盖 w 列、h 行后的矩形中心。
-    /// </summary>
-    private Vector3 GetFootprintCenterWorld(int anchorRow, int anchorCol, BaseAnimal prefab, int gridW, int gridH)
+    private static Vector2Int RotateOffset(Vector2Int offset, DirectionEnum facing)
     {
-        var fs = prefab.FootprintSizeCells;
-        int w = Mathf.Max(1, fs.x);
-        int h = Mathf.Max(1, fs.y);
-
-        if (anchorRow < 0 || anchorCol < 0 || anchorRow + h > gridH || anchorCol + w > gridW)
+        return facing switch
         {
-            Debug.LogWarning(
-                $"[LevelGenerator] footprint 越界：anchor=({anchorRow},{anchorCol})，占用 {w}×{h}，地图 {gridW}×{gridH}，prefab={prefab.name}");
-        }
-
-        Vector3 a = GridToWorld(anchorRow, anchorCol, gridW, gridH);
-        Vector3 b = GridToWorld(anchorRow + h - 1, anchorCol + w - 1, gridW, gridH);
-        return (a + b) * 0.5f;
+            DirectionEnum.Down => offset,
+            DirectionEnum.Up => new Vector2Int(-offset.x, -offset.y),
+            DirectionEnum.Left => new Vector2Int(-offset.y, offset.x),
+            DirectionEnum.Right => new Vector2Int(offset.y, -offset.x),
+            _ => offset,
+        };
     }
 
-    /// <summary>
-    /// 平移 root，使子层级合并后的 Renderer.bounds.center 与目标世界点重合（用于 pivot 不在视觉中心时对齐格子）。
-    /// </summary>
-    private static void AlignSpawnToRendererBoundsCenter(Transform root, Vector3 targetWorldCenter)
+    private IEnumerable<Vector2Int> GetWorldFootprintOffsets(BaseAnimal prefab, DirectionEnum facing)
     {
-        if (!TryGetCombinedRendererBounds(root, out Bounds worldBounds))
-            return;
+        yield return Vector2Int.zero;
 
-        Vector3 delta = targetWorldCenter - worldBounds.center;
-        root.position += delta;
-    }
+        var extras = prefab.FootprintSizeCells;
+        if (extras == null)
+            yield break;
 
-    private static bool TryGetCombinedRendererBounds(Transform root, out Bounds worldBounds)
-    {
-        worldBounds = default;
-        var renderers = root.GetComponentsInChildren<Renderer>();
-        if (renderers == null || renderers.Length == 0)
-            return false;
-
-        int start = 0;
-        while (start < renderers.Length && renderers[start] is ParticleSystemRenderer)
-            start++;
-        if (start >= renderers.Length)
-            return false;
-
-        worldBounds = renderers[start].bounds;
-        for (int i = start + 1; i < renderers.Length; i++)
+        for (int i = 0; i < extras.Count; i++)
         {
-            if (renderers[i] is ParticleSystemRenderer)
+            var off = extras[i];
+            if (off == Vector2Int.zero)
                 continue;
-            worldBounds.Encapsulate(renderers[i].bounds);
+            yield return footprintFollowsFacing ? RotateOffset(off, facing) : off;
         }
-
-        return true;
     }
 
-    /// <summary>
-    /// 地图含义：up = 世界 +Z，down = -Z，right = +X，left = -X（Y 轴朝上）。与 <see cref="GridToWorld"/> 一致。
-    /// </summary>
-    private static Quaternion DirectionToRotation(string direction)
+    private Vector3 GetFootprintBottomLeftWorld(
+        int anchorRow,
+        int anchorCol,
+        DirectionEnum facing,
+        BaseAnimal prefab,
+        int gridW,
+        int gridH)
     {
-        if (string.IsNullOrEmpty(direction))
-            return Quaternion.identity;
-
-        Vector3 forward;
-        switch (direction.Trim().ToLowerInvariant())
-        {
-            case "up":
-                forward = Vector3.forward;
-                break;
-            case "down":
-                forward = Vector3.back;
-                break;
-            case "right":
-                forward = Vector3.right;
-                break;
-            case "left":
-                forward = Vector3.left;
-                break;
-            default:
-                return Quaternion.identity;
-        }
-
-        return Quaternion.LookRotation(forward, Vector3.up);
+        return GridToWorld(anchorRow, anchorCol, gridW, gridH);
     }
 }
 

@@ -1,11 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// 由关卡配置生成的实体基类。具体移动、交互等逻辑写在子类。
 /// <para>
-/// 与 <see cref="LevelGenerator"/> 约定：json 里的 (row,col) 为该实例 footprint 在网格中的<strong>左上角</strong>
-/// （row 较小表示更靠“上”，与 row0IsTop 一致）；生成时 transform 放在整块占用的<strong>世界空间几何中心</strong>。
-/// Gizmo 以当前 transform 为几何中心、按 <see cref="FootprintSizeCells"/> 向外画示意格子。
+/// 与 <see cref="LevelGenerator"/> 约定：json 里的 (row,col) 为该实例 footprint 的<strong>锚定格</strong>
+/// （row 较小表示更靠「上」，与 row0IsTop 一致）；默认将根 pivot 放在 footprint <strong>左下角格中心</strong>；
+/// 若生成器开启「按 Renderer 对齐」会把合并包围盒中心挪到该格心，pivot 会随之偏移。
+/// Gizmo 在物体<strong>本地 XZ 底面</strong>上铺设（列沿 local +X，行沿 local -Z；与 LevelGenerator 在世界坐标下、物体仅绕 Y 旋转时一致）。
+/// 绘制时使用 <c>Gizmos.matrix = transform.localToWorldMatrix</c>，因此会随物体的<strong>旋转与缩放</strong>一起变换；棱柱厚度沿 local Y（一般即模型竖直方向）。
 /// </para>
 /// </summary>
 public abstract class BaseAnimal : MonoBehaviour
@@ -17,7 +20,12 @@ public abstract class BaseAnimal : MonoBehaviour
     public int Id { get; private set; }
     public int Row { get; private set; }
     public int Col { get; private set; }
+
+    /// <summary>配置里的原始字符串（可能为空）。解析朝向请用 <see cref="FacingDirection"/>。</summary>
     public string Direction { get; private set; }
+
+    /// <summary>由 json <c>direction</c> 解析；空或非法时为 <see cref="DirectionEnum.Down"/>（朝下）。</summary>
+    public DirectionEnum FacingDirection { get; private set; } = DirectionEnum.Down;
 
     /// <summary>与配置 type / prefab 对应的动物种类。</summary>
     public abstract AnimalType Type { get; }
@@ -28,15 +36,25 @@ public abstract class BaseAnimal : MonoBehaviour
         Id = id;
         Row = row;
         Col = col;
-        Direction = direction;
+        Direction = direction ?? string.Empty;
+        FacingDirection = DirectionEnumUtility.ParseOrDefault(direction);
     }
 
     #endregion
 
     #region 占用格（与生成器一致，取 Prefab 上配置）
 
-    /// <summary> footprint 占用：x=列数，y=行数。json (row,col) 为左上角第一格。</summary>
-    public Vector2Int FootprintSizeCells => footprintSize;
+    /// <summary>
+    /// footprint 占用格（相对“起始格”的偏移列表）。
+    /// <para>
+    /// 约定：以 <see cref="transform.position"/> 对应的格子为起始格（偏移 = (0,0)）。
+    /// 本列表存放“额外占用”的格子偏移：x=列偏移（向右为 +），y=行偏移（向下为 +）。
+    /// </para>
+    /// <para>
+    /// 注意：起始格 (0,0) 不需要填进列表；生成器会默认包含起始格。
+    /// </para>
+    /// </summary>
+    public IReadOnlyList<Vector2Int> FootprintSizeCells => footprintExtraCells;
 
     #endregion
 
@@ -49,16 +67,13 @@ public abstract class BaseAnimal : MonoBehaviour
     [Tooltip("勾选则仅在选中本物体时绘制")]
     [SerializeField] private bool drawFootprintWhenSelectedOnly = true;
 
-    [Tooltip("占用列数 × 占用行数（与配置网格一致：x=列，y=行）")]
-    [SerializeField] private Vector2Int footprintSize = Vector2Int.one;
-
-    [Tooltip("相对几何中心的偏移，单位：格；x 沿世界 +X，y 沿“行”方向（对应世界 -Z 一侧）")]
-    [SerializeField] private Vector2Int footprintCellOffset = Vector2Int.zero;
+    [Tooltip("额外占用格子的偏移（不包含起始格 (0,0)）。x=列偏移（向右 +），y=行偏移（向下 +）")]
+    [SerializeField] private List<Vector2Int> footprintExtraCells = new List<Vector2Int>();
 
     [Tooltip("逐格绘制半透明块；关闭则只画整体线框")]
     [SerializeField] private bool drawCellsIndividually = true;
 
-    [Tooltip("单格在世界空间中的尺寸：x=沿 X 的宽度，z=沿 Z 的深度（应与 LevelGenerator.cellSize 一致）")]
+    [Tooltip("单格在物体本地底面上的尺寸：x=local X 宽度，y=local Z 深度（数值应与 LevelGenerator.cellSize 一致）")]
     [SerializeField] private Vector2 cellSizeXZ = Vector2.one;
 
     [SerializeField] private Color gizmoWireColor = new Color(0.2f, 1f, 0.35f, 0.95f);
@@ -92,72 +107,91 @@ public abstract class BaseAnimal : MonoBehaviour
 
     private void DrawFootprint()
     {
-        int columns = Mathf.Max(1, footprintSize.x);
-        int rows = Mathf.Max(1, footprintSize.y);
         float dx = Mathf.Max(1e-4f, cellSizeXZ.x);
         float dz = Mathf.Max(1e-4f, cellSizeXZ.y);
 
-        // 几何中心 = transform，再按「格」做一次平移
-        Vector3 anchor = transform.position;
-        anchor.x += footprintCellOffset.x * dx;
-        anchor.z -= footprintCellOffset.y * dz;
-        anchor.y += gizmoHeightBias;
+        // 本地空间：起始格中心为 (0,0)；列沿 local +X，行沿 local -Z
+        Vector3 localAnchor = new Vector3(0f, gizmoHeightBias, 0f);
+        Vector3 cellExtentLocal = new Vector3(dx, GizmoPrismHeight, dz);
 
-        float totalW = columns * dx;
-        float totalD = rows * dz;
-
-        float left = anchor.x - 0.5f * totalW + 0.5f * dx;
-        float topZ = anchor.z + 0.5f * totalD - 0.5f * dz;
-        Vector3 cellExtent = new Vector3(dx, GizmoPrismHeight, dz);
-
-        // 与几何中心最近的格子视为「中心格」（1×1 时即该格；偶数尺寸时取距离最小的一个，平手取行小、列小）
-        int centerR = 0;
-        int centerC = 0;
-        float bestSq = float.MaxValue;
-        for (int r = 0; r < rows; r++)
+        // 计算“所有占用格”（包含起始格）
+        int occupiedCount = 1 + (footprintExtraCells?.Count ?? 0);
+        var occupied = new List<Vector2Int>(occupiedCount) { Vector2Int.zero };
+        if (footprintExtraCells != null)
         {
-            for (int c = 0; c < columns; c++)
+            for (int i = 0; i < footprintExtraCells.Count; i++)
             {
-                float cx = left + c * dx;
-                float cz = topZ - r * dz;
-                float dSq = (cx - anchor.x) * (cx - anchor.x) + (cz - anchor.z) * (cz - anchor.z);
-                if (dSq < bestSq - 1e-8f || (Mathf.Abs(dSq - bestSq) <= 1e-8f && (r < centerR || (r == centerR && c < centerC))))
-                {
-                    bestSq = dSq;
-                    centerR = r;
-                    centerC = c;
-                }
+                var off = footprintExtraCells[i];
+                if (off == Vector2Int.zero)
+                    continue;
+                occupied.Add(off);
             }
         }
 
+        // 选“离起始格最近”的格子作为中心强调格（用于可视化，不影响逻辑）
+        int centerIndex = 0;
+        int bestSq = int.MaxValue;
+        for (int i = 0; i < occupied.Count; i++)
+        {
+            var o = occupied[i];
+            int dSq = o.x * o.x + o.y * o.y;
+            if (dSq < bestSq)
+            {
+                bestSq = dSq;
+                centerIndex = i;
+            }
+        }
+
+        Matrix4x4 prevMatrix = Gizmos.matrix;
+        Gizmos.matrix = transform.localToWorldMatrix;
+
         if (drawCellsIndividually)
         {
-            for (int r = 0; r < rows; r++)
+            for (int i = 0; i < occupied.Count; i++)
             {
-                for (int c = 0; c < columns; c++)
-                {
-                    Vector3 cellCenter = new Vector3(left + c * dx, anchor.y, topZ - r * dz);
-                    bool isCenter = r == centerR && c == centerC;
+                var o = occupied[i];
+                Vector3 localCell = localAnchor + new Vector3(o.x * dx, 0f, o.y * dz);
+                bool isCenter = i == centerIndex;
 
-                    Gizmos.color = isCenter ? gizmoCenterFillColor : gizmoFillColor;
-                    Gizmos.DrawCube(cellCenter, cellExtent);
-                    Gizmos.color = isCenter ? gizmoCenterWireColor : gizmoWireColor;
-                    Gizmos.DrawWireCube(cellCenter, cellExtent);
-                }
+                Gizmos.color = isCenter ? gizmoCenterFillColor : gizmoFillColor;
+                Gizmos.DrawCube(localCell, cellExtentLocal);
+                Gizmos.color = isCenter ? gizmoCenterWireColor : gizmoWireColor;
+                Gizmos.DrawWireCube(localCell, cellExtentLocal);
             }
         }
         else
         {
-            Vector3 boundsExtent = new Vector3(totalW, GizmoPrismHeight, totalD);
-            Gizmos.color = gizmoWireColor;
-            Gizmos.DrawWireCube(anchor, boundsExtent);
+            // 只画整体包围框（按占用格集合的 AABB）
+            int minX = occupied[0].x;
+            int maxX = occupied[0].x;
+            int minY = occupied[0].y;
+            int maxY = occupied[0].y;
+            for (int i = 1; i < occupied.Count; i++)
+            {
+                var o = occupied[i];
+                minX = Mathf.Min(minX, o.x);
+                maxX = Mathf.Max(maxX, o.x);
+                minY = Mathf.Min(minY, o.y);
+                maxY = Mathf.Max(maxY, o.y);
+            }
 
-            Vector3 pivotCenter = new Vector3(left + centerC * dx, anchor.y, topZ - centerR * dz);
+            float sizeX = (maxX - minX + 1) * dx;
+            float sizeZ = (maxY - minY + 1) * dz;
+            Vector3 boundsSizeLocal = new Vector3(sizeX, GizmoPrismHeight, sizeZ);
+            Vector3 boundsCenterLocal = localAnchor + new Vector3(((minX + maxX) * 0.5f) * dx, 0f, -((minY + maxY) * 0.5f) * dz);
+
+            Gizmos.color = gizmoWireColor;
+            Gizmos.DrawWireCube(boundsCenterLocal, boundsSizeLocal);
+
+            var centerOff = occupied[centerIndex];
+            Vector3 localCenterCell = localAnchor + new Vector3(centerOff.x * dx, 0f, -centerOff.y * dz);
             Gizmos.color = gizmoCenterFillColor;
-            Gizmos.DrawCube(pivotCenter, cellExtent);
+            Gizmos.DrawCube(localCenterCell, cellExtentLocal);
             Gizmos.color = gizmoCenterWireColor;
-            Gizmos.DrawWireCube(pivotCenter, cellExtent);
+            Gizmos.DrawWireCube(localCenterCell, cellExtentLocal);
         }
+
+        Gizmos.matrix = prevMatrix;
     }
 #endif
 

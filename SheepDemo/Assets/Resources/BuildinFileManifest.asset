@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03e8da390983491eabc861c4ba6caed6, type: 3}
+  m_Name: BuildinFileManifest
+  m_EditorClassIdentifier: 
+  BuildinFiles:
+  - PackageName: GamePackage
+    FileName: 8b4278c906d311fae328be4193d057d4.bundle
+    FileCRC32: 13f3747a
+  - PackageName: GamePackage
+    FileName: BuildReport_GamePackage_2026-02-20-37.json
+    FileCRC32: afd5f712
+  - PackageName: GamePackage
+    FileName: ManifestPackage_GamePackage.version
+    FileCRC32: 91baa74c
+  - PackageName: GamePackage
+    FileName: ManifestPackage_GamePackage_2026-02-20-37.bytes
+    FileCRC32: f9a6ddb5
+  - PackageName: GamePackage
+    FileName: ManifestPackage_GamePackage_2026-02-20-37.hash
+    FileCRC32: b6318aa0
+  - PackageName: GamePackage
+    FileName: ManifestPackage_GamePackage_2026-02-20-37.json
+    FileCRC32: 709d5fd3
+  - PackageName: GamePackage
+    FileName: OutputCache
+    FileCRC32: aa84deda
+  - PackageName: GamePackage
+    FileName: OutputCache.manifest
+    FileCRC32: 211a9805
+  - PackageName: GamePackage
+    FileName: defbd0ac500f486d38d901a875d7fe98.bundle
+    FileCRC32: d1f59cad

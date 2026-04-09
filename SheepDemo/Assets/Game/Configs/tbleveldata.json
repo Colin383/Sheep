@@ -1,0 +1,426 @@
+[
+  {
+    "id": "10001",
+    "path": "Level_001",
+    "congraktTips": "S_congraktTips_Des_level_01",
+    "answerTips": "S_answer_Des_level_01",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10002",
+    "path": "Level_002",
+    "congraktTips": "S_congraktTips_Des_level_02",
+    "answerTips": "S_answer_Des_level_02",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10003",
+    "path": "Level_003",
+    "congraktTips": "S_congraktTips_Des_level_03",
+    "answerTips": "S_answer_Des_level_03",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10004",
+    "path": "Level_004",
+    "congraktTips": "S_congraktTips_Des_level_04",
+    "answerTips": "S_answer_Des_level_04",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10005",
+    "path": "Level_005",
+    "congraktTips": "S_congraktTips_Des_level_05",
+    "answerTips": "S_answer_Des_level_05",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10006",
+    "path": "Level_006",
+    "congraktTips": "S_congraktTips_Des_level_06",
+    "answerTips": "S_answer_Des_level_06",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10007",
+    "path": "Level_007",
+    "congraktTips": "S_congraktTips_Des_level_07",
+    "answerTips": "S_answer_Des_level_07",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10008",
+    "path": "Level_008",
+    "congraktTips": "S_congraktTips_Des_level_08",
+    "answerTips": "S_answer_Des_level_08",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10009",
+    "path": "Level_009",
+    "congraktTips": "S_congraktTips_Des_level_09",
+    "answerTips": "S_answer_Des_level_09",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10010",
+    "path": "Level_010",
+    "congraktTips": "S_congraktTips_Des_level_10",
+    "answerTips": "S_answer_Des_level_10",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10011",
+    "path": "Level_011",
+    "congraktTips": "S_congraktTips_Des_level_11",
+    "answerTips": "S_answer_Des_level_11",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10012",
+    "path": "Level_012",
+    "congraktTips": "S_congraktTips_Des_level_12",
+    "answerTips": "S_answer_Des_level_12",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10013",
+    "path": "Level_013",
+    "congraktTips": "S_congraktTips_Des_level_13",
+    "answerTips": "S_answer_Des_level_13",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10014",
+    "path": "Level_014",
+    "congraktTips": "S_congraktTips_Des_level_14",
+    "answerTips": "S_answer_Des_level_14",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10015",
+    "path": "Level_015",
+    "congraktTips": "S_congraktTips_Des_level_15",
+    "answerTips": "S_answer_Des_level_15",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10016",
+    "path": "Level_016",
+    "congraktTips": "S_congraktTips_Des_level_16",
+    "answerTips": "S_answer_Des_level_16",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10017",
+    "path": "Level_017",
+    "congraktTips": "S_congraktTips_Des_level_17",
+    "answerTips": "S_answer_Des_level_17",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10018",
+    "path": "Level_018",
+    "congraktTips": "S_congraktTips_Des_level_18",
+    "answerTips": "S_answer_Des_level_18",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10019",
+    "path": "Level_019",
+    "congraktTips": "S_congraktTips_Des_level_19",
+    "answerTips": "S_answer_Des_level_19",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10020",
+    "path": "Level_020",
+    "congraktTips": "S_congraktTips_Des_level_20",
+    "answerTips": "S_answer_Des_level_20",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10021",
+    "path": "Level_021",
+    "congraktTips": "S_congraktTips_Des_level_21",
+    "answerTips": "S_answer_Des_level_21",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10022",
+    "path": "Level_022",
+    "congraktTips": "S_congraktTips_Des_level_22",
+    "answerTips": "S_answer_Des_level_22",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10023",
+    "path": "Level_023",
+    "congraktTips": "S_congraktTips_Des_level_23",
+    "answerTips": "S_answer_Des_level_23",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10024",
+    "path": "Level_024",
+    "congraktTips": "S_congraktTips_Des_level_24",
+    "answerTips": "S_answer_Des_level_24",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10025",
+    "path": "Level_025",
+    "congraktTips": "S_congraktTips_Des_level_25",
+    "answerTips": "S_answer_Des_level_25",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10026",
+    "path": "Level_026",
+    "congraktTips": "S_congraktTips_Des_level_26",
+    "answerTips": "S_answer_Des_level_26",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10027",
+    "path": "Level_027",
+    "congraktTips": "S_congraktTips_Des_level_27",
+    "answerTips": "S_answer_Des_level_27",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10028",
+    "path": "Level_028",
+    "congraktTips": "S_congraktTips_Des_level_28",
+    "answerTips": "S_answer_Des_level_28",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10029",
+    "path": "Level_029",
+    "congraktTips": "S_congraktTips_Des_level_29",
+    "answerTips": "S_answer_Des_level_29",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10030",
+    "path": "Level_030",
+    "congraktTips": "S_congraktTips_Des_level_30",
+    "answerTips": "S_answer_Des_level_30",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10031",
+    "path": "Level_031",
+    "congraktTips": "S_congraktTips_Des_level_31",
+    "answerTips": "S_answer_Des_level_31",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10032",
+    "path": "Level_032",
+    "congraktTips": "S_congraktTips_Des_level_32",
+    "answerTips": "S_answer_Des_level_32",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10033",
+    "path": "Level_033",
+    "congraktTips": "S_congraktTips_Des_level_33",
+    "answerTips": "S_answer_Des_level_33",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10034",
+    "path": "Level_034",
+    "congraktTips": "S_congraktTips_Des_level_34",
+    "answerTips": "S_answer_Des_level_34",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10035",
+    "path": "Level_035",
+    "congraktTips": "S_congraktTips_Des_level_35",
+    "answerTips": "S_answer_Des_level_35",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10036",
+    "path": "Level_036",
+    "congraktTips": "S_congraktTips_Des_level_36",
+    "answerTips": "S_answer_Des_level_36",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10037",
+    "path": "Level_037",
+    "congraktTips": "S_congraktTips_Des_level_37",
+    "answerTips": "S_answer_Des_level_37",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10038",
+    "path": "Level_038",
+    "congraktTips": "S_congraktTips_Des_level_38",
+    "answerTips": "S_answer_Des_level_38",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10039",
+    "path": "Level_039",
+    "congraktTips": "S_congraktTips_Des_level_39",
+    "answerTips": "S_answer_Des_level_39",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10040",
+    "path": "Level_040",
+    "congraktTips": "S_congraktTips_Des_level_40",
+    "answerTips": "S_answer_Des_level_40",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10041",
+    "path": "Level_041",
+    "congraktTips": "S_congraktTips_Des_level_41",
+    "answerTips": "S_answer_Des_level_41",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10042",
+    "path": "Level_042",
+    "congraktTips": "S_congraktTips_Des_level_42",
+    "answerTips": "S_answer_Des_level_42",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10043",
+    "path": "Level_043",
+    "congraktTips": "S_congraktTips_Des_level_43",
+    "answerTips": "S_answer_Des_level_43",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10044",
+    "path": "Level_044",
+    "congraktTips": "S_congraktTips_Des_level_44",
+    "answerTips": "S_answer_Des_level_44",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10045",
+    "path": "Level_045",
+    "congraktTips": "S_congraktTips_Des_level_45",
+    "answerTips": "S_answer_Des_level_45",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10046",
+    "path": "Level_046",
+    "congraktTips": "S_congraktTips_Des_level_46",
+    "answerTips": "S_answer_Des_level_46",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10047",
+    "path": "Level_047",
+    "congraktTips": "S_congraktTips_Des_level_47",
+    "answerTips": "S_answer_Des_level_47",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10048",
+    "path": "Level_048",
+    "congraktTips": "S_congraktTips_Des_level_48",
+    "answerTips": "S_answer_Des_level_48",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10049",
+    "path": "Level_049",
+    "congraktTips": "S_congraktTips_Des_level_49",
+    "answerTips": "S_answer_Des_level_49",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10050",
+    "path": "Level_050",
+    "congraktTips": "S_congraktTips_Des_level_50",
+    "answerTips": "S_answer_Des_level_50",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10051",
+    "path": "Level_051",
+    "congraktTips": "S_congraktTips_Des_level_51",
+    "answerTips": "S_answer_Des_level_51",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10052",
+    "path": "Level_052",
+    "congraktTips": "S_congraktTips_Des_level_52",
+    "answerTips": "S_answer_Des_level_52",
+    "levelType": 0,
+    "lockType": 1
+  },
+  {
+    "id": "10999",
+    "path": "Level_999",
+    "congraktTips": "",
+    "answerTips": "",
+    "levelType": 0,
+    "lockType": 2
+  }
+]

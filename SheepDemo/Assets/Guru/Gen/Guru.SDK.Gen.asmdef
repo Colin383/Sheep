@@ -1,0 +1,8 @@
+{
+  "name": "Guru.SDK.Gen",
+  "references": [
+    "AdjustSdk.Scripts",
+    "Guru.SDK.Framework.Core",
+    "Guru.SDK.Framework.Utils"
+  ]
+}

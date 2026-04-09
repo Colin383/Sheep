@@ -1,0 +1,14 @@
+[
+  {
+    "test": "hello",
+    "tipCostCount": 1,
+    "showTipsFailCount": 2,
+    "showTipsTimeLimit": 30,
+    "ad_interstitialCD": 30,
+    "ad_rewardResetInterstitialCD": 60,
+    "ad_interstitialShowMinLevel": 3,
+    "ad_interstitialShowIntervalCount": 2,
+    "ad_interstitialShowFailedCount": 8,
+    "showRatingLevel": 4
+  }
+]

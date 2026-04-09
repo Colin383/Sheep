@@ -1,0 +1,63 @@
+pluginManagement {
+    repositories {
+        **ARTIFACTORYREPOSITORY**
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+
+include ':launcher', ':unityLibrary'
+**INCLUDES**
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        **ARTIFACTORYREPOSITORY**
+        google()
+        mavenCentral()
+// Android Resolver Repos Start
+        def unityProjectPath = $/file:///**DIR_UNITYPROJECT**/$.replace("\\", "/")
+        maven {
+            url "https://verve.jfrog.io/artifactory/verve-gradle-release" // Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Mediation/Verve/Editor/Dependencies.xml:7
+        }
+        maven {
+            url (unityProjectPath + "/Assets/GeneratedLocalRepo/Firebase/m2repository") // Packages/com.google.firebase.analytics/Firebase/Editor/AnalyticsDependencies.xml:18, Packages/com.google.firebase.app-core/Firebase/Editor/AppDependencies.xml:22, Packages/com.google.firebase.auth/Firebase/Editor/AuthDependencies.xml:20, Packages/com.google.firebase.crashlytics/Firebase/Editor/CrashlyticsDependencies.xml:20, Packages/com.google.firebase.dynamic-links/Firebase/Editor/DynamicLinksDependencies.xml:20, Packages/com.google.firebase.firestore/Firebase/Editor/FirestoreDependencies.xml:20, Packages/com.google.firebase.installations/Firebase/Editor/InstallationsDependencies.xml:20, Packages/com.google.firebase.messaging/Firebase/Editor/MessagingDependencies.xml:24, Packages/com.google.firebase.remote-config/Firebase/Editor/RemoteConfigDependencies.xml:20
+        }
+        maven {
+            url "https://aws.oss.sonatype.org/content/repositories/releases/" // Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Amazon/Scripts/Editor/AmazonDependencies.xml:10
+        }
+        maven {
+            url "https://artifactory.bidmachine.io/bidmachine" // Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Mediation/BidMachine/Editor/Dependencies.xml:8
+        }
+        maven {
+            url "https://artifact.bytedance.com/repository/pangle" // Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Pangle/Mediation/Editor/PangleCustomDependencies.xml:9, Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Pangle/Mediation/Editor/PangleCustomDependencies.xml:16
+        }
+        maven {
+            url "https://cboost.jfrog.io/artifactory/chartboost-ads/" // Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Mediation/Chartboost/Editor/Dependencies.xml:8
+        }
+        maven {
+            url "https://android-sdk.is.com/" // Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Mediation/IronSource/Editor/Dependencies.xml:8
+        }
+        maven {
+            url "https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea" // Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Mediation/Mintegral/Editor/Dependencies.xml:8
+        }
+        maven {
+            url "https://maven.ogury.co" // Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Mediation/OguryPresage/Editor/Dependencies.xml:8
+        }
+        maven {
+            url "https://repo.pubmatic.com/artifactory/public-repos-gradle" // Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Mediation/PubMatic/Editor/Dependencies.xml:8
+        }
+        maven {
+            url "https://s3.amazonaws.com/smaato-sdk-releases/" // Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Mediation/Smaato/Editor/Dependencies.xml:8
+        }
+        maven {
+            url "https://repo.pubmatic.com/artifactory/public-repos" // Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Pubmatic/AppLovinPubMaticAdapter/Editor/ALOpenWrapMediationDependencies.xml:17, Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Pubmatic/OpenWrapSDK/Editor/OpenWrapSDKDependencies.xml:18
+        }
+        mavenLocal()
+// Android Resolver Repos End
+        flatDir {
+            dirs "${project(':unityLibrary').projectDir}/libs"
+        }
+    }
+}

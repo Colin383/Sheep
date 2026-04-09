@@ -1,0 +1,267 @@
+[
+    {
+        "uuid": "l68dzm-iecz07-0ojh72-jx7dg0",
+        "id": 219,
+        "origin": "游戏中",
+        "output": "artboard-l68dzm-iecz07-0ojh72-jx7dg0.png",
+        "detail": "detail-l68dzm-iecz07-0ojh72-jx7dg0.json",
+        "platform": "web",
+        "baseDpi": 1,
+        "assets": {
+            
+        },
+        "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1920,
+            "height": 1080
+        },
+        "resolution": 72,
+        "layers": [
+            {
+                "id": 0,
+                "index": 0,
+                "name": "游戏中",
+                "type": "shapeLayer",
+                "x": 0,
+                "y": 0,
+                "width": 1920,
+                "height": 1080
+            },
+            {
+                "id": 1587,
+                "index": 17,
+                "name": "Whereisthe“SteppingStone”?",
+                "type": "textLayer",
+                "x": 1269,
+                "y": 213,
+                "width": 296,
+                "height": 96,
+                "textInfo": {
+                    "content": "Where is the \r“Stepping Stone”?",
+                    "orientation": "horizontal",
+                    "bounds": {
+                        "x": 0,
+                        "y": -8.81695461273193,
+                        "width": 81.0714263916016,
+                        "height": 27.9779176712036
+                    },
+                    "fontPostScriptName": "Twinkly",
+                    "fontName": "Twinkly",
+                    "fontSize": 38,
+                    "bold": false,
+                    "italic": false,
+                    "color": "#79664E"
+                }
+            },
+            {
+                "id": 2194,
+                "index": 16,
+                "name": "UI_youxizhong_bg_tishi_01.png",
+                "type": "layer",
+                "x": 1238,
+                "y": 186,
+                "width": 354,
+                "height": 157
+            },
+            {
+                "id": 2241,
+                "index": 15,
+                "name": "36",
+                "type": "textLayer",
+                "x": 74,
+                "y": 77,
+                "width": 90,
+                "height": 59,
+                "stroke": {
+                    "width": 4,
+                    "color": "#FFFFFF",
+                    "opacity": 100,
+                    "alignment": "strokeStyleAlignOutside"
+                },
+                "textInfo": {
+                    "content": "36",
+                    "orientation": "horizontal",
+                    "bounds": {
+                        "x": -99.708251953125,
+                        "y": -148.717422485352,
+                        "width": 199.416534423828,
+                        "height": 193.839641571045
+                    },
+                    "fontPostScriptName": "MaokenAssortedSans",
+                    "fontName": "MaokenAssortedSans",
+                    "fontSize": 80,
+                    "bold": false,
+                    "italic": false,
+                    "color": "#3E4750"
+                }
+            },
+            {
+                "id": 2240,
+                "index": 14,
+                "name": "LEVEL",
+                "type": "textLayer",
+                "x": 95,
+                "y": 38,
+                "width": 94,
+                "height": 23,
+                "textInfo": {
+                    "content": "LEVEL",
+                    "orientation": "horizontal",
+                    "bounds": {
+                        "x": -276.09716796875,
+                        "y": -151.663940429688,
+                        "width": 552.194641113281,
+                        "height": 197.680156707764
+                    },
+                    "fontPostScriptName": "MaokenAssortedSans",
+                    "fontName": "MaokenAssortedSans",
+                    "fontSize": 30,
+                    "bold": false,
+                    "italic": false,
+                    "color": "#FFFFFF"
+                }
+            },
+            {
+                "id": 2251,
+                "index": 13,
+                "name": "UI_youxizhong_icon_tuding_01.png",
+                "type": "layer",
+                "x": 17,
+                "y": 13,
+                "width": 56,
+                "height": 55
+            },
+            {
+                "id": 2277,
+                "index": 12,
+                "name": "UI_youxizhong_pic_yinying_01.png",
+                "type": "layer",
+                "x": 43,
+                "y": 52,
+                "width": 30,
+                "height": 18
+            },
+            {
+                "id": 2278,
+                "index": 11,
+                "name": "UI_youxizhong_bg_title_01.png",
+                "type": "layer",
+                "x": 36,
+                "y": 34,
+                "width": 164,
+                "height": 134
+            },
+            {
+                "id": 2148,
+                "index": 10,
+                "name": "UI_youxizhong_btn_tishi_01",
+                "type": "layer",
+                "x": 582,
+                "y": 37,
+                "width": 155,
+                "height": 107
+            },
+            {
+                "id": 2143,
+                "index": 9,
+                "name": "UI_youxizhong_btn_zanting_01",
+                "type": "layer",
+                "x": 406,
+                "y": 38,
+                "width": 153,
+                "height": 104
+            },
+            {
+                "id": 2138,
+                "index": 8,
+                "name": "UI_youxizhong_btn_chonglai_01",
+                "type": "layer",
+                "x": 238,
+                "y": 36,
+                "width": 146,
+                "height": 106
+            },
+            {
+                "id": 2131,
+                "index": 7,
+                "name": "UI_youxizhong_icon_shang_01.png",
+                "type": "layer",
+                "x": 1612,
+                "y": 907,
+                "width": 96,
+                "height": 102
+            },
+            {
+                "id": 2130,
+                "index": 6,
+                "name": "UI_youxizhong_icon_zuoyou_01",
+                "type": "layer",
+                "x": 514,
+                "y": 910,
+                "width": 128,
+                "height": 96
+            },
+            {
+                "id": 2129,
+                "index": 5,
+                "name": "UI_youxizhong_icon_zuoyou_01",
+                "type": "layer",
+                "x": 179,
+                "y": 910,
+                "width": 128,
+                "height": 96
+            },
+            {
+                "id": 2122,
+                "index": 4,
+                "name": "UI_youxizhong_btn_fangxiang_01",
+                "type": "layer",
+                "x": 1516,
+                "y": 890,
+                "width": 284,
+                "height": 150
+            },
+            {
+                "id": 2120,
+                "index": 3,
+                "name": "UI_youxizhong_btn_fangxiang_01",
+                "type": "layer",
+                "x": 436,
+                "y": 890,
+                "width": 284,
+                "height": 150
+            },
+            {
+                "id": 2118,
+                "index": 2,
+                "name": "UI_youxizhong_btn_fangxiang_01",
+                "type": "layer",
+                "x": 101,
+                "y": 890,
+                "width": 284,
+                "height": 150
+            },
+            {
+                "id": 2040,
+                "index": 1,
+                "name": "UI_youxizhong_btn_shangdian_01",
+                "type": "layer",
+                "x": 1730,
+                "y": 32,
+                "width": 160,
+                "height": 141
+            },
+            {
+                "id": 2279,
+                "index": 0,
+                "name": "bg",
+                "type": "layer",
+                "x": 0,
+                "y": 0,
+                "width": 2340,
+                "height": 1440
+            }
+        ]
+    }
+]

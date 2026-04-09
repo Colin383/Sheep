@@ -1,0 +1,30 @@
+[
+  {
+    "id": "no_ads",
+    "androidProductId": "brpk.a.iap.noads1",
+    "iosProductId": "brpk.i.iap.noads1",
+    "type": 0,
+    "rewardId": "20001"
+  },
+  {
+    "id": "hint1",
+    "androidProductId": "brpk.a.iap.hint1",
+    "iosProductId": "brpk.i.iap.hint2",
+    "type": 1,
+    "rewardId": "20002"
+  },
+  {
+    "id": "hint2",
+    "androidProductId": "brpk.a.iap.hint2",
+    "iosProductId": "brpk.i.iap.hint2",
+    "type": 1,
+    "rewardId": "20003"
+  },
+  {
+    "id": "hint99",
+    "androidProductId": "brpk.a.iap.hint99",
+    "iosProductId": "brpk.i.iap.hint99",
+    "type": 0,
+    "rewardId": "20004"
+  }
+]

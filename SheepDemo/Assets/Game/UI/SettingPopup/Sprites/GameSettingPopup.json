@@ -1,0 +1,871 @@
+{
+  "document": {
+    "exportMeta": {
+      "format": "json+polyfill",
+      "scriptVersion": "2.2.0"
+    },
+    "height": 1440,
+    "mode": "DocumentMode.RGB",
+    "name": "设置.psd",
+    "resolution": 72,
+    "width": 2340
+  },
+  "layers": [
+    {
+      "bounds": {
+        "bottom": 935,
+        "height": 28,
+        "left": 1284,
+        "right": 1477,
+        "top": 907,
+        "width": 193
+      },
+      "color": {
+        "b": 116,
+        "g": 121,
+        "hex": "#7d7974",
+        "r": 125
+      },
+      "content": "Terms of Use",
+      "fontSize": 30,
+      "isGroup": false,
+      "kind": "LayerKind.TEXT",
+      "name": "UI_setting_1_txt",
+      "opacity": 100,
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 935,
+        "height": 29,
+        "left": 863,
+        "right": 1068,
+        "top": 906,
+        "width": 205
+      },
+      "color": {
+        "b": 116,
+        "g": 121,
+        "hex": "#7d7974",
+        "r": 125
+      },
+      "content": "Privacy Policy",
+      "fontSize": 30,
+      "isGroup": false,
+      "kind": "LayerKind.TEXT",
+      "name": "UI_setting_2_txt",
+      "opacity": 100,
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1204,
+        "height": 23,
+        "left": 1057,
+        "right": 1283,
+        "top": 1181,
+        "width": 226
+      },
+      "color": {
+        "b": 255,
+        "g": 255,
+        "hex": "#ffffff",
+        "r": 255
+      },
+      "content": "2.1.3-22051266",
+      "fontSize": 30,
+      "isGroup": false,
+      "kind": "LayerKind.TEXT",
+      "name": "UI_setting_3_txt",
+      "opacity": 30.1960784313726,
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1172,
+        "height": 219,
+        "left": 862,
+        "right": 1478,
+        "top": 953,
+        "width": 616
+      },
+      "children": [
+        {
+          "bounds": {
+            "bottom": 1001,
+            "height": 48,
+            "left": 1357,
+            "right": 1385,
+            "top": 953,
+            "width": 28
+          },
+          "isGroup": false,
+          "kind": "LayerKind.SOLIDFILL",
+          "name": "UI_setting_img_tiepian_01",
+          "opacity": 100,
+          "visible": true
+        },
+        {
+          "bounds": {
+            "bottom": 1001,
+            "height": 48,
+            "left": 955,
+            "right": 983,
+            "top": 953,
+            "width": 28
+          },
+          "isGroup": false,
+          "kind": "LayerKind.SOLIDFILL",
+          "name": "UI_setting_img_tiepian_01",
+          "opacity": 100,
+          "visible": true
+        },
+        {
+          "bounds": {
+            "bottom": 1132,
+            "height": 66,
+            "left": 978,
+            "right": 1362,
+            "top": 1066,
+            "width": 384
+          },
+          "children": [
+            {
+              "bounds": {
+                "bottom": 1132,
+                "height": 66,
+                "left": 1300,
+                "right": 1362,
+                "top": 1066,
+                "width": 62
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "UI_setting_icon_douyin_01",
+              "opacity": 100,
+              "src": "UI_setting_icon_douyin_01.png",
+              "visible": true
+            },
+            {
+              "bounds": {
+                "bottom": 1132,
+                "height": 66,
+                "left": 1192,
+                "right": 1254,
+                "top": 1066,
+                "width": 62
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "UI_setting_icon_discord_01",
+              "opacity": 100,
+              "src": "UI_setting_icon_discord_01.png",
+              "visible": true
+            },
+            {
+              "bounds": {
+                "bottom": 1132,
+                "height": 66,
+                "left": 1085,
+                "right": 1147,
+                "top": 1066,
+                "width": 62
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "UI_setting_icon_ins_01",
+              "opacity": 100,
+              "src": "UI_setting_icon_ins_01.png",
+              "visible": true
+            },
+            {
+              "bounds": {
+                "bottom": 1132,
+                "height": 66,
+                "left": 978,
+                "right": 1040,
+                "top": 1066,
+                "width": 62
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "UI_setting_icon_yotube_01",
+              "opacity": 100,
+              "src": "UI_setting_icon_yotube_01.png",
+              "visible": true
+            }
+          ],
+          "isGroup": true,
+          "kind": "groupLayer",
+          "name": "组 18",
+          "opacity": 100,
+          "visible": true
+        },
+        {
+          "bounds": {
+            "bottom": 1172,
+            "height": 184,
+            "left": 862,
+            "right": 1478,
+            "top": 988,
+            "width": 616
+          },
+          "children": [
+            {
+              "bounds": {
+                "bottom": 1037,
+                "height": 32,
+                "left": 1079,
+                "right": 1260,
+                "top": 1005,
+                "width": 181
+              },
+              "color": {
+                "b": 65,
+                "g": 83,
+                "hex": "#755341",
+                "r": 117
+              },
+              "content": "Follow Us",
+              "fontSize": 40,
+              "isGroup": false,
+              "kind": "LayerKind.TEXT",
+              "name": "U_Settings_Des_01",
+              "opacity": 100,
+              "visible": true
+            },
+            {
+              "bounds": {
+                "bottom": 1027,
+                "height": 10,
+                "left": 1295,
+                "right": 1385,
+                "top": 1017,
+                "width": 90
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "ui_common_pic_dian_01",
+              "opacity": 100,
+              "src": "ui_common_pic_dian_01.png",
+              "visible": true
+            },
+            {
+              "bounds": {
+                "bottom": 1027,
+                "height": 10,
+                "left": 955,
+                "right": 1045,
+                "top": 1017,
+                "width": 90
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "ui_common_pic_dian_01_1",
+              "opacity": 100,
+              "src": "ui_common_pic_dian_01.png",
+              "visible": true
+            },
+            {
+              "bounds": {
+                "bottom": 1162,
+                "height": 174,
+                "left": 862,
+                "right": 1478,
+                "top": 988,
+                "width": 616
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "ui_common_pic_xian_01",
+              "opacity": 100,
+              "src": "ui_common_pic_xian_01.png",
+              "visible": true
+            },
+            {
+              "bounds": {
+                "bottom": 1172,
+                "height": 184,
+                "left": 862,
+                "right": 1478,
+                "top": 988,
+                "width": 616
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "UI_common_bak_bian_01",
+              "opacity": 100,
+              "src": "UI_common_bak_bian_01.png",
+              "visible": true
+            },
+            {
+              "bounds": {
+                "bottom": 1162,
+                "height": 174,
+                "left": 862,
+                "right": 1478,
+                "top": 988,
+                "width": 616
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "ui_common_bak_xia_01",
+              "opacity": 100,
+              "src": "ui_common_bak_xia_01.png",
+              "visible": true
+            }
+          ],
+          "isGroup": true,
+          "kind": "groupLayer",
+          "name": "组 17",
+          "opacity": 100,
+          "visible": true
+        }
+      ],
+      "isGroup": true,
+      "kind": "groupLayer",
+      "name": "组 7",
+      "opacity": 100,
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 656,
+        "height": 167,
+        "left": 862,
+        "right": 1477,
+        "top": 489,
+        "width": 615
+      },
+      "children": [
+        {
+          "bounds": {
+            "bottom": 656,
+            "height": 167,
+            "left": 1317,
+            "right": 1477,
+            "top": 489,
+            "width": 160
+          },
+          "children": [
+            {
+              "bounds": {
+                "bottom": 649,
+                "height": 160,
+                "left": 1317,
+                "right": 1477,
+                "top": 489,
+                "width": 160
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "UI_setting_icon_guan_01",
+              "opacity": 100,
+              "src": "UI_setting_icon_guan_01.png",
+              "visible": true
+            },
+            {
+              "bounds": {
+                "bottom": 618,
+                "height": 97,
+                "left": 1346,
+                "right": 1450,
+                "top": 521,
+                "width": 104
+              },
+              "isGroup": false,
+              "kind": "LayerKind.SOLIDFILL",
+              "name": "UI_setting_icon_zhendong_01",
+              "opacity": 100,
+              "visible": true
+            },
+            {
+              "bounds": {
+                "bottom": 656,
+                "height": 167,
+                "left": 1317,
+                "right": 1477,
+                "top": 489,
+                "width": 160
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "UI_setting_btn_huang_01",
+              "opacity": 100,
+              "src": "UI_setting_btn_huang_01.png",
+              "visible": true
+            }
+          ],
+          "isGroup": true,
+          "kind": "groupLayer",
+          "name": "组 14",
+          "opacity": 100,
+          "visible": true
+        },
+        {
+          "bounds": {
+            "bottom": 656,
+            "height": 167,
+            "left": 862,
+            "right": 1022,
+            "top": 489,
+            "width": 160
+          },
+          "children": [
+            {
+              "bounds": {
+                "bottom": 621,
+                "height": 104,
+                "left": 890,
+                "right": 996,
+                "top": 517,
+                "width": 106
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "UI_setting_icon_voise_01",
+              "opacity": 100,
+              "src": "UI_setting_icon_voise_01.png",
+              "visible": true
+            },
+            {
+              "bounds": {
+                "bottom": 656,
+                "height": 167,
+                "left": 862,
+                "right": 1022,
+                "top": 489,
+                "width": 160
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "UI_setting_btn_huang_01_1",
+              "opacity": 100,
+              "src": "UI_setting_btn_huang_01.png",
+              "visible": true
+            }
+          ],
+          "isGroup": true,
+          "kind": "groupLayer",
+          "name": "组 13",
+          "opacity": 100,
+          "visible": true
+        },
+        {
+          "bounds": {
+            "bottom": 656,
+            "height": 167,
+            "left": 1090,
+            "right": 1250,
+            "top": 489,
+            "width": 160
+          },
+          "children": [
+            {
+              "bounds": {
+                "bottom": 621,
+                "height": 101,
+                "left": 1118,
+                "right": 1221,
+                "top": 520,
+                "width": 103
+              },
+              "isGroup": false,
+              "kind": "LayerKind.SOLIDFILL",
+              "name": "UI_setting_icon_music_01",
+              "opacity": 100,
+              "visible": true
+            },
+            {
+              "bounds": {
+                "bottom": 656,
+                "height": 167,
+                "left": 1090,
+                "right": 1250,
+                "top": 489,
+                "width": 160
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "UI_setting_btn_huang_01_2",
+              "opacity": 100,
+              "src": "UI_setting_btn_huang_01.png",
+              "visible": true
+            }
+          ],
+          "isGroup": true,
+          "kind": "groupLayer",
+          "name": "组 15",
+          "opacity": 100,
+          "visible": true
+        }
+      ],
+      "isGroup": true,
+      "kind": "groupLayer",
+      "name": "组 16",
+      "opacity": 100,
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 867,
+        "height": 97,
+        "left": 862,
+        "right": 1477,
+        "top": 770,
+        "width": 615
+      },
+      "children": [
+        {
+          "bounds": {
+            "bottom": 867,
+            "height": 97,
+            "left": 1189,
+            "right": 1477,
+            "top": 770,
+            "width": 288
+          },
+          "children": [
+            {
+              "bounds": {
+                "bottom": 832,
+                "height": 34,
+                "left": 1215,
+                "right": 1249,
+                "top": 798,
+                "width": 34
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "UI_setting_icon_youjian_01",
+              "opacity": 100,
+              "src": "UI_setting_icon_youjian_01.png",
+              "visible": true
+            },
+            {
+              "bounds": {
+                "bottom": 835,
+                "height": 37,
+                "left": 1295,
+                "right": 1424,
+                "top": 798,
+                "width": 129
+              },
+              "color": {
+                "b": 216,
+                "g": 236,
+                "hex": "#eaecd8",
+                "r": 234
+              },
+              "content": "Support",
+              "fontSize": 42,
+              "isGroup": false,
+              "kind": "LayerKind.TEXT",
+              "name": "U_Settings_Des_02",
+              "opacity": 100,
+              "visible": true
+            },
+            {
+              "bounds": {
+                "bottom": 867,
+                "height": 97,
+                "left": 1189,
+                "right": 1477,
+                "top": 770,
+                "width": 288
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "ui_common_btn_black_01",
+              "opacity": 100,
+              "src": "ui_common_btn_black_01.png",
+              "visible": true
+            }
+          ],
+          "isGroup": true,
+          "kind": "groupLayer",
+          "name": "组 11",
+          "opacity": 100,
+          "visible": true
+        },
+        {
+          "bounds": {
+            "bottom": 867,
+            "height": 97,
+            "left": 862,
+            "right": 1150,
+            "top": 770,
+            "width": 288
+          },
+          "children": [
+            {
+              "bounds": {
+                "bottom": 832,
+                "height": 34,
+                "left": 888,
+                "right": 922,
+                "top": 798,
+                "width": 34
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "UI_setting_icon_langruage_01",
+              "opacity": 100,
+              "src": "UI_setting_icon_langruage_01.png",
+              "visible": true
+            },
+            {
+              "bounds": {
+                "bottom": 835,
+                "height": 36,
+                "left": 951,
+                "right": 1118,
+                "top": 799,
+                "width": 167
+              },
+              "color": {
+                "b": 201,
+                "g": 227,
+                "hex": "#e6e3c9",
+                "r": 230
+              },
+              "content": "Language",
+              "fontSize": 42,
+              "isGroup": false,
+              "kind": "LayerKind.TEXT",
+              "name": "UI_setting_5_txt",
+              "opacity": 100,
+              "visible": true
+            },
+            {
+              "bounds": {
+                "bottom": 867,
+                "height": 97,
+                "left": 862,
+                "right": 1150,
+                "top": 770,
+                "width": 288
+              },
+              "isGroup": false,
+              "kind": "LayerKind.NORMAL",
+              "name": "ui_common_btn_black_01_1",
+              "opacity": 100,
+              "src": "ui_common_btn_black_01.png",
+              "visible": true
+            }
+          ],
+          "isGroup": true,
+          "kind": "groupLayer",
+          "name": "组 10",
+          "opacity": 100,
+          "visible": true
+        }
+      ],
+      "isGroup": true,
+      "kind": "groupLayer",
+      "name": "组 12",
+      "opacity": 100,
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 456,
+        "height": 152,
+        "left": 766,
+        "right": 1171,
+        "top": 304,
+        "width": 405
+      },
+      "children": [
+        {
+          "bounds": {
+            "bottom": 394,
+            "height": 54,
+            "left": 925,
+            "right": 1122,
+            "top": 340,
+            "width": 197
+          },
+          "color": {
+            "b": 201,
+            "g": 227,
+            "hex": "#e6e3c9",
+            "r": 230
+          },
+          "content": "Setting",
+          "fontSize": 60,
+          "isGroup": false,
+          "kind": "LayerKind.TEXT",
+          "name": "UI_setting_4_txt",
+          "opacity": 100,
+          "visible": true
+        },
+        {
+          "bounds": {
+            "bottom": 456,
+            "height": 152,
+            "left": 766,
+            "right": 1171,
+            "top": 304,
+            "width": 405
+          },
+          "isGroup": false,
+          "kind": "LayerKind.NORMAL",
+          "name": "ui_common_pic_green_01",
+          "opacity": 100,
+          "src": "ui_common_pic_green_01.png",
+          "visible": true
+        }
+      ],
+      "isGroup": true,
+      "kind": "groupLayer",
+      "name": "组 9",
+      "opacity": 100,
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 971,
+        "height": 628,
+        "left": 797,
+        "right": 1550,
+        "top": 343,
+        "width": 753
+      },
+      "children": [
+        {
+          "bounds": {
+            "bottom": 726,
+            "height": 10,
+            "left": 863,
+            "right": 1474,
+            "top": 716,
+            "width": 611
+          },
+          "isGroup": false,
+          "kind": "LayerKind.SOLIDFILL",
+          "name": "ui_common_pic_dian_01",
+          "opacity": 100,
+          "visible": true
+        },
+        {
+          "bounds": {
+            "bottom": 431,
+            "height": 88,
+            "left": 1462,
+            "right": 1550,
+            "top": 343,
+            "width": 88
+          },
+          "isGroup": false,
+          "kind": "LayerKind.NORMAL",
+          "name": "ui_common_btn_X_01",
+          "opacity": 100,
+          "src": "ui_common_btn_X_01.png",
+          "visible": true
+        },
+        {
+          "bounds": {
+            "bottom": 971,
+            "height": 622,
+            "left": 797,
+            "right": 1543,
+            "top": 349,
+            "width": 746
+          },
+          "isGroup": false,
+          "kind": "LayerKind.NORMAL",
+          "name": "UI_common_bak_bian_01_1",
+          "opacity": 100,
+          "src": "UI_common_bak_bian_01.png",
+          "visible": true
+        },
+        {
+          "bounds": {
+            "bottom": 419,
+            "height": 70,
+            "left": 797,
+            "right": 1543,
+            "top": 349,
+            "width": 746
+          },
+          "isGroup": false,
+          "kind": "LayerKind.NORMAL",
+          "name": "xiegang",
+          "opacity": 100,
+          "src": "xiegang.png",
+          "visible": true
+        },
+        {
+          "bounds": {
+            "bottom": 419,
+            "height": 70,
+            "left": 797,
+            "right": 1543,
+            "top": 349,
+            "width": 746
+          },
+          "isGroup": false,
+          "kind": "LayerKind.NORMAL",
+          "name": "ui_common_bak_shang_01",
+          "opacity": 100,
+          "src": "ui_common_bak_shang_01.png",
+          "visible": true
+        },
+        {
+          "bounds": {
+            "bottom": 961,
+            "height": 612,
+            "left": 797,
+            "right": 1543,
+            "top": 349,
+            "width": 746
+          },
+          "isGroup": false,
+          "kind": "LayerKind.NORMAL",
+          "name": "ui_common_pic_xian_01_1",
+          "opacity": 100,
+          "src": "ui_common_pic_xian_01.png",
+          "visible": true
+        },
+        {
+          "bounds": {
+            "bottom": 961,
+            "height": 612,
+            "left": 797,
+            "right": 1543,
+            "top": 349,
+            "width": 746
+          },
+          "isGroup": false,
+          "kind": "LayerKind.NORMAL",
+          "name": "ui_common_bak_xia_01_1",
+          "opacity": 100,
+          "src": "ui_common_bak_xia_01.png",
+          "visible": true
+        }
+      ],
+      "isGroup": true,
+      "kind": "groupLayer",
+      "name": "组 8",
+      "opacity": 100,
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1440,
+        "height": 1440,
+        "left": 0,
+        "right": 2340,
+        "top": 0,
+        "width": 2340
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "bg",
+      "opacity": 100,
+      "src": "bg.png",
+      "visible": true
+    }
+  ]
+}

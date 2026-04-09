@@ -1,0 +1,12 @@
+guru_sdk: v3.1.0
+
+integrated:
+- l10n
+- buildtool
+- i2
+- vibration
+- appsflyer
+- ads_max
+- guru_core
+- guru_uiux
+

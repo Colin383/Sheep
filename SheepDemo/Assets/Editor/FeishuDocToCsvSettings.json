@@ -1,0 +1,11 @@
+﻿{
+    "AppId": "cli_a92f8e630f389ced",
+    "AppSecret": "suaM83DhGtPy10qcdd3jObrKIP5aygjS",
+    "DocId": "https://scnmrtumk0zm.feishu.cn/sheets/MykUsdeCXh0dq4ts8aZcgCAmnqg",
+    "TabToComma": true,
+    "SourceTypeValue": 1,
+    "UserToken": "u-5uuZCE6PdftbdAKoqQBOtI45hl9RghUVpMyymNkywbTP",
+    "UserRefreshToken": "ur-6Zee5eer1e4r2BojkV0RM545htFlghUho0yy3B0ywaTz",
+    "UserTokenExpire": "0",
+    "ExcludeColumns": "修改状态,备注"
+}

@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "contyrName": "简体中文",
+    "correspondingKey": "zh-CN",
+    "isOpen": true
+  },
+  {
+    "id": 2,
+    "contyrName": "English",
+    "correspondingKey": "en",
+    "isOpen": true
+  },
+  {
+    "id": 3,
+    "contyrName": "日本語",
+    "correspondingKey": "en",
+    "isOpen": false
+  },
+  {
+    "id": 4,
+    "contyrName": "한국어",
+    "correspondingKey": "en",
+    "isOpen": false
+  },
+  {
+    "id": 5,
+    "contyrName": "ภาษาไทย",
+    "correspondingKey": "en",
+    "isOpen": false
+  },
+  {
+    "id": 6,
+    "contyrName": "Tiếng Việt",
+    "correspondingKey": "en",
+    "isOpen": false
+  },
+  {
+    "id": 7,
+    "contyrName": "Bahasa Indonesia",
+    "correspondingKey": "en",
+    "isOpen": false
+  },
+  {
+    "id": 8,
+    "contyrName": "العربية",
+    "correspondingKey": "en",
+    "isOpen": false
+  },
+  {
+    "id": 9,
+    "contyrName": "Français",
+    "correspondingKey": "en",
+    "isOpen": false
+  },
+  {
+    "id": 10,
+    "contyrName": "Deutsch",
+    "correspondingKey": "en",
+    "isOpen": false
+  },
+  {
+    "id": 11,
+    "contyrName": "Español",
+    "correspondingKey": "en",
+    "isOpen": false
+  },
+  {
+    "id": 12,
+    "contyrName": "Italiano",
+    "correspondingKey": "en",
+    "isOpen": false
+  },
+  {
+    "id": 13,
+    "contyrName": "Русский",
+    "correspondingKey": "en",
+    "isOpen": false
+  },
+  {
+    "id": 14,
+    "contyrName": "Português",
+    "correspondingKey": "en",
+    "isOpen": false
+  }
+]

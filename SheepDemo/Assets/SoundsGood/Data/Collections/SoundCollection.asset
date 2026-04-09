@@ -1,0 +1,281 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0662f1fff191d644dbe6bb9c5c5a0e4a, type: 3}
+  m_Name: SoundCollection
+  m_EditorClassIdentifier: 
+  sounds:
+  - tag: closeDoor
+    clips:
+    - {fileID: 8300000, guid: d3c6d1d2386b58641a49e78131ab418d, type: 3}
+    compressionPreset: 2
+    forceToMono: 1
+  - tag: enterDoor
+    clips:
+    - {fileID: 8300000, guid: 50ec7bbf8b45ce041a7d5065eca7114c, type: 3}
+    compressionPreset: 2
+    forceToMono: 1
+  - tag: failed
+    clips:
+    - {fileID: 8300000, guid: 1b8897b1b4f38a840ad45cce5cabe01a, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: openDoor
+    clips:
+    - {fileID: 8300000, guid: 8099542b784abee42b5e65a06cd36e93, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: success
+    clips:
+    - {fileID: 8300000, guid: 18bedcf2e6d5dde47a88325da84307cc, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: getKey
+    clips:
+    - {fileID: 8300000, guid: 04bcd61bb0cc4c24289bec66af1468e0, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: unlock
+    clips:
+    - {fileID: 8300000, guid: 1a25a128e2bb70d49a0f0e988b70f1d2, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: knockDoor
+    clips:
+    - {fileID: 8300000, guid: 24002a5830b8ce64b9cf9a4280b8b880, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: passwordCorrect
+    clips:
+    - {fileID: 8300000, guid: 557e0499b6893fe4882d431bf3aaee78, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: passwordError
+    clips:
+    - {fileID: 8300000, guid: 8711f80881ee543499431f558d77e5ff, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: getCoin
+    clips:
+    - {fileID: 8300000, guid: 7d8d9899414a6f746a59ba5c8fc278ca, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: pressPassword
+    clips:
+    - {fileID: 8300000, guid: 83a502037fdf7a6428e29a3b662ccbdd, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: ballonExplosion
+    clips:
+    - {fileID: 8300000, guid: fd52c02855faee0468efcc6fe785658f, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: crash
+    clips:
+    - {fileID: 8300000, guid: 493f0158b0c0adf499702ef22addbafa, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: trap
+    clips:
+    - {fileID: 8300000, guid: 0707119b7af8f13498d0efd983ba1df8, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: level16Drop
+    clips:
+    - {fileID: 8300000, guid: a5c1d51b8cba95344ab3d1afd5bbe7cf, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: redLight
+    clips:
+    - {fileID: 8300000, guid: 03a5d0ad0d7252642b1e7090790f436e, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: showTrafficLight
+    clips:
+    - {fileID: 8300000, guid: d35ac692f5084e34b8db61447f8fbde2, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: bark
+    clips:
+    - {fileID: 8300000, guid: c7df1b4d287153e4fb29bb831ecf0242, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: noise
+    clips:
+    - {fileID: 8300000, guid: 76d4ba3768679b648bb922eedd69e8df, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: openChest
+    clips:
+    - {fileID: 8300000, guid: 132d7681b12a9a94aa34d4b7750ff6b2, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: doorStandup
+    clips:
+    - {fileID: 8300000, guid: 23d0228b8f6c6fc429dab8913a9665f3, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: jumpToWater
+    clips:
+    - {fileID: 8300000, guid: 81b1f8ab5e2ab7747a3d94b2ee7c8a3c, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: drainage
+    clips:
+    - {fileID: 8300000, guid: 63d8442ea8c969742a5b5fa1007acdc9, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: button
+    clips:
+    - {fileID: 8300000, guid: 1b1f98bd87739644eb2e8011681ce766, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: jump
+    clips:
+    - {fileID: 8300000, guid: 722242be2034ca64cbc3f93ac5c305a2, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: actorWalk
+    clips:
+    - {fileID: 8300000, guid: 6f58e6786252229459360cba5b3b47d7, type: 3}
+    - {fileID: 8300000, guid: f446a3c602d176d4d81a4b9e68ef46fa, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: step
+    clips:
+    - {fileID: 8300000, guid: 6f58e6786252229459360cba5b3b47d7, type: 3}
+    - {fileID: 8300000, guid: f446a3c602d176d4d81a4b9e68ef46fa, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: crashBroke
+    clips:
+    - {fileID: 8300000, guid: defe244eb35ecc44f980ed513225c08b, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: splash
+    clips:
+    - {fileID: 8300000, guid: 63f2ef16d8ccc784ca9b641c82979041, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: trafficLightStartDrop
+    clips: []
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: trafficLightCrash
+    clips:
+    - {fileID: 8300000, guid: eefbefbc402604144a90b2ecc31be936, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: blockByDoor
+    clips:
+    - {fileID: 8300000, guid: 1f101e4b73c172c4498eff29a1b01fd4, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: levelup
+    clips:
+    - {fileID: 8300000, guid: d9e04c9351bdb2b45b0377e8053d2068, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: boardTrigger
+    clips:
+    - {fileID: 8300000, guid: 6e2b3e443827a5b499a2c25ec2c52547, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: breakByBoard
+    clips:
+    - {fileID: 8300000, guid: 995bc7b7b3f375f49961f86550f6c77b, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: spring
+    clips:
+    - {fileID: 8300000, guid: 7e6482d803d1bae42af0937f1f1d84b6, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: turnntableStart
+    clips:
+    - {fileID: 8300000, guid: 1195549d1e271d74ca6c9d8e99eca2c0, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: turntableGetReward
+    clips:
+    - {fileID: 8300000, guid: 346887d848d35cf469ada9d4fd9901d2, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: mergeNumber
+    clips:
+    - {fileID: 8300000, guid: 7fa6e34eb7483db4eb9c142e6eae904b, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: shopGetReward
+    clips:
+    - {fileID: 8300000, guid: 468fbf40036b66143886b4a7c8fd3b27, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: verifticationCorrect
+    clips:
+    - {fileID: 8300000, guid: 4ca89ab258e92eb4fbdeebc25a877f8d, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: verifticationError
+    clips:
+    - {fileID: 8300000, guid: f3fc6cae564e16e4f8b062c9867877a3, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: verifticationStep1
+    clips:
+    - {fileID: 8300000, guid: a1acb6985c8d42543a14708fc923d70c, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: fan
+    clips:
+    - {fileID: 8300000, guid: 62d5fefe4a4fce14dafb0f22a7840668, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: fanSwitch
+    clips:
+    - {fileID: 8300000, guid: 33b3b805bfe41e24792d2ed52bcba4b0, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: frictional
+    clips:
+    - {fileID: 8300000, guid: 6f29f04b17e612b4c9d702188628006f, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: buildInFire
+    clips:
+    - {fileID: 8300000, guid: 33e3f51729b02584ab9dc533283e5c54, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: TBC
+    clips:
+    - {fileID: 8300000, guid: af4900baa3288664da07f997dc4c9bf3, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: iceCrash1
+    clips:
+    - {fileID: 8300000, guid: d4c79c6547809c140b90091daed1cd6b, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: iceCrash2
+    clips:
+    - {fileID: 8300000, guid: d2ca728854b66294e94ec55ce587462f, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: iceCrash3
+    clips:
+    - {fileID: 8300000, guid: 615567f6481d20f47a4d39715983166c, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: FlipPage
+    clips:
+    - {fileID: 8300000, guid: 7c435610affd75748a31b2439c487566, type: 3}
+    compressionPreset: 1
+    forceToMono: 0

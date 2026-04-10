@@ -74,8 +74,7 @@ public class Animal_Moving : StateNode, IDebuger
     {
         // 到点后吸附，避免浮点误差累积。
         owner.transform.position = nextTarget;
-        // 到点后同步记录当前所在网格位置。
-        owner.AdvanceCurrentGridPos(currentStepDirection);
+        // 注意：CurrentPos 已在 CheckMoveTarget 返回 true 时更新，此处不再重复更新。
 
         // 到达边界或出界则回收。
         if (owner.Level.IsAnimCanBack(nextTarget))

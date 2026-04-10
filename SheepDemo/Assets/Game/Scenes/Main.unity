@@ -696,7 +696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.5896226, b: 0.5896226, a: 1}
+  m_Color: {r: 1, g: 0.87025505, b: 0.5882353, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -817,6 +817,7 @@ MonoBehaviour:
   drawGridGizmos: 1
   drawInstanceGizmos: 1
   drawFootprintCellsGizmo: 1
+  drawCurrentPosGizmos: 1
   drawInstanceGizmoLabels: 1
   gizmoGridColor: {r: 0, g: 0.8, b: 1, a: 0.7}
   gizmoBorderColor: {r: 1, g: 1, b: 1, a: 0.9}
@@ -825,6 +826,8 @@ MonoBehaviour:
   gizmoInstanceColor: {r: 1, g: 0.85, b: 0.2, a: 0.9}
   gizmoInstanceRadius: 0.08
   gizmoFootprintCellWireColor: {r: 0.25, g: 0.95, b: 1, a: 0.55}
+  gizmoCurrentPosColor: {r: 1, g: 0.35, b: 0.35, a: 0.95}
+  gizmoCurrentPosYOffset: 0.03
   drawGridCellLabels: 1
   gizmoCellLabelColor: {r: 1, g: 1, b: 1, a: 0.85}
   gizmoCellLabelYOffset: 0.04

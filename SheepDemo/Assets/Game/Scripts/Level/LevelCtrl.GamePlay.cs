@@ -66,6 +66,9 @@ public partial class LevelCtrl
                 return false;
         }
 
+        // 确认可以移动，立即更新动物的当前网格坐标。
+        animal.SetCurrentGridPos(nextAnchorRow, nextAnchorCol);
+
         return true;
     }
 

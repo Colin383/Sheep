@@ -5,13 +5,13 @@ Scope: `D:\GitStore\SheepDemo\SheepDemo\Assets\Game`
 
 ## Snapshot
 
-`Assets/Game` currently has 11 top-level folders. By file count, the largest areas are `UI` (656 files), `Scripts` (207 files, including 90 `.cs` files), and `Editor` (22 files).
+`Assets/Game` currently has 11 top-level folders. By file count, the largest areas are `UI` (656 files), `Scripts` (213 files, including 94 `.cs` files), and `ArtSrc` (27 files).
 
 Top-level layout:
 
 | Folder | File Count | Notes |
 | --- | ---: | --- |
-| `ArtSrc` | 21 | Art source assets. |
+| `ArtSrc` | 27 | Art source assets. |
 | `Configs` | 12 | Luban-generated JSON config tables and meta files. |
 | `DB` | 12 | Save data and settings ScriptableObjects plus partial classes. |
 | `Editor` | 22 | Unity editor tooling for config generation, UI generation, sprite import, and atlas packing. |
@@ -19,7 +19,7 @@ Top-level layout:
 | `Prefabs` | 10 | Shared gameplay prefabs, currently animal prefabs. |
 | `Resources` | 1 | Minimal root resource folder at the moment. |
 | `Scenes` | 4 | `Loading.unity` and `Main.unity` plus meta files. |
-| `Scripts` | 207 | Runtime gameplay, SDK, config, and helper code. |
+| `Scripts` | 213 | Runtime gameplay, SDK, config, and helper code. |
 | `Settings` | 4 | Generated DB manager code and DB setting asset. |
 | `UI` | 656 | Panel prefabs, generated scripts, sprites, and shared UI resources. |
 
@@ -75,6 +75,13 @@ Top-level layout:
 - Concrete or level-specific behavior is expected to extend this base.
 - Level-specific scripts currently live under `Scripts/Level/LevelItem/Level_17` and `Scripts/Level/LevelItem/Level_2`.
 
+### Animal runtime
+
+- `Scripts/Animals/BaseAnimal.cs` is the shared MonoBehaviour base class for spawned animals.
+- It now owns a Bear FSM with `IDLE`, `MOVING`, and `BACK` and updates that machine each frame.
+- `Scripts/Animals/Animal_Nodes/*` splits the per-animal FSM into separate node classes that mirror the `PlayCtrl` node layout.
+- Concrete animal prefabs such as `Scripts/Animals/SheepAnimal.cs` inherit from `BaseAnimal` and can override the state callbacks without rebuilding the FSM wiring.
+
 ### Gameplay UI input
 
 - `UI/GamePanel/Scripts/GamePlayPanel.cs` is the runtime control surface.
@@ -90,21 +97,26 @@ Top-level layout:
 
 ## Scripts Map
 
-`Assets/Game/Scripts` contains 90 `.cs` files.
+`Assets/Game/Scripts` contains 94 `.cs` files.
 
 | Area | C# Count | Responsibility |
 | --- | ---: | --- |
 | `(root)` | 2 | Global entry files such as `GameManager.cs` and `Booster.cs`. |
-| `Common` | 33 | Cross-cutting helpers, managers, UI button helpers, pooling, singleton base classes, screen fit, triggers, and utilities. |
+| `Animals` | 9 | Animal enums, prefab base types, and the per-animal FSM nodes. |
+| `Common` | 35 | Cross-cutting helpers, managers, UI button helpers, pooling, singleton base classes, screen fit, triggers, and utilities. |
 | `Config` | 3 | Config table loading and remote-config accessors. |
 | `HotReload` | 11 | Package bootstrap and hot-update FSM. |
-| `Level` | 5 | Base level logic, success animation, and level-specific handlers. |
-| `Play` | 17 | Main play controller, level progression, animals, level generation, and play-state nodes. |
+| `Level` | 3 | Base level logic and success animation handlers. |
+| `Play` | 12 | Main play controller, level progression, level generation, and play-state nodes. |
 | `Runtime` | 3 | Runtime helpers, currently focused on ads policy and ad helpers. |
 | `SDK` | 16 | SDK adapters and services for ads, events, purchase, remote config, and analytics. |
 
 Detailed notes:
 
+- `Animals`
+  - `BaseAnimal.cs` owns the shared per-animal Bear FSM entry point
+  - `AnimalStateName.cs` centralizes the `IDLE` / `MOVING` / `BACK` state keys
+  - `Animal_Nodes/*` contains the animal state nodes that dispatch into `BaseAnimal` callbacks
 - `Common`
   - `AudioManager`, `VibrationManager`, `JsonUtils`, `EventsUtils`, `InputUtils`, `LocalizatioinUtils`
   - UI button stack under `Common/Buttons`
@@ -120,7 +132,6 @@ Detailed notes:
   - `PlayCtrl.cs` is the owner
   - `LevelCtrl.cs` owns progression
   - `LevelRuntimeState.cs` tracks per-level runtime state
-  - `Animals/*` holds player-character related enums and classes
   - `LevelGeneration/*` looks like generation-time config and helper code
 - `Runtime/Ads`
   - `InterstitialAdPolicy.cs` derives ad gating from remote config and persisted counters

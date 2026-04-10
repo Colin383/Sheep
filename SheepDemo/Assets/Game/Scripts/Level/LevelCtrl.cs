@@ -6,11 +6,12 @@ using Config;
 using Game;
 using Game.ConfigModule;
 using SimpleJSON;
+using UnityEngine;
 
 /// <summary>
 /// 用于处理一些 Level 相关的数据
 /// </summary>
-public class LevelCtrl : IDebuger
+public partial class LevelCtrl : MonoBehaviour, IDebuger
 {
     private bool isReady = false;
 

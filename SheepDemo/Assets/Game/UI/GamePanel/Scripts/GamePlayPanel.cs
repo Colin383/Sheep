@@ -96,14 +96,14 @@ public partial class GamePlayPanel : BaseUIView, IDebuger, IEventSender
         TipsBtn.OnClick += OnClickTips;
         ShopBtn.OnClick += OnClickShop;
 
-        JumpBtn.OnClickDown += OnClickJump;
+        // JumpBtn.OnClickDown += OnClickJump;
         RightMoveBtn.OnClickEnter += OnClickDownRight;
         LeftMoveBtn.OnClickEnter += OnClickDownLeft;
 
-        RightMoveBtn.OnClickUp += OnClickUpRight;
+/*         RightMoveBtn.OnClickUp += OnClickUpRight;
         LeftMoveBtn.OnClickUp += OnClickUpLeft;
         RightMoveBtn.OnClickExit += OnClickUpRight;
-        LeftMoveBtn.OnClickExit += OnClickUpLeft;
+        LeftMoveBtn.OnClickExit += OnClickUpLeft; */
     }
 
 
@@ -119,7 +119,7 @@ public partial class GamePlayPanel : BaseUIView, IDebuger, IEventSender
         isLeftDown = true;
     }
 
-    private void OnClickUpRight(CustomButton btn)
+/*     private void OnClickUpRight(CustomButton btn)
     {
         this.Log("Right Up");
         isRightDown = false;
@@ -140,17 +140,17 @@ public partial class GamePlayPanel : BaseUIView, IDebuger, IEventSender
 
         this.Log("Jump");
         this.DispatchEvent(Witness<PlayerJumpEvent>._);
-    }
+    } */
     #endregion
     void Update()
     {
         if (isPause)
             return;
 
-        if (isRightDown)
+/*         if (isRightDown)
             this.DispatchEvent(Witness<PlayerRightMoveEvent>._);
         else if (isLeftDown)
-            this.DispatchEvent(Witness<PlayerLeftMoveEvent>._);
+            this.DispatchEvent(Witness<PlayerLeftMoveEvent>._); */
     }
 
     private void OnClickReset(CustomButton btn)

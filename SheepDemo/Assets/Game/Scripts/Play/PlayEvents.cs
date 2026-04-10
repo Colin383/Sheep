@@ -8,38 +8,6 @@ using System.Collections.Generic;
 namespace Game.Events
 {
     #region Playing
-    // 角色控制，向右
-    public class PlayerRightMoveEvent : EventBase
-    {
-
-    }
-
-    // 角色控制，向左
-
-    public class PlayerLeftMoveEvent : EventBase
-    {
-
-    }
-
-    // 取消移动操作
-    public class PlayerMoveCancelEvent : EventBase
-    {
-
-    }
-
-    // 角色控制，跳跃
-
-    public class PlayerJumpEvent : EventBase
-    {
-
-    }
-
-    // 角色下潜
-
-    public class PlayerDiveEvent : EventBase<bool>
-    {
-        public bool isDown => Field1;
-    }
 
     // 暂停游戏
 
@@ -65,12 +33,6 @@ namespace Game.Events
     {
         public int EventId => Field1;
     }
-
-    // 触发陷阱
-    public class OnTriggerTrapEvent : EventBase { }
-
-    // 失败区域
-    public class OnTriggerFailAreaEvent : EventBase { }
 
     #endregion
 
@@ -147,7 +109,7 @@ namespace Game.Events
     /// <summary>
     /// 内购恢复成功后
     /// </summary>
-    public class OnRestoreSuccessEvent : EventBase {}
+    public class OnRestoreSuccessEvent : EventBase { }
 
     #endregion
 
@@ -181,16 +143,16 @@ namespace Game.Events
     #region AD
 
     // 播放激励
-    public class PlayRewardADEvent: EventBase
+    public class PlayRewardADEvent : EventBase
     {
-        
+
     }
 
 
     // 播放插屏
     public class PlayInterstitialAdEvent : EventBase
     {
-        
+
     }
 
     #endregion 

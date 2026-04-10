@@ -12,7 +12,7 @@ using UnityEditor;
 /// 读取 LevelGameConfig，在 XZ 平面按格子生成实体并缓存。
 /// 网格默认左下角为原点。
 /// </summary>
-public class LevelGenerator : MonoBehaviour, IDebuger
+public partial class LevelCtrl
 {
     [Header("Config")]
     [SerializeField] private TextAsset levelJson;
@@ -32,7 +32,7 @@ public class LevelGenerator : MonoBehaviour, IDebuger
     [Tooltip("footprint（Prefab 上列×行）是否随实例 facing 在世界格上旋转展开；关闭则始终沿「行 +、列 +」轴对齐矩形")]
     [SerializeField] private bool footprintFollowsFacing = true;
 
-    #region Gizmos
+    #region Gizmos Config
     [SerializeField] private bool alignSpawnToRendererBoundsCenter = false;
 
     [FoldoutGroup("Gizmos", Expanded = false)]
@@ -83,6 +83,7 @@ public class LevelGenerator : MonoBehaviour, IDebuger
     [SerializeField] private float gizmoCellLabelYOffset = 0.04f;
 
     #endregion
+
     private readonly Dictionary<AnimalType, BaseAnimal> prefabByType = new();
     private readonly List<BaseAnimal> spawned = new();
     private readonly Dictionary<int, BaseAnimal> spawnedById = new();
@@ -172,6 +173,8 @@ public class LevelGenerator : MonoBehaviour, IDebuger
             animal.transform.position = spawnCellCenterWorld;
 
             animal.Init(inst.id, inst.row, inst.col, inst.direction);
+            animal.SetLevelOwner(this);
+            
             CacheSpawned(animal, instType);
         }
     }
@@ -298,6 +301,8 @@ public class LevelGenerator : MonoBehaviour, IDebuger
     }
 
 #if UNITY_EDITOR
+    #region Gizmos Editor
+
     private static GUIStyle s_gridCellLabelStyle;
     private static GUIStyle s_instanceGizmoLabelStyle;
 
@@ -510,6 +515,8 @@ public class LevelGenerator : MonoBehaviour, IDebuger
             Gizmos.DrawWireCube(GridToWorld(gr, gc, gridW, gridH), cellExtent);
         }
     }
+
+    #endregion
 #endif
 
     private void EnsureRoots()

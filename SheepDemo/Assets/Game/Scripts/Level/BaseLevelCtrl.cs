@@ -63,8 +63,6 @@ namespace Game.Level
 
             _subscriber.Subscribe<GamePauseEvent>(OnGamePause);
             _subscriber.Subscribe<GameResumeEvent>(OnGameResume);
-
-            _subscriber.Subscribe<OnTriggerFailAreaEvent>(OnTriggerFailArea);
         }
 
 
@@ -114,11 +112,6 @@ namespace Game.Level
                     this.Log("trigger layer: " + layerName);
                     break;
             }
-        }
-
-        private void OnTriggerFailArea(OnTriggerFailAreaEvent evt)
-        {
-            WaitingFail().Forget();
         }
 
         private async UniTask WaitingFail()

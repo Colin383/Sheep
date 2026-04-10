@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Bear.Fsm;
 using UnityEngine;
 
 /// <summary>
@@ -11,9 +12,88 @@ using UnityEngine;
 /// 绘制时使用 <c>Gizmos.matrix = transform.localToWorldMatrix</c>，因此会随物体的<strong>旋转与缩放</strong>一起变换；棱柱厚度沿 local Y（一般即模型竖直方向）。
 /// </para>
 /// </summary>
-public abstract class BaseAnimal : MonoBehaviour
+public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner
 {
     private const float GizmoPrismHeight = 0.01f;
+    private StateMachine _machine;
+    private bool _machineReady;
+
+    public StateMachine Machine => _machine;
+    public string CurrentState { get; private set; }
+
+    protected virtual string DefaultState => AnimalStateName.IDLE;
+
+    protected virtual void Awake()
+    {
+        InitStateMachine();
+    }
+
+    protected virtual void Update()
+    {
+        _machine?.Update();
+    }
+
+    protected virtual void OnDestroy()
+    {
+        _machine?.Dispose();
+    }
+
+    public void EnterState(string stateName)
+    {
+        if (!_machineReady || string.IsNullOrWhiteSpace(stateName))
+            return;
+
+        CurrentState = stateName;
+        _machine.Enter(stateName);
+    }
+
+    public bool IsInState(string stateName)
+    {
+        return _machine != null && _machine.IsRunning(stateName);
+    }
+
+    public void EnterIdleState()
+    {
+        EnterState(AnimalStateName.IDLE);
+    }
+
+    public void EnterMovingState()
+    {
+        EnterState(AnimalStateName.MOVING);
+    }
+
+    public void EnterBackState()
+    {
+        EnterState(AnimalStateName.BACK);
+    }
+
+    private void InitStateMachine()
+    {
+        if (_machineReady)
+            return;
+
+        _machineReady = true;
+        _machine = new StateMachine(this);
+        _machine.Inject(typeof(Animal_Idle),
+            typeof(Animal_Moving),
+            typeof(Animal_Back));
+
+        _machine.Apply(typeof(BaseAnimal));
+        EnterState(DefaultState);
+    }
+
+    // 检测移动方向，每个动物的检测方式不一样。大多是都是朝向检测。
+    public virtual DirectionEnum GetMovableDirections()
+    {
+        return FacingDirection;
+    }
+
+    // 进入移动模式
+    public virtual void TryMoving()
+    {
+        EnterMovingState();
+    }
+
 
     #region 关卡数据（由 Init 写入）
 
@@ -30,6 +110,8 @@ public abstract class BaseAnimal : MonoBehaviour
     /// <summary>与配置 type / prefab 对应的动物种类。</summary>
     public abstract AnimalType Type { get; }
 
+    public LevelCtrl Level { get; private set;}
+
     /// <summary>用关卡实例数据初始化，生成器在 Instantiate 后调用。</summary>
     public virtual void Init(int id, int row, int col, string direction)
     {
@@ -38,6 +120,15 @@ public abstract class BaseAnimal : MonoBehaviour
         Col = col;
         Direction = direction ?? string.Empty;
         FacingDirection = DirectionEnumUtility.ParseOrDefault(direction);
+    }
+
+    /// <summary>
+    /// 用于监听 animal 状态，以及更新地图内容信息
+    /// </summary>
+    /// <param name="owner"></param>
+    public virtual void SetLevelOwner(LevelCtrl owner)
+    {
+        Level = owner;
     }
 
     #endregion

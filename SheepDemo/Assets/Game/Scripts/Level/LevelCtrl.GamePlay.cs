@@ -66,6 +66,9 @@ public partial class LevelCtrl
                 return false;
         }
 
+        // 确认可以移动，立即更新动物的当前网格坐标。
+        animal.SetCurrentGridPos(nextAnchorRow, nextAnchorCol);
+
         return true;
     }
 
@@ -86,7 +89,7 @@ public partial class LevelCtrl
     }
 
     /// <summary>
-    /// 返回农场
+    /// 返回农场。将 animal 切到 Back 状态并从缓存移除，但不立即销毁，由 Back 状态控制销毁时机。
     /// </summary>
     /// <param name="animal"></param>
     public void BackToFarm(BaseAnimal animal)
@@ -94,10 +97,7 @@ public partial class LevelCtrl
         if (animal == null)
             return;
 
-        // 先切回收状态，便于动画/状态机做过渡。
-        animal.EnterBackState();
-
-        // 先从运行时缓存移除，再销毁，避免查询脏数据。
+        // 先从运行时缓存移除，避免查询脏数据。
         spawned.Remove(animal);
 
         if (spawnedById.TryGetValue(animal.Id, out var cached) && cached == animal)
@@ -112,14 +112,11 @@ public partial class LevelCtrl
         }
 
         // 可选：回收前先挪到终点（视觉过渡点）。
-        if (endPoint != null)
-            animal.transform.position = endPoint.position;
+        // if (endPoint != null)
+        //     animal.transform.position = endPoint.position;
 
-        // 运行态用 Destroy，编辑态用 DestroyImmediate。
-        if (Application.isPlaying)
-            Destroy(animal.gameObject);
-        else
-            DestroyImmediate(animal.gameObject);
+        // 切到 Back 状态，由状态机控制销毁时机（如动画播放完成后）。
+        animal.EnterBackState();
     }
 
     private HashSet<Vector2Int> BuildOccupiedCellSet(BaseAnimal self, int gridW, int gridH)

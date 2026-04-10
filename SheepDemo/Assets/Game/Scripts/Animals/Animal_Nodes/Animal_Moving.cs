@@ -16,10 +16,9 @@ public class Animal_Moving : StateNode, IDebuger
     private Vector3 nextTarget;
     private Quaternion desiredRotation;
 
-    // 位移速度（单位/秒）
-    private float moveSpeed = 3f;
-    // 原地旋转速度（角度/秒）
-    private float rotateSpeed = 540f;
+    // 从 owner 获取移动速度
+    private float MoveSpeed => owner?.MoveSpeed ?? 3f;
+    private float RotateSpeed => owner?.RotateSpeed ?? 540f;
     // 到点阈值
     private float minDistance = 0.05f;
     // 旋转完成阈值（度）
@@ -74,8 +73,7 @@ public class Animal_Moving : StateNode, IDebuger
     {
         // 到点后吸附，避免浮点误差累积。
         owner.transform.position = nextTarget;
-        // 到点后同步记录当前所在网格位置。
-        owner.AdvanceCurrentGridPos(currentStepDirection);
+        // 注意：CurrentPos 已在 CheckMoveTarget 返回 true 时更新，此处不再重复更新。
 
         // 到达边界或出界则回收。
         if (owner.Level.IsAnimCanBack(nextTarget))
@@ -121,7 +119,7 @@ public class Animal_Moving : StateNode, IDebuger
         owner.transform.rotation = Quaternion.RotateTowards(
             owner.transform.rotation,
             desiredRotation,
-            rotateSpeed * Time.deltaTime);
+            RotateSpeed * Time.deltaTime);
 
         if (Quaternion.Angle(owner.transform.rotation, desiredRotation) <= rotateEpsilon)
         {
@@ -135,7 +133,7 @@ public class Animal_Moving : StateNode, IDebuger
         owner.transform.position = Vector3.MoveTowards(
             owner.transform.position,
             nextTarget,
-            moveSpeed * Time.deltaTime);
+            MoveSpeed * Time.deltaTime);
     }
 
     public override void OnExit()

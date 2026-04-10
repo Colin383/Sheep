@@ -1,0 +1,4 @@
+interface:
+  display_name: "SheepDemo Game Structure"
+  short_description: "Track SheepDemo Assets/Game architecture."
+  default_prompt: "Use this skill to inspect, summarize, and update the recorded structure of SheepDemo/Assets/Game before making gameplay changes."

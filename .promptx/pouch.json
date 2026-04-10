@@ -1,0 +1,71 @@
+{
+  "currentState": "initial",
+  "stateHistory": [
+    {
+      "from": "initial",
+      "command": "discover",
+      "timestamp": "2026-04-10T05:09:24.993Z",
+      "args": []
+    },
+    {
+      "from": "initial",
+      "command": "action",
+      "timestamp": "2026-04-10T05:10:00.127Z",
+      "args": [
+        "unity",
+        null
+      ]
+    },
+    {
+      "from": "initial",
+      "command": "action",
+      "timestamp": "2026-04-10T05:10:54.729Z",
+      "args": [
+        "Unity",
+        null
+      ]
+    },
+    {
+      "from": "initial",
+      "command": "project",
+      "timestamp": "2026-04-10T05:11:14.872Z",
+      "args": [
+        {
+          "workingDirectory": "D:\\GitStore\\SheepDemo",
+          "ideType": "codex"
+        }
+      ]
+    },
+    {
+      "from": "initial",
+      "command": "discover",
+      "timestamp": "2026-04-10T05:11:21.914Z",
+      "args": []
+    },
+    {
+      "from": "initial",
+      "command": "action",
+      "timestamp": "2026-04-10T05:12:10.443Z",
+      "args": [
+        "unity-frontend-expert",
+        null
+      ]
+    },
+    {
+      "from": "initial",
+      "command": "discover",
+      "timestamp": "2026-04-10T05:12:20.154Z",
+      "args": []
+    },
+    {
+      "from": "initial",
+      "command": "action",
+      "timestamp": "2026-04-10T05:12:56.232Z",
+      "args": [
+        "Unity",
+        null
+      ]
+    }
+  ],
+  "lastUpdated": "2026-04-10T05:12:56.233Z"
+}

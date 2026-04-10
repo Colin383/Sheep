@@ -21,7 +21,7 @@ namespace Game.Level
         // [SerializeField] private OnTrigger2DHandle onTrigger2DHandle;
 
 
-        [SerializeField] private SuccessAnimCtrl successAnim;
+        // [SerializeField] private SuccessAnimCtrl successAnim;
 
         /// <summary>
         /// 每个 Level 专门配置不同的 gamepanel
@@ -63,8 +63,6 @@ namespace Game.Level
 
             _subscriber.Subscribe<GamePauseEvent>(OnGamePause);
             _subscriber.Subscribe<GameResumeEvent>(OnGameResume);
-
-            _subscriber.Subscribe<OnTriggerFailAreaEvent>(OnTriggerFailArea);
         }
 
 
@@ -116,11 +114,6 @@ namespace Game.Level
             }
         }
 
-        private void OnTriggerFailArea(OnTriggerFailAreaEvent evt)
-        {
-            WaitingFail().Forget();
-        }
-
         private async UniTask WaitingFail()
         {   
             if (isFinished)
@@ -169,7 +162,7 @@ namespace Game.Level
         }
 
         private void PlaySuccessAnim()
-        {
+        {/* 
             if (successAnim)
             {
                 successAnim.Play(() =>
@@ -180,7 +173,7 @@ namespace Game.Level
             else
             {
                 this.DispatchEvent(Witness<SwitchGameStateEvent>._, GamePlayStateName.SUCCESS);
-            }
+            } */
         }
 
         private async void TryToRestart()

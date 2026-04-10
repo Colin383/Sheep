@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -12,7 +12,7 @@ using UnityEditor;
 /// 读取 LevelGameConfig，在 XZ 平面按格子生成实体并缓存。
 /// 网格默认左下角为原点。
 /// </summary>
-public class LevelGenerator : MonoBehaviour, IDebuger
+public partial class LevelCtrl
 {
     [Header("Config")]
     [SerializeField] private TextAsset levelJson;
@@ -32,7 +32,7 @@ public class LevelGenerator : MonoBehaviour, IDebuger
     [Tooltip("footprint（Prefab 上列×行）是否随实例 facing 在世界格上旋转展开；关闭则始终沿「行 +、列 +」轴对齐矩形")]
     [SerializeField] private bool footprintFollowsFacing = true;
 
-    #region Gizmos
+    #region Gizmos Config
     [SerializeField] private bool alignSpawnToRendererBoundsCenter = false;
 
     [FoldoutGroup("Gizmos", Expanded = false)]
@@ -43,6 +43,9 @@ public class LevelGenerator : MonoBehaviour, IDebuger
 
     [FoldoutGroup("Gizmos")]
     [SerializeField] private bool drawFootprintCellsGizmo = true;
+
+    [FoldoutGroup("Gizmos")]
+    [SerializeField] private bool drawCurrentPosGizmos = true;
 
     [FoldoutGroup("Gizmos")]
     [SerializeField] private bool drawInstanceGizmoLabels = true;
@@ -72,6 +75,12 @@ public class LevelGenerator : MonoBehaviour, IDebuger
     [Tooltip("footprint 占用的每一格的线框（青色半透明，不含单独加粗的左下角格）")]
     [SerializeField] private Color gizmoFootprintCellWireColor = new Color(0.25f, 0.95f, 1f, 0.55f);
 
+    [FoldoutGroup("Gizmos")]
+    [SerializeField] private Color gizmoCurrentPosColor = new Color(1f, 0.35f, 0.35f, 0.95f);
+
+    [FoldoutGroup("Gizmos")]
+    [SerializeField] private float gizmoCurrentPosYOffset = 0.03f;
+
 
     [FoldoutGroup("Gizmos")]
     [SerializeField] private bool drawGridCellLabels = true;
@@ -83,6 +92,7 @@ public class LevelGenerator : MonoBehaviour, IDebuger
     [SerializeField] private float gizmoCellLabelYOffset = 0.04f;
 
     #endregion
+
     private readonly Dictionary<AnimalType, BaseAnimal> prefabByType = new();
     private readonly List<BaseAnimal> spawned = new();
     private readonly Dictionary<int, BaseAnimal> spawnedById = new();
@@ -172,6 +182,8 @@ public class LevelGenerator : MonoBehaviour, IDebuger
             animal.transform.position = spawnCellCenterWorld;
 
             animal.Init(inst.id, inst.row, inst.col, inst.direction);
+            animal.SetLevelOwner(this);
+            
             CacheSpawned(animal, instType);
         }
     }
@@ -298,6 +310,8 @@ public class LevelGenerator : MonoBehaviour, IDebuger
     }
 
 #if UNITY_EDITOR
+    #region Gizmos Editor
+
     private static GUIStyle s_gridCellLabelStyle;
     private static GUIStyle s_instanceGizmoLabelStyle;
 
@@ -313,6 +327,9 @@ public class LevelGenerator : MonoBehaviour, IDebuger
 
         if (drawInstanceGizmos)
             DrawInstanceGizmos(width, height);
+
+        if (drawCurrentPosGizmos)
+            DrawCurrentPosGizmos(width, height);
     }
 
     private void DrawGridGizmos(int width, int height)
@@ -510,6 +527,49 @@ public class LevelGenerator : MonoBehaviour, IDebuger
             Gizmos.DrawWireCube(GridToWorld(gr, gc, gridW, gridH), cellExtent);
         }
     }
+
+    private void DrawCurrentPosGizmos(int width, int height)
+    {
+        // 只使用 CurrentPos，不从 transform 反推格子。
+        if (spawned == null || spawned.Count == 0)
+            return;
+
+        if (drawInstanceGizmoLabels && s_instanceGizmoLabelStyle == null)
+        {
+            s_instanceGizmoLabelStyle = new GUIStyle(EditorStyles.miniLabel)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = 11,
+            };
+        }
+
+        if (s_instanceGizmoLabelStyle != null)
+            s_instanceGizmoLabelStyle.normal.textColor = gizmoCurrentPosColor;
+
+        Vector3 currentPosExtent = new Vector3(cellSize.x * 0.55f, 0.03f, cellSize.y * 0.55f);
+        float labelDy = gizmoCellLabelYOffset + 0.08f;
+
+        for (int i = 0; i < spawned.Count; i++)
+        {
+            var animal = spawned[i];
+            if (animal == null)
+                continue;
+
+            int row = animal.CurrentPos.y;
+            int col = animal.CurrentPos.x;
+            Vector3 world = GridToWorld(row, col, width, height);
+            world.y += gizmoCurrentPosYOffset;
+
+            Gizmos.color = gizmoCurrentPosColor;
+            Gizmos.DrawWireCube(world, currentPosExtent);
+            Gizmos.DrawSphere(world, gizmoInstanceRadius * 0.55f);
+
+            if (drawInstanceGizmoLabels && s_instanceGizmoLabelStyle != null)
+                Handles.Label(world + Vector3.up * labelDy, $"CurrentPos ({col},{row})", s_instanceGizmoLabelStyle);
+        }
+    }
+
+    #endregion
 #endif
 
     private void EnsureRoots()
@@ -549,8 +609,9 @@ public class LevelGenerator : MonoBehaviour, IDebuger
     {
         return facing switch
         {
-            DirectionEnum.Down => offset,
-            DirectionEnum.Up => new Vector2Int(-offset.x, -offset.y),
+            // 以左下角格为锚点：默认 footprint 朝 Up；Down 为 180°。
+            DirectionEnum.Down => new Vector2Int(-offset.x, -offset.y),
+            DirectionEnum.Up => offset,
             DirectionEnum.Left => new Vector2Int(-offset.y, offset.x),
             DirectionEnum.Right => new Vector2Int(offset.y, -offset.x),
             _ => offset,
@@ -585,4 +646,3 @@ public class LevelGenerator : MonoBehaviour, IDebuger
         return GridToWorld(anchorRow, anchorCol, gridW, gridH);
     }
 }
-

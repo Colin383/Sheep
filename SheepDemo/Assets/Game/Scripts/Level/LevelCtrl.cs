@@ -6,11 +6,12 @@ using Config;
 using Game;
 using Game.ConfigModule;
 using SimpleJSON;
+using UnityEngine;
 
 /// <summary>
 /// 用于处理一些 Level 相关的数据
 /// </summary>
-public class LevelCtrl : IDebuger
+public partial class LevelCtrl : MonoBehaviour, IDebuger
 {
     private bool isReady = false;
 
@@ -134,8 +135,7 @@ public class LevelCtrl : IDebuger
         CurrentLevelState = new LevelRuntimeState();
 
         InitUnlockLevel();
-
-        AddWaitingForNextLevel();
+        
         SyncRemoteConfig();
         RefreshLevel();
     }
@@ -145,21 +145,6 @@ public class LevelCtrl : IDebuger
     {
         if (!DB.GameData.UnlockLevels.Contains(1))
             DB.GameData.UnlockLevels.Add(1);
-    }
-
-    /// <summary>
-    /// 增加未完待续关卡
-    /// </summary>
-    private void AddWaitingForNextLevel()
-    {
-        var json = new JSONObject
-        {
-            ["id"] = levelsort.Count + 1,
-            ["path"] = "10999",
-        };
-
-        var levelData = new LevelSort(json);
-        levelsort.Add(levelData);
     }
 
     public void Victory()

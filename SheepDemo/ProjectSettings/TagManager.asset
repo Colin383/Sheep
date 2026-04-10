@@ -11,17 +11,17 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - OpenDoor
+  - Animal
   - Water
   - UI
   - Ground
-  - FallArea
-  - Stuff
-  - TriggerItem
-  - NonCollisionRigibodyLayer
-  - Actor
-  - CommonBg
-  - WithoutShadowGround
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 

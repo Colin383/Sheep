@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 由关卡配置生成的实体基类。具体移动、交互等逻辑写在子类。
 /// </summary>
-public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner
+public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHandle
 {
     private const float GizmoPrismHeight = 0.01f;
     private StateMachine _machine;
@@ -13,6 +13,23 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner
 
     [Tooltip("动画控制器")]
     [SerializeField] private AnimAnimtorCtrl animAnimtorCtrl;
+
+    [Header("移动配置")]
+    [Tooltip("位移速度（单位/秒）")]
+    [SerializeField] private float moveSpeed = 3f;
+
+    [Tooltip("原地旋转速度（角度/秒）")]
+    [SerializeField] private float rotateSpeed = 540f;
+
+    /// <summary>
+    /// 位移速度（单位/秒）
+    /// </summary>
+    public float MoveSpeed => moveSpeed;
+
+    /// <summary>
+    /// 原地旋转速度（角度/秒）
+    /// </summary>
+    public float RotateSpeed => rotateSpeed;
 
     /// <summary>
     /// 当前占用格（x=col, y=row）。
@@ -362,6 +379,11 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner
         }
 
         Gizmos.matrix = prevMatrix;
+    }
+
+    public void OnComplete()
+    {
+        throw new System.NotImplementedException();
     }
 #endif
 

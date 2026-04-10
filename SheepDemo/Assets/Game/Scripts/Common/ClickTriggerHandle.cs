@@ -149,7 +149,19 @@ public class ClickTriggerHandle : MonoBehaviour
 
     private static bool TryGetPointerDownScreenPosition(out Vector2 screenPosition)
     {
-#if UNITY_ANDROID || UNITY_IOS
+
+#if UNITY_EDITOR
+        if (Input.GetMouseButtonDown(0))
+        {
+            screenPosition = Input.mousePosition;
+            return true;
+        }
+
+        screenPosition = default;
+        return false;
+
+
+#elif UNITY_ANDROID || UNITY_IOS
         for (int i = 0; i < Input.touchCount; i++)
         {
             var touch = Input.GetTouch(i);
@@ -157,15 +169,6 @@ public class ClickTriggerHandle : MonoBehaviour
                 continue;
 
             screenPosition = touch.position;
-            return true;
-        }
-
-        screenPosition = default;
-        return false;
-#else
-        if (Input.GetMouseButtonDown(0))
-        {
-            screenPosition = Input.mousePosition;
             return true;
         }
 

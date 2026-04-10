@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using Bear.Fsm;
 using Bear.Logger;
 
@@ -9,37 +9,56 @@ using Bear.Logger;
 public class Animal_Moving : StateNode, IDebuger
 {
     private BaseAnimal owner;
-    private bool canMove = false;
+    private bool canMove;
+    private bool isRotating;
+    private DirectionEnum currentStepDirection = DirectionEnum.Down;
 
     private Vector3 nextTarget;
+    private Quaternion desiredRotation;
 
-    private float minDistance = 0.1f;
+    // 位移速度（单位/秒）
+    private float moveSpeed = 3f;
+    // 原地旋转速度（角度/秒）
+    private float rotateSpeed = 540f;
+    // 到点阈值
+    private float minDistance = 0.05f;
+    // 旋转完成阈值（度）
+    private float rotateEpsilon = 1f;
 
     public override void OnEnter()
     {
         owner = _owner as BaseAnimal;
-        canMove = owner.Level.CheckMoveTarget(owner, out nextTarget);
+        currentStepDirection = owner != null ? owner.GetMovableDirections() : DirectionEnum.Down;
+        canMove = owner != null && owner.Level != null && owner.Level.CheckMoveTarget(owner, out nextTarget);
 
-        this.Log($"Enter {owner.Id}");
+        if (canMove)
+            PrepareCurrentStep();
+
+        this.Log($"Enter {(owner != null ? owner.Id : -1)}");
     }
 
     public override void OnUpdate()
     {
         if (!canMove)
         {
-            // 播放晕头效果
-            owner.EnterIdleState();
+            // 当前不可移动，回到 Idle。
+            owner?.EnterIdleState();
+            return;
         }
-        else
-        {
-            Moving();
-        }
+
+        Moving();
     }
 
     private void Moving()
     {
-        // 控制 owner.transform 朝向 nextTarget 移动。
+        // 需要转向时先原地旋转，旋转完成后再移动。
+        if (isRotating)
+        {
+            RotateInPlace();
+            return;
+        }
 
+        MoveForward();
         if (IsMovComplete())
         {
             OnMoveComplete();
@@ -48,24 +67,79 @@ public class Animal_Moving : StateNode, IDebuger
 
     private bool IsMovComplete()
     {
-        return Vector3.Distance(owner.transform.position, nextTarget) < minDistance;
+        return Vector3.Distance(owner.transform.position, nextTarget) <= minDistance;
     }
 
     private void OnMoveComplete()
     {
-        // 到达位置后，检查是否移动到边界，可以会到农场
+        // 到点后吸附，避免浮点误差累积。
+        owner.transform.position = nextTarget;
+        // 到点后同步记录当前所在网格位置。
+        owner.AdvanceCurrentGridPos(currentStepDirection);
+
+        // 到达边界或出界则回收。
         if (owner.Level.IsAnimCanBack(nextTarget))
         {
             owner.Level.BackToFarm(owner);
             return;
         }
 
-        // 检查下一次移动
+        // 继续计算下一步目标；若可移动则继续“先转后移”。
+        currentStepDirection = owner.GetMovableDirections();
         canMove = owner.Level.CheckMoveTarget(owner, out nextTarget);
+        if (canMove)
+            PrepareCurrentStep();
+    }
+
+    private void PrepareCurrentStep()
+    {
+        // 用目标点方向作为本步目标朝向。
+        var forward = nextTarget - owner.transform.position;
+        forward.y = 0f;
+
+        if (forward.sqrMagnitude <= 1e-6f)
+        {
+            isRotating = false;
+            return;
+        }
+
+        desiredRotation = Quaternion.LookRotation(forward.normalized, Vector3.up);
+        float angle = Quaternion.Angle(owner.transform.rotation, desiredRotation);
+
+        if (angle <= rotateEpsilon)
+        {
+            owner.transform.rotation = desiredRotation;
+            isRotating = false;
+            return;
+        }
+
+        isRotating = true;
+    }
+
+    private void RotateInPlace()
+    {
+        owner.transform.rotation = Quaternion.RotateTowards(
+            owner.transform.rotation,
+            desiredRotation,
+            rotateSpeed * Time.deltaTime);
+
+        if (Quaternion.Angle(owner.transform.rotation, desiredRotation) <= rotateEpsilon)
+        {
+            owner.transform.rotation = desiredRotation;
+            isRotating = false;
+        }
+    }
+
+    private void MoveForward()
+    {
+        owner.transform.position = Vector3.MoveTowards(
+            owner.transform.position,
+            nextTarget,
+            moveSpeed * Time.deltaTime);
     }
 
     public override void OnExit()
     {
-        this.Log($"Exit {owner.Id}");
+        this.Log($"Exit {(owner != null ? owner.Id : -1)}");
     }
 }

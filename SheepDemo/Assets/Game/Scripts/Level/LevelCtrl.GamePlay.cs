@@ -153,13 +153,10 @@ public partial class LevelCtrl
 
     private bool TryGetAnimalAnchor(BaseAnimal animal, int gridW, int gridH, out int row, out int col)
     {
-        // 优先用实时世界坐标反算；失败时退回配置初始 row/col。
-        if (TryWorldToGrid(animal.transform.position, gridW, gridH, out row, out col))
-            return true;
-
-        row = animal.Row;
-        col = animal.Col;
-        return true;
+        // 使用动物自己维护的网格坐标，不再依赖 transform 实时反算。
+        row = animal.CurrentPos.y;
+        col = animal.CurrentPos.x;
+        return IsInsideGrid(row, col, gridW, gridH);
     }
 
     private bool TryWorldToGrid(Vector3 worldPos, int width, int height, out int row, out int col)

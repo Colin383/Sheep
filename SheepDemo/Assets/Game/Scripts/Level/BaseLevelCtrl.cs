@@ -21,7 +21,7 @@ namespace Game.Level
         // [SerializeField] private OnTrigger2DHandle onTrigger2DHandle;
 
 
-        [SerializeField] private SuccessAnimCtrl successAnim;
+        // [SerializeField] private SuccessAnimCtrl successAnim;
 
         /// <summary>
         /// 每个 Level 专门配置不同的 gamepanel
@@ -162,7 +162,7 @@ namespace Game.Level
         }
 
         private void PlaySuccessAnim()
-        {
+        {/* 
             if (successAnim)
             {
                 successAnim.Play(() =>
@@ -173,7 +173,7 @@ namespace Game.Level
             else
             {
                 this.DispatchEvent(Witness<SwitchGameStateEvent>._, GamePlayStateName.SUCCESS);
-            }
+            } */
         }
 
         private async void TryToRestart()

@@ -135,8 +135,7 @@ public partial class LevelCtrl : MonoBehaviour, IDebuger
         CurrentLevelState = new LevelRuntimeState();
 
         InitUnlockLevel();
-
-        AddWaitingForNextLevel();
+        
         SyncRemoteConfig();
         RefreshLevel();
     }
@@ -146,21 +145,6 @@ public partial class LevelCtrl : MonoBehaviour, IDebuger
     {
         if (!DB.GameData.UnlockLevels.Contains(1))
             DB.GameData.UnlockLevels.Add(1);
-    }
-
-    /// <summary>
-    /// 增加未完待续关卡
-    /// </summary>
-    private void AddWaitingForNextLevel()
-    {
-        var json = new JSONObject
-        {
-            ["id"] = levelsort.Count + 1,
-            ["path"] = "10999",
-        };
-
-        var levelData = new LevelSort(json);
-        levelsort.Add(levelData);
     }
 
     public void Victory()

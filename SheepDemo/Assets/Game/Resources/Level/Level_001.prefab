@@ -504,7 +504,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92c5e3685ef1abf4e9ac8f5753660483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  endPoint: {fileID: 0}
   pathManager: {fileID: 8417419101866163179}
   levelJson: {fileID: 4900000, guid: 60dfb5a942ec30a448f8787b17558166, type: 3}
   cellSize: {x: 1, y: 1}
@@ -969,7 +968,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0

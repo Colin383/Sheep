@@ -1,10 +1,15 @@
 ﻿using System.Collections.Generic;
+using Bear.EventSystem;
+using Bear.Fsm;
+using Game.Events;
+using Game.Play;
+using GF;
 using UnityEngine;
 
 /// <summary>
 /// 关卡内动物运行时玩法辅助逻辑。
 /// </summary>
-public partial class LevelCtrl
+public partial class LevelCtrl : IEventSender
 {
     [Header("Gameplay")]
     [SerializeField] private Transform endPoint;
@@ -193,6 +198,7 @@ public partial class LevelCtrl
         {
             Debug.Log("[LevelCtrl] 所有动物已处理完毕，游戏结束！");
             // TODO: 触发游戏结束逻辑（如显示胜利界面、上报关卡完成等）
+            this.DispatchEvent(Witness<SwitchGameStateEvent>._, GamePlayStateName.SUCCESS);
             return true;
         }
         return false;

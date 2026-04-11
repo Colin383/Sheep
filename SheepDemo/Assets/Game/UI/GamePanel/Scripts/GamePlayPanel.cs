@@ -19,10 +19,6 @@ public partial class GamePlayPanel : BaseUIView, IDebuger, IEventSender
 
     #region Player ctrl
 
-    private bool isRightDown = false;
-
-    private bool isLeftDown = false;
-
     [SerializeField] private Image blackMask;
     [SerializeField] private GameObject clickBlock;
 
@@ -52,8 +48,6 @@ public partial class GamePlayPanel : BaseUIView, IDebuger, IEventSender
     {
         base.OnOpen();
         isPause = false;
-        isRightDown = false;
-        isLeftDown = false;
         clickBlock.SetActive(false);
 
         AddListener();
@@ -67,21 +61,7 @@ public partial class GamePlayPanel : BaseUIView, IDebuger, IEventSender
         _subscriber.Subscribe<SwitchGameStateEvent>(OnGameStateChanged);
         _subscriber.Subscribe<GamePlayPanelFadeInEvent>(OnGamePlayFadeIn);
         _subscriber.Subscribe<GamePlayPanelSwitchBlockEvent>(OnSwichEventBlock);
-
-        // _subscriber.Subscribe<GameShowBannerEvent>(OnSDKShowBannerEvent);
     }
-
-    /*     private void OnSDKShowBannerEvent(GameShowBannerEvent @event)
-        {
-            // TODO: 完善 Banner 展示的时候 UI 相关的变化
-            var root = transform.Find("Root");
-            if (root != null && root is RectTransform rectTransform)
-            {
-                var offsetMin = rectTransform.offsetMin;
-                offsetMin.y = @event.bannerHeight;
-                rectTransform.offsetMin = offsetMin;
-            }
-        } */
 
     private void OnSwichEventBlock(GamePlayPanelSwitchBlockEvent @event)
     {
@@ -95,52 +75,8 @@ public partial class GamePlayPanel : BaseUIView, IDebuger, IEventSender
         PauseBtn.OnClick += OnClickSetting;
         TipsBtn.OnClick += OnClickTips;
         ShopBtn.OnClick += OnClickShop;
-
-        // JumpBtn.OnClickDown += OnClickJump;
-        RightMoveBtn.OnClickEnter += OnClickDownRight;
-        LeftMoveBtn.OnClickEnter += OnClickDownLeft;
-
-/*         RightMoveBtn.OnClickUp += OnClickUpRight;
-        LeftMoveBtn.OnClickUp += OnClickUpLeft;
-        RightMoveBtn.OnClickExit += OnClickUpRight;
-        LeftMoveBtn.OnClickExit += OnClickUpLeft; */
     }
 
-
-    private void OnClickDownRight(CustomButton btn)
-    {
-        this.Log("Right Down");
-        isRightDown = true;
-    }
-
-    private void OnClickDownLeft(CustomButton btn)
-    {
-        this.Log("Left Down");
-        isLeftDown = true;
-    }
-
-/*     private void OnClickUpRight(CustomButton btn)
-    {
-        this.Log("Right Up");
-        isRightDown = false;
-        this.DispatchEvent(Witness<PlayerMoveCancelEvent>._);
-    }
-
-    private void OnClickUpLeft(CustomButton btn)
-    {
-        this.Log("Left Up");
-        isLeftDown = false;
-        this.DispatchEvent(Witness<PlayerMoveCancelEvent>._);
-    }
-
-    private void OnClickJump(CustomButton btn)
-    {
-        if (isPause)
-            return;
-
-        this.Log("Jump");
-        this.DispatchEvent(Witness<PlayerJumpEvent>._);
-    } */
     #endregion
     void Update()
     {

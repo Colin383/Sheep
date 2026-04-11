@@ -15,12 +15,6 @@ public partial class StartPanel : BaseUIView, IDebuger, IEventSender
         base.OnOpen();
         PlayBtn.transform.localScale = Vector3.zero;
         PlayBtn.transform.DOScale(Vector3.one, 0.4f).SetDelay(1f).SetEase(Ease.OutBack, 3f);
-
-        var rt = ChoiceLevelBtn.transform as RectTransform;
-        var pos = rt.anchoredPosition;
-        pos.x = 300;
-        rt.anchoredPosition = pos;
-        rt.DOAnchorPosX(0, 0.3f).SetDelay(1.4f);
     }
 
     public override void OnCreate()
@@ -31,16 +25,7 @@ public partial class StartPanel : BaseUIView, IDebuger, IEventSender
         GMPanel.Create();        
 #endif
         PlayBtn.OnClick += OnClickPlay;
-        ChoiceLevelBtn.OnClick += OnShowChoiceLevel;
         SettingBtn.OnClick += ShowSetting;
-
-        // TestBtn.OnClick += TestTips;
-
-        var entry = spineCtrl.PlayAnimation("loading", false);
-        entry.Complete += (track) =>
-        {
-            spineCtrl.PlayAnimation("loading01", true);
-        };
     }
 
 

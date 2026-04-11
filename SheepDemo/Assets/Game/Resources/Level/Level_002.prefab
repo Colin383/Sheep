@@ -29469,7 +29469,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6934362297892886226}
   - component: {fileID: 687836059908053872}
-  - component: {fileID: 3525679145299744905}
   m_Layer: 0
   m_Name: Level_002
   m_TagString: Untagged
@@ -29535,20 +29534,6 @@ MonoBehaviour:
   drawGridCellLabels: 1
   gizmoCellLabelColor: {r: 1, g: 1, b: 1, a: 0.85}
   gizmoCellLabelYOffset: 0.04
---- !u!114 &3525679145299744905
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4112558543410290606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32a80fb9fd6fd8f4b9838d29bbaf30a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  level: {fileID: 0}
-  btn: {fileID: 0}
 --- !u!1 &4120170614148141675
 GameObject:
   m_ObjectHideFlags: 0

@@ -152,8 +152,6 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
         DestroyLevel();
         CreateLevel(Level.CurrentLevelSort);
         this.DispatchEvent(Witness<GamePlayPanelFadeInEvent>._);
-        // 重置一下点击 Tips 的状态
-        Level.CurrentLevelState.SwitchClickTips(false);
 
         _machine.Enter(GamePlayStateName.PAUSE);
 
@@ -229,7 +227,9 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
     /// </summary>
     private void RefreshGamePanel()
     {
-
+        if (!CurrentGamePlayPanel)
+            CurrentGamePlayPanel = GamePlayPanel.Create();
+        CurrentGamePlayPanel.SetData(Level.CurrentLevelSort.Id);
     }
 
     public void Update()

@@ -265,14 +265,14 @@ public partial class GameSDKService
     {
         var playCtrl = PlayCtrl.Instance;
         var level = playCtrl?.Level;
-        var levelData = level?.CurrentLevelData;
+        var levelData = level?.CurrentLevelSort;
         if (levelData == null)
         {
             UnityEngine.Debug.LogWarning("CurrentLevelData is null when reporting game analytics. Use 'no_start' as level path.");
             return "no_start";
         }
 
-        return levelData.Path;
+        return levelData.LevelConfig;
     }
 
     /// <summary>

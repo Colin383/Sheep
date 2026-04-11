@@ -158,11 +158,11 @@ public class LoadManager : MonoBehaviour, IDebuger
     {
 
         // 先按 LoadManager 风格执行 RemoteConfig 的加载协程
-        var remoteEnumerator = RemoteConfigService.UpdateRemoteConfigsForLoadManager();
+/*         var remoteEnumerator = RemoteConfigService.UpdateRemoteConfigsForLoadManager();
         while (remoteEnumerator.MoveNext())
         {
             yield return remoteEnumerator.Current;
-        }
+        } */
 
         // 确保 ConfigManager 实例存在
         if (ConfigManager.Instance == null)

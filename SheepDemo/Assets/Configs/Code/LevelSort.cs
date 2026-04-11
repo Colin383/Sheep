@@ -18,7 +18,8 @@ public sealed partial class LevelSort : Luban.BeanBase
     public LevelSort(JSONNode _buf) 
     {
         { if(!_buf["id"].IsNumber) { throw new SerializationException(); }  Id = _buf["id"]; }
-        { if(!_buf["path"].IsString) { throw new SerializationException(); }  Path = _buf["path"]; }
+        { if(!_buf["levelConfig"].IsString) { throw new SerializationException(); }  LevelConfig = _buf["levelConfig"]; }
+        { if(!_buf["scene"].IsString) { throw new SerializationException(); }  Scene = _buf["scene"]; }
     }
 
     public static LevelSort DeserializeLevelSort(JSONNode _buf)
@@ -31,9 +32,13 @@ public sealed partial class LevelSort : Luban.BeanBase
     /// </summary>
     public readonly int Id;
     /// <summary>
-    /// 关卡索引
+    /// 关卡配置数据
     /// </summary>
-    public readonly string Path;
+    public readonly string LevelConfig;
+    /// <summary>
+    /// 关卡地图
+    /// </summary>
+    public readonly string Scene;
    
     public const int __ID__ = 347718434;
     public override int GetTypeId() => __ID__;
@@ -46,7 +51,8 @@ public sealed partial class LevelSort : Luban.BeanBase
     {
         return "{ "
         + "id:" + Id + ","
-        + "path:" + Path + ","
+        + "levelConfig:" + LevelConfig + ","
+        + "scene:" + Scene + ","
         + "}";
     }
 }

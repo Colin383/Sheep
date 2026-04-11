@@ -53,8 +53,9 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
     }
 
     public Transform SceneRoot;
-    public BaseLevelCtrl LevelCtrl;
-    public BaseLevelCtrl LevelPrefab;
+    private LevelCtrl LevelPrefab;
+
+    public LevelCtrl CurrentLevel;
     private const string LevelPath = "Level/{0}";
 
     #endregion
@@ -110,14 +111,14 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
     {
         DestroyLevel();
         var sortId = evt.Data.Id;
-        Level.SetCurrentLevel(sortId);
+        Level.SetCurrentLevelId(sortId);
 
-        var data = Level.CurrentLevelData;
-        Level.CurrentLevelState.StartLevel(evt.Data.Id, data.Path);
+        var data = Level.CurrentLevelSort;
+        Level.CurrentLevelState.StartLevel(evt.Data.Id, data.LevelConfig);
 
         EnterLevelLoading.Create(() =>
         {
-            CreateLevel(Level.CurrentLevelData.Path);
+            CreateLevel(Level.CurrentLevelSort);
             _machine.Enter(GamePlayStateName.PLAYING);
         });
     }
@@ -140,7 +141,7 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
 
     private void OnGameResetEvent(GameResetEvent evt)
     {
-        
+
     }
 
     private async UniTask ResetGame()
@@ -149,7 +150,7 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
 
         // Show Ask 
         DestroyLevel();
-        CreateLevel(Level.CurrentLevelData.Path);
+        CreateLevel(Level.CurrentLevelSort);
         this.DispatchEvent(Witness<GamePlayPanelFadeInEvent>._);
         // 重置一下点击 Tips 的状态
         Level.CurrentLevelState.SwitchClickTips(false);
@@ -173,11 +174,11 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
     /// </summary>
     public void DestroyLevel()
     {
-        if (LevelCtrl == null)
+        if (CurrentLevel == null)
             return;
 
-        LevelCtrl.DestroyLevel();
-        LevelCtrl = null;
+        CurrentLevel.DestroyLevel();
+        CurrentLevel = null;
         LevelPrefab = null;
 
         AudioManager.StopAllSound();
@@ -185,24 +186,41 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
         GameManager.Instance.OpenCamera();
     }
 
-    public void CreateLevel(string levelName)
+    public void CreateLevel(LevelSort data)
     {
-        if (LevelCtrl != null)
+        if (CurrentLevel != null)
             return;
 
         GameManager.Instance.CloseCamera();
 
+        string levelPath = string.Format(LevelPath, data.Scene);
         // id, 测试关卡
         if (!LevelPrefab)
-            LevelPrefab = Resources.Load<BaseLevelCtrl>(string.Format(LevelPath, levelName));
+            LevelPrefab = Resources.Load<LevelCtrl>(levelPath);
 
         if (!LevelPrefab)
         {
-            this.LogError($"Level lost: {levelName}");
+            this.LogError($"Level lost: {levelPath}");
             return;
         }
 
-        LevelCtrl = GameObject.Instantiate(LevelPrefab, SceneRoot);
+        CurrentLevel = GameObject.Instantiate(LevelPrefab, SceneRoot);
+
+        if (CurrentLevel == null)
+        {
+            this.LogError($"Level lost: {levelPath}, CurrentLevel is null");
+            return;
+        }
+
+        var config = Resources.Load<TextAsset>(string.Format("LevelConfig/{0}", data.LevelConfig));
+
+        if (!config)
+        {
+            this.LogError($"Level lost: {levelPath}, config is null");
+            return;
+        }
+
+        CurrentLevel.SetConfig(LevelGameConfig.FromJson(config.text));
         RefreshGamePanel();
     }
 
@@ -211,7 +229,7 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
     /// </summary>
     private void RefreshGamePanel()
     {
-        
+
     }
 
     public void Update()

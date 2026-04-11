@@ -29,7 +29,7 @@ namespace Game.Play
         private void ShowVictory()
         {
             // 处理等级
-            _gameVictoryPanel = GameVictoryPanel.Create(owner.Level.CurrentLevelData);
+            _gameVictoryPanel = GameVictoryPanel.Create();
             owner.Level.Victory();
         }
 

@@ -16,7 +16,6 @@ public partial class GameVictoryPanel : BaseUIView, IEventSender, IDebuger
     [SerializeField] private CanvasGroup nextBtn;
 
     [SerializeField] private UISpineCtrl spineCtrl;
-    private LevelData _data;
     private string _tipsKey;
 
     public override void OnCreate()
@@ -109,11 +108,9 @@ public partial class GameVictoryPanel : BaseUIView, IEventSender, IDebuger
         this.DispatchEvent(Witness<EnterNextLevelEvent>._);
     }
 
-    public static GameVictoryPanel Create(LevelData data)
+    public static GameVictoryPanel Create()
     {
         var panel = UIManager.Instance.OpenUI<GameVictoryPanel>($"{typeof(GameVictoryPanel).Name}", UILayer.Popup);
-        panel._data = data;
-        panel._tipsKey = data.CongraktTips;
         return panel;
     }
 }

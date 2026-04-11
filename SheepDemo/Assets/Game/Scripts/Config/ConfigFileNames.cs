@@ -15,7 +15,6 @@ namespace Game.ConfigModule
             {
                 "lubanconfig_tbglobalconst",
                 "tblanguage",
-                "tbleveldata",
                 "tblevelsort",
                 "tbproducts",
                 "tbshop"

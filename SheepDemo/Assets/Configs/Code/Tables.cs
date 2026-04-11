@@ -16,7 +16,6 @@ public partial class Tables
 {
     public LubanConfig.TbGlobalConst TbGlobalConst {get; }
     public TbLanguage TbLanguage {get; }
-    public TbLevelData TbLevelData {get; }
     public TbLevelSort TbLevelSort {get; }
     public TbProducts TbProducts {get; }
     public TbShop TbShop {get; }
@@ -25,7 +24,6 @@ public partial class Tables
     {
         TbGlobalConst = new LubanConfig.TbGlobalConst(loader("lubanconfig_tbglobalconst"));
         TbLanguage = new TbLanguage(loader("tblanguage"));
-        TbLevelData = new TbLevelData(loader("tbleveldata"));
         TbLevelSort = new TbLevelSort(loader("tblevelsort"));
         TbProducts = new TbProducts(loader("tbproducts"));
         TbShop = new TbShop(loader("tbshop"));
@@ -36,7 +34,6 @@ public partial class Tables
     {
         TbGlobalConst.ResolveRef(this);
         TbLanguage.ResolveRef(this);
-        TbLevelData.ResolveRef(this);
         TbLevelSort.ResolveRef(this);
         TbProducts.ResolveRef(this);
         TbShop.ResolveRef(this);

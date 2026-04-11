@@ -28,7 +28,6 @@ public partial class LevelChoiceItem : BaseAutoUIBind, IEventSender
 
     private State _state;
     private LevelSort _levelSort;
-    private LevelData _levelData;
     private ChoiceLevelPanel _owner;
 
     public CanvasGroup canvasGroup;
@@ -75,41 +74,6 @@ public partial class LevelChoiceItem : BaseAutoUIBind, IEventSender
 
     public void SetData(LevelSort levelSort)
     {
-        if (levelSort == null)
-        {
-            gameObject.SetActive(false);
-            return;
-        }
-
-        _levelSort = levelSort;
-        var data = PlayCtrl.Instance.Level.GetLevelDataById(_levelSort.Path);
-        _levelData = data;
-
-        if (data == null)
-        {
-            gameObject.SetActive(false);
-            return;
-        }
-
-        _state = State.Normal;
-        gameObject.SetActive(true);
-
-        RefreshState();
-        BtnClearEvents();
-
-        switch (_state)
-        {
-            case State.Passed:
-            case State.Max:
-            case State.Normal:
-                ClickAreaBtn.OnClick += EnterLevel;
-                break;
-            case State.AdLock:
-                ClickAreaBtn.OnClick += ShowRewardAd;
-                break;
-            case State.LevelLock:
-                break;
-        }
     }
 
     private void BtnClearEvents()
@@ -120,67 +84,12 @@ public partial class LevelChoiceItem : BaseAutoUIBind, IEventSender
 
     private void RefreshState()
     {
-        bool isPassed = false;
-        bool isMax = false;
-
-        // 未完待续关卡
-        bool isUnlock = PlayCtrl.Instance.Level.IsUnlock(_levelSort.Id);
-
-        if (!isUnlock)
-        {
-            _state = State.LevelLock;
-
-            if (_levelData.LockType != Config.Level.LevelLockType.Unlock)
-            {
-                if (!PlayCtrl.Instance.Level.IsUnlock(_levelSort.Id))
-                {
-                    isUnlock = false;
-                    if (_levelData.LockType == Config.Level.LevelLockType.Ad)
-                        _state = State.AdLock;
-
-                }
-                else
-                {
-                    isUnlock = true;
-                    _state = State.Normal;
-                }
-            }
-        }
-
-        if (isUnlock)
-        {
-            isMax = PlayCtrl.Instance.Level.MaxLevel == _levelSort.Id;
-            if (!isMax)
-                isPassed = PlayCtrl.Instance.Level.IsPassed(_levelSort.Id);
-        }
-
-
-        if (isMax)
-            _state = State.Max;
-
-        if (isPassed)
-            _state = State.Passed;
-
-        // refresh
-        PassedState.SetActive(_state == State.Passed);
-        NormalState.SetActive(_state == State.Normal);
-        CurrentState.SetActive(_state == State.Max);
-        AdLockState.SetActive(_state != State.Passed && _state != State.Normal && _state != State.Max);
-        AdImg.gameObject.SetActive(_state == State.AdLock);
-
-        NormalTxt.text = _levelSort.Id.ToString();
-        PassedTxt.text = CurrentTxt.text = AdLockTxt.text = NormalTxt.text;
+       
     }
 
     private void ShowRewardAd(CustomButton btn)
     {
-        if (_levelData == null)
-            return;
-
-        RewardAdHelper.TryToShowRewardAd(Config.Game.RewardPlacement.OutGameUnlockLevel.ToString(), 
-        success: "U_HurryTips_RewardVideo_succeed",
-        failed: "U_HurryTips_RewardVideo_failed",
-        onResult: OnRewardAdCallback);
+       
     }
 
     private void OnRewardAdCallback(string placement, bool isSuc)

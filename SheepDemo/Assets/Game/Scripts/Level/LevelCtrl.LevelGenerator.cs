@@ -284,6 +284,18 @@ public partial class LevelCtrl
         }
     }
 
+    /// <summary>
+    /// 设置关卡配置（用于动态加载配置）
+    /// </summary>
+    public void SetConfig(LevelGameConfig gameConfig)
+    {
+        config = gameConfig;
+        if (config == null)
+        {
+            Debug.LogWarning("[LevelCtrl] SetConfig: gameConfig is null.");
+        }
+    }
+
     private bool TryGetConfigDimensions(out int width, out int height)
     {
         width = 0;

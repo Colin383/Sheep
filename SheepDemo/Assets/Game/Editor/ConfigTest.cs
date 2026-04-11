@@ -217,47 +217,7 @@ namespace Game.Editor
 
         private void TestLevelConfig()
         {
-            if (ConfigManager.Instance == null || !ConfigManager.Instance.IsInitialized || ConfigManager.Instance.Tables == null)
-            {
-                AddLog("Error: Config tables not initialized!");
-                return;
-            }
-
-            var levelConfig = ConfigManager.Instance.Tables.TbLevelData;
-            if (levelConfig == null)
-            {
-                AddLog("Error: TbLevelConfig is null!");
-                return;
-            }
-
-            AddLog("=== TbLevelConfig Table ===");
-            AddLog($"DataMap Count: {levelConfig.DataMap.Count}");
-            AddLog($"DataList Count: {levelConfig.DataList.Count}");
-
-            if (levelConfig.DataList.Count > 0)
-            {
-                AddLog("\nFirst 5 Items:");
-                int count = Mathf.Min(5, levelConfig.DataList.Count);
-                for (int i = 0; i < count; i++)
-                {
-                    var item = levelConfig.DataList[i];
-                    AddLog($"  [{i}] Id: {item.Id}, Level: {item.Path}, LevelType: {item.LevelType}, LockType: {item.LockType}");
-                }
-            }
-
-            // 测试通过 ID 获取
-            if (levelConfig.DataMap.Count > 0)
-            {
-                var firstId = levelConfig.DataList[0].Id;
-                var itemById = levelConfig.Get(firstId);
-                if (itemById != null)
-                {
-                    AddLog($"\nGet by ID ({firstId}):");
-                    AddLog($"  Id: {itemById.Id}, Level: {itemById.Path}, LevelType: {itemById.LevelType}, LockType: {itemById.LockType}");
-                }
-            }
-
-            AddLog("");
+            
         }
 
         private void PrintAllTablesInfo()
@@ -271,7 +231,6 @@ namespace Game.Editor
             var tables = ConfigManager.Instance.Tables;
             AddLog("=== All Tables Info ===");
             AddLog($"TbGlobalConst: {(tables.TbGlobalConst != null ? "Loaded" : "Null")}");
-            AddLog($"TbLevelConfig: {(tables.TbLevelData != null ? "Loaded" : "Null")}");
             AddLog("");
         }
 
@@ -284,7 +243,6 @@ namespace Game.Editor
                 AddLog($"Initialized: {ConfigManager.Instance.IsInitialized}");
                 AddLog($"Load Progress: {ConfigManager.Instance.LoadProgress * 100:F1}%");
                 AddLog($"TbGlobalConst: {tables.TbGlobalConst?.DataList?.Count ?? 0} items");
-                AddLog($"TbLevelConfig: {tables.TbLevelData?.DataList?.Count ?? 0} items");
                 AddLog("");
             }
         }

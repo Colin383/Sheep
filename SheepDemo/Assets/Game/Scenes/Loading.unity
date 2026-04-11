@@ -201,11 +201,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4812f4cc563fa44986f4559a84c0df7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LayerResolution: {x: 2340, y: 1080}
+  LayerResolution: {x: 1080, y: 1920}
   MaskAlpha: 0.8
   MaskFadeDuration: 0.2
   ScreenMatchMode: 0
-  MatchWidthOrHeight: 1
+  MatchWidthOrHeight: 0
 --- !u!4 &845817180
 Transform:
   m_ObjectHideFlags: 0
@@ -238,8 +238,8 @@ MonoBehaviour:
   autoUpdateOnResolutionChange: 1
   aspectRatioThreshold: 2.16
   fixResolutionList:
-  - {x: 1920, y: 1080}
-  - {x: 2340, y: 1080}
+  - {x: 1080, y: 1920}
+  - {x: 1080, y: 2340}
   minMatch: 0
   maxMatch: 1
 --- !u!1 &1578475565
@@ -671,7 +671,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f71c7ff958c93a47b0bb9de86b3f68a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fixResolution: {x: 1920, y: 1080}
+  fixResolution: {x: 1080, y: 1920}
   mainCamera: {fileID: 1859341551}
 --- !u!1 &2022377088
 GameObject:
@@ -876,8 +876,47 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8550851050139410358, guid: 427a83c096d49bd43b91736180520bee, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -1765
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838662544658586464, guid: 427a83c096d49bd43b91736180520bee, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838662544658586464, guid: 427a83c096d49bd43b91736180520bee, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838662544658586464, guid: 427a83c096d49bd43b91736180520bee, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838662544658586464, guid: 427a83c096d49bd43b91736180520bee, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838662544658586464, guid: 427a83c096d49bd43b91736180520bee, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0.000061035156
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838662544658586464, guid: 427a83c096d49bd43b91736180520bee, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838662544658586464, guid: 427a83c096d49bd43b91736180520bee, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838662544658586464, guid: 427a83c096d49bd43b91736180520bee, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6701265607653550061, guid: 427a83c096d49bd43b91736180520bee, type: 3}
+    - {fileID: 5081455405109255841, guid: 427a83c096d49bd43b91736180520bee, type: 3}
+    - {fileID: 4329024034893841517, guid: 427a83c096d49bd43b91736180520bee, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 427a83c096d49bd43b91736180520bee, type: 3}

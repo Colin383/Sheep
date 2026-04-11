@@ -5,7 +5,6 @@ using Bear.Logger;
 using Config;
 using Game;
 using Game.ConfigModule;
-using SimpleJSON;
 using UnityEngine;
 
 /// <summary>
@@ -15,9 +14,7 @@ public partial class LevelCtrl : MonoBehaviour, IDebuger
 {
     private bool isReady = false;
 
-    private List<LevelData> leveldatas;
     private List<LevelSort> levelsort;
-
 
     // 关卡顺序数据，只能从这里获取
     public List<LevelSort> LevelSorts { get => levelsort; }
@@ -51,41 +48,6 @@ public partial class LevelCtrl : MonoBehaviour, IDebuger
             }
 
             return CurrentLevel >= levelsort.Last().Id;
-        }
-    }
-
-    /// <summary>
-    /// 当前关卡数据（根据当前关卡 Id 映射到对应的 LevelData）。
-    /// </summary>
-    public LevelData CurrentLevelData
-    {
-        get
-        {
-            if (leveldatas == null || levelsort == null || levelsort.Count == 0)
-            {
-                this.LogError("[LevelCtrl] CurrentLevelData: level data not initialized.");
-                return null;
-            }
-
-            // 使用关卡排序表的 Id 范围进行一次安全夹紧
-            int minId = levelsort.First().Id;
-            int maxId = levelsort.Last().Id;
-            int currentId = Math.Clamp(CurrentLevel, minId, maxId);
-
-            var sort = levelsort.Find(d => d.Id == currentId);
-            if (sort == null)
-            {
-                this.LogError($"[LevelCtrl] CurrentLevelData: LevelSort not found for id = {currentId}, fallback to last.");
-                sort = levelsort.Last();
-            }
-
-            var data = GetLevelDataById(sort.Path);
-            if (data == null)
-            {
-                this.LogError($"[LevelCtrl] CurrentLevelData: LevelData not found for path = {sort.Path}.");
-            }
-
-            return data;
         }
     }
 
@@ -128,16 +90,10 @@ public partial class LevelCtrl : MonoBehaviour, IDebuger
             return;
 
         // 数据加载配置
-        leveldatas = ConfigManager.Instance.Tables.TbLevelData.DataList;
         levelsort = ConfigManager.Instance.Tables.TbLevelSort.DataList;
         isReady = true;
 
         CurrentLevelState = new LevelRuntimeState();
-
-        InitUnlockLevel();
-        
-        SyncRemoteConfig();
-        RefreshLevel();
     }
 
     // 默认第一关
@@ -175,128 +131,6 @@ public partial class LevelCtrl : MonoBehaviour, IDebuger
 
         this.Log("----- Victroy currentLevel" + DB.GameData.CurrentLevel);
 
-        RefreshLevel();
-    }
-
-    // 根据 pass 和 unlock 确定当前的 最小 level
-    public void RefreshLevel()
-    {
-        // check current config and DB 数据对比
-        // _currentLevel = 1
-        LevelSort sortData;
-        LevelData data = null;
-        var gameData = DB.GameData;
-
-        string levelId = "";
-        for (int i = 0; i < levelsort.Count; i++)
-        {
-            sortData = levelsort[i];
-            levelId = sortData.Path;
-            data = GetLevelDataById(levelId);
-            if (IsPassed(sortData.Id))
-            {
-                continue;
-            }
-
-            if (!IsUnlock(sortData.Id))
-            {
-                if (data.LockType == Config.Level.LevelLockType.Unlock)
-                    gameData.UnlockLevels.Add(sortData.Id);
-                else
-                    continue;
-            }
-
-        }
-
-        DB.GameData.Save();
-    }
-
-    /// <summary>
-    /// 同步 RemoteConfig 中的关卡配置。
-    /// 默认使用 remote key: level_config。
-    /// - 如果 enabled 没变化：不做任何事
-    /// - 如果 enabled 变为 true：todo
-    /// </summary>
-    public void SyncRemoteConfig()
-    {
-        if (ConfigManager.Instance == null || !ConfigManager.Instance.IsInitialized)
-        {
-            return;
-        }
-
-        if (!ConfigManager.RemoteConfig.TryGetValue<bool>(
-                ConfigManager.RemoteConfig.LevelConfigKey,
-                ConfigManager.RemoteConfig.EnabledFieldKey,
-                out var remoteEnabled))
-        {
-            return;
-        }
-
-        if (!remoteEnabled)
-            return;
-
-        // TODO: enabled == true 时的逻辑
-        if (ConfigManager.RemoteConfig.TryGetValue<List<string>>(
-                ConfigManager.RemoteConfig.LevelConfigKey,
-                ConfigManager.RemoteConfig.LevelSortKey,
-                out var newPaths))
-        {
-            if (levelsort == null || levelsort.Count == 0 || newPaths == null || newPaths.Count == 0)
-            {
-                return;
-            }
-
-            var copied = new List<LevelSort>(levelsort.Count);
-            for (int i = 0; i < levelsort.Count; i++)
-            {
-                var old = levelsort[i];
-                string path = old.Path;
-                if (i < newPaths.Count && !string.IsNullOrEmpty(newPaths[i]))
-                {
-                    path = newPaths[i];
-                }
-
-                var json = new JSONObject();
-                json["id"] = old.Id;
-                json["path"] = path;
-
-                var replaced = LevelSort.DeserializeLevelSort(json);
-                copied.Add(replaced);
-            }
-
-            levelsort = copied;
-
-            this.Log("Replace levelsort success: " + levelsort.Count);
-        }
-    }
-
-    public LevelData GetLevelDataById(string id)
-    {
-        if (string.IsNullOrEmpty(id))
-        {
-            this.LogError("[LevelCtrl] GetLevelDataById: id is null or empty.");
-            return null;
-        }
-
-        if (leveldatas == null || leveldatas.Count == 0)
-        {
-            this.LogError("[LevelCtrl] GetLevelDataById: leveldatas is not initialized.");
-            return null;
-        }
-
-        // 关卡表中同时存在 Id(string) 和 Path(string)，这里优先按 Path 匹配，找不到再按 Id 兜底
-        var data = leveldatas.Find(d => d.Path == id);
-        if (data == null)
-        {
-            data = leveldatas.Find(d => d.Id == id);
-        }
-
-        if (data == null)
-        {
-            this.LogError($"[LevelCtrl] GetLevelDataById: LevelData not found, id/path = {id}.");
-        }
-
-        return data;
     }
 
     public LevelSort GetLevelSortById(int id)
@@ -315,7 +149,6 @@ public partial class LevelCtrl : MonoBehaviour, IDebuger
 
         return sort;
     }
-
 
     /// <summary>
     /// 是否已解锁
@@ -355,7 +188,7 @@ public partial class LevelCtrl : MonoBehaviour, IDebuger
     /// For Test
     /// </summary>
     /// <param name="id"></param>
-    public void SetCurrentLevel(int id)
+    public void SetCurrentLevelId(int id)
     {
         if (levelsort == null || levelsort.Count == 0)
         {
@@ -369,5 +202,21 @@ public partial class LevelCtrl : MonoBehaviour, IDebuger
         }
 
         DB.GameData.Save();
+    }
+
+    /// <summary>
+    /// 销毁当前关卡（销毁自身 GameObject）
+    /// </summary>
+    public void DestroyLevel()
+    {
+        if (Application.isPlaying)
+            Destroy(gameObject);
+        else
+            DestroyImmediate(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        ClearSpawned();
     }
 }

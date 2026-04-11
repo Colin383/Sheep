@@ -246,7 +246,7 @@ public partial class GMPanel : BaseUIView, IEventSender
     {
         var level = PlayCtrl.Instance.Level;
         var levelIndex = level.CurrentLevel;
-        level.SetCurrentLevel(++levelIndex);
+        level.SetCurrentLevelId(++levelIndex);
 
         this.DispatchEvent(Witness<Game.Events.EnterLevelEvent>._, level.CurrentLevelSort);
     }
@@ -255,7 +255,7 @@ public partial class GMPanel : BaseUIView, IEventSender
     {
         var level = PlayCtrl.Instance.Level;
         var levelIndex = level.CurrentLevel;
-        level.SetCurrentLevel(--levelIndex);
+        level.SetCurrentLevelId(--levelIndex);
 
         this.DispatchEvent(Witness<Game.Events.EnterLevelEvent>._, level.CurrentLevelSort);
     }
@@ -270,7 +270,6 @@ public partial class GMPanel : BaseUIView, IEventSender
         var panel = UIManager.Instance.OpenUI<GMPanel>($"{typeof(GMPanel).Name}", UILayer.System);
         return panel;
     }
-
 
     const float margin = 20f;
     const float width = 730f;

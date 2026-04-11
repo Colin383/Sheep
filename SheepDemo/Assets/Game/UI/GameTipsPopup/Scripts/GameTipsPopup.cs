@@ -77,14 +77,7 @@ public partial class GameTipsPopup : BaseUIView, IEventSender, IDebuger
 
     private void RefreshTips()
     {
-        this.Log("RefreshTipsPopup ------------ ");
-        if (state == TipPopupState.PassLevel)
-        {
-            var tipsKey = PlayCtrl.Instance.Level.CurrentLevelData.AnswerTips;
-            TipTxt.text = LocalizationManager.GetTranslation(tipsKey);
-
-            this.Log("RefreshTipsPopup ------------ 2: " + TipTxt.text);
-        }
+       
     }
 
     private void TryToPassLevel(CustomButton button)

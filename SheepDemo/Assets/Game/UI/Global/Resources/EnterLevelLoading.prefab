@@ -636,7 +636,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  skeletonDataAsset: {fileID: 11400000, guid: 2ccbd9baf4051224295368911a4086c1, type: 2}
+  skeletonDataAsset: {fileID: 0}
   additiveMaterial: {fileID: 2100000, guid: 2e8245019faeb8c43b75f9ca3ac8ee34, type: 2}
   multiplyMaterial: {fileID: 2100000, guid: e74a1f8978a7da348a721508d0d58834, type: 2}
   screenMaterial: {fileID: 2100000, guid: bab24c479f34eec45be6ea8595891569, type: 2}
@@ -961,8 +961,8 @@ MonoBehaviour:
   _pageEffect: {fileID: 3471376720645242540}
   _brushEffect: {fileID: 2296363538189653101}
   _duration: 1
-  _ease: 1
   _startDelay: 0.1
+  _stampPathStep: 0.25
   _useProceduralPath: 0
   _spiralTurns: 20
   _pathResolution: 200
@@ -999,7 +999,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4095
+    m_Bits: 127
 --- !u!1 &7425345761095818153
 GameObject:
   m_ObjectHideFlags: 0

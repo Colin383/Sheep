@@ -12,11 +12,13 @@ using UnityEngine;
 public partial class LevelCtrl : IEventSender
 {
     [Header("Gameplay")]
-    [SerializeField] private Transform endPoint;
     [SerializeField] private PathManager pathManager;
 
     // 世界坐标转格子时的吸附容差（相对格子尺寸）。
     private const float GridMatchEpsilon = 0.4f;
+
+    // 正在返回农场的动物缓存（Back 状态）
+    private readonly List<BaseAnimal> returningAnimals = new();
 
     /// <summary>
     /// 计算下一步目标点，并校验是否与其他动物占位冲突。
@@ -115,8 +117,9 @@ public partial class LevelCtrl : IEventSender
                 spawnedByType.Remove(animal.Type);
         }
 
-        // 切到 Back 状态
+        // 切到 Back 状态，并加入返回缓存
         animal.EnterBackState();
+        returningAnimals.Add(animal);
 
         // 如果有 PathManager，将 animal 交给 PathManager 控制
         if (pathManager != null)
@@ -126,6 +129,7 @@ public partial class LevelCtrl : IEventSender
         else
         {
             Debug.LogWarning("[LevelCtrl] PathManager 未设置，animal 将直接销毁");
+            returningAnimals.Remove(animal);
             Destroy(animal.gameObject);
         }
     }
@@ -135,9 +139,9 @@ public partial class LevelCtrl : IEventSender
     /// </summary>
     private void SetupBackPath(BaseAnimal animal)
     {
-        if (pathManager == null || endPoint == null || animal == null)
+        if (pathManager == null|| animal == null)
         {
-            Debug.LogError($"[LevelCtrl] SetupBackPath 失败: pathManager={pathManager}, endPoint={endPoint}, animal={animal}");
+            Debug.LogError($"[LevelCtrl] SetupBackPath 失败: pathManager={pathManager}, animal={animal}");
             return;
         }
 
@@ -177,6 +181,9 @@ public partial class LevelCtrl : IEventSender
             pathManager.UnregisterMoveHandle(animal.transform);
         }
 
+        // 从返回缓存中移除
+        returningAnimals.Remove(animal);
+
         // 直接销毁 animal
         if (Application.isPlaying)
             Destroy(animal.gameObject);
@@ -188,12 +195,12 @@ public partial class LevelCtrl : IEventSender
     }
 
     /// <summary>
-    /// 检查是否所有 animals 都已处理完毕（数量为 0 表示游戏结束）
+    /// 检查是否所有 animals 都已处理完毕（spawned 和 returningAnimals 都为 0 表示游戏结束）
     /// </summary>
     /// <returns>是否游戏结束</returns>
     private bool CheckFinished()
     {
-        int remainingCount = spawned.Count;
+        int remainingCount = spawned.Count + returningAnimals.Count;
         if (remainingCount == 0)
         {
             Debug.Log("[LevelCtrl] 所有动物已处理完毕，游戏结束！");

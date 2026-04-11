@@ -11,11 +11,11 @@ using DG.Tweening;
 
 public partial class GameVictoryPanel : BaseUIView, IEventSender, IDebuger
 {
-    [SerializeField] private TextMeshProUGUI title;
-    [SerializeField] private TextMeshProUGUI tips;
+    // [SerializeField] private TextMeshProUGUI title;
+    // [SerializeField] private TextMeshProUGUI tips;
     [SerializeField] private CanvasGroup nextBtn;
 
-    [SerializeField] private UISpineCtrl spineCtrl;
+    // [SerializeField] private UISpineCtrl spineCtrl;
     private string _tipsKey;
 
     public override void OnCreate()
@@ -28,11 +28,11 @@ public partial class GameVictoryPanel : BaseUIView, IEventSender, IDebuger
     {
         base.OnOpen();
 
-        NextBtn.Interactable = false;
-        OpenAnimation();
+        // NextBtn.Interactable = false;
+        // OpenAnimation();
     }
 
-    private void OpenAnimation()
+/*     private void OpenAnimation()
     {
         var dc = new Color(1, 1, 1, 1);
         title.color = dc;
@@ -52,7 +52,7 @@ public partial class GameVictoryPanel : BaseUIView, IEventSender, IDebuger
             };
         }
     }
-
+ */
     private void OnSpineEvent(Spine.TrackEntry trackEntry, Spine.Event e)
     {
         if (trackEntry == null || trackEntry.Animation == null || e == null)
@@ -94,10 +94,10 @@ public partial class GameVictoryPanel : BaseUIView, IEventSender, IDebuger
             return;
         }
 
-        TipsTxt.DOText(translated, 1f).SetUpdate(true).OnComplete(() =>
+       /*  TipsTxt.DOText(translated, 1f).SetUpdate(true).OnComplete(() =>
         {
             NextBtn.Interactable = true;
-        });
+        }); */
 
         Debug.Log($"[GameVictoryPanel] RefreshTips: key={key}, text=\"{translated}\"");
     }

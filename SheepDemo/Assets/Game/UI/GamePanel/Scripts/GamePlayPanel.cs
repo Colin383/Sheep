@@ -73,7 +73,6 @@ public partial class GamePlayPanel : BaseUIView, IDebuger, IEventSender
     {
         ResetBtn.OnClick += OnClickReset;
         PauseBtn.OnClick += OnClickSetting;
-        TipsBtn.OnClick += OnClickTips;
         ShopBtn.OnClick += OnClickShop;
     }
 

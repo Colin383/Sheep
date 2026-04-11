@@ -116,7 +116,7 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
         var data = Level.CurrentLevelSort;
         Level.CurrentLevelState.StartLevel(evt.Data.Id, data.LevelConfig);
 
-        EnterLevelLoading.Create(() =>
+        ClickTransformPanel.Create(() =>
         {
             CreateLevel(Level.CurrentLevelSort);
             _machine.Enter(GamePlayStateName.PLAYING);
@@ -141,7 +141,7 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
 
     private void OnGameResetEvent(GameResetEvent evt)
     {
-
+        ResetGame().Forget();
     }
 
     private async UniTask ResetGame()
@@ -181,7 +181,6 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
 
         AudioManager.StopAllSound();
         Announce.CloseStraightly();
-        GameManager.Instance.OpenCamera();
     }
 
     public void CreateLevel(LevelSort data)
@@ -219,6 +218,7 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
         }
 
         CurrentLevel.SetConfig(LevelGameConfig.FromJson(config.text));
+        CurrentLevel.Generate();
         RefreshGamePanel();
     }
 

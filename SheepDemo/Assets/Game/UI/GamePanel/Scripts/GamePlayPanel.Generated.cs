@@ -12,7 +12,6 @@ using TMPro;
         [SerializeField] private CustomButton PauseBtn;
         [SerializeField] private CustomButton ResetBtn;
         [SerializeField] private CustomButton ShopBtn;
-        [SerializeField] private CustomButton TipsBtn;
         #endregion
 
         #region Texts

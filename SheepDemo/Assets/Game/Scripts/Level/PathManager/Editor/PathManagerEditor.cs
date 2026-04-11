@@ -281,17 +281,24 @@ namespace Game.Editor
 
         private Vector2Int WorldToCell(Vector3 worldPos)
         {
-            Vector3 origin = _pathManager.transform.position - new Vector3(
-                _pathManager.CellSize * 0.5f,
-                0,
-                _pathManager.CellSize * 0.5f
-            );
+            Vector3 origin = GetGridOrigin();
 
             Vector3 localPos = worldPos - origin;
             int x = Mathf.FloorToInt(localPos.x / _pathManager.CellSize);
             int y = Mathf.FloorToInt(localPos.z / _pathManager.CellSize);
 
             return new Vector2Int(x, y);
+        }
+
+        private Vector3 GetGridOrigin()
+        {
+            Vector3 rootPos = _pathManager.transform.position;
+            float halfW = _pathManager.GridWidth * 0.5f * _pathManager.CellSize;
+            float halfH = _pathManager.GridHeight * 0.5f * _pathManager.CellSize;
+            Vector2 offset = _pathManager.OriginOffset;
+            float leftX = rootPos.x - halfW + offset.x;
+            float bottomZ = rootPos.z - halfH + offset.y;
+            return new Vector3(leftX, rootPos.y, bottomZ);
         }
 
         private bool IsValidCell(Vector2Int cell)
@@ -302,11 +309,7 @@ namespace Game.Editor
 
         private Vector3 GetCellCenter(Vector2Int cell)
         {
-            Vector3 origin = _pathManager.transform.position - new Vector3(
-                _pathManager.CellSize * 0.5f,
-                0,
-                _pathManager.CellSize * 0.5f
-            );
+            Vector3 origin = GetGridOrigin();
 
             return origin + new Vector3(
                 (cell.x + 0.5f) * _pathManager.CellSize,

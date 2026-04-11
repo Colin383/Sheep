@@ -134,6 +134,9 @@ public partial class LevelCtrl
 
         EnsureRoots();
 
+        // 对齐 PathManager
+        // AlignPathManager();
+
         if (config.instances == null || config.instances.Length == 0)
         {
             return;
@@ -582,6 +585,30 @@ public partial class LevelCtrl
         var go = new GameObject("InstancesRoot");
         go.transform.SetParent(transform, false);
         instancesRoot = go.transform;
+    }
+
+    /// <summary>
+    /// 对齐 PathManager 到当前关卡的网格设置
+    /// </summary>
+    private void AlignPathManager()
+    {
+        if (pathManager == null) return;
+        if (!TryGetConfigDimensions(out int width, out int height)) return;
+
+        // 使 PathManager 的位置和设置与 LevelCtrl 一致
+        // pathManager.transform.position = transform.position;
+        
+        // 计算 originOffset 使网格对齐
+        // LevelCtrl 的 GridToWorld: leftX = rootPos.x - halfW + origin.x
+        // PathManager 的 _gridOrigin: leftX = rootPos.x - halfW + originOffset.x
+        // 所以我们需要 originOffset = origin
+        
+        // 通过反射或直接设置（暂时用简单方法）
+/*         Debug.Log($"[LevelCtrl] AlignPathManager: 请手动设置 PathManager 的 Origin Offset 为 ({origin.x}, {origin.y})");
+        Debug.Log($"[LevelCtrl] 当前 PathManager GridOrigin={pathManager.GridOrigin}"); */
+        
+        // 尝试自动对齐
+        // pathManager.AlignToGrid(transform.position, cellSize.x, width, height);
     }
 
     /// <summary>

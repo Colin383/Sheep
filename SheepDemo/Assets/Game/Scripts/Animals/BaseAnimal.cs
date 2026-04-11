@@ -95,7 +95,7 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
     {
         EnterState(AnimalStateName.BACK);
         // Back 默认关闭 walk。
-        SetWalkAnim(false);
+        SetWalkAnim(true);
     }
 
     /// <summary>
@@ -383,7 +383,8 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
 
     public void OnComplete()
     {
-        throw new System.NotImplementedException();
+        // 路径移动完成回调，由 PathManager 调用
+        // 具体的销毁逻辑已在 LevelCtrl.OnAnimalReachEndPoint 中处理
     }
 #endif
 

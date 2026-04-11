@@ -8,6 +8,7 @@ public partial class LevelCtrl
 {
     [Header("Gameplay")]
     [SerializeField] private Transform endPoint;
+    [SerializeField] private PathManager pathManager;
 
     // 世界坐标转格子时的吸附容差（相对格子尺寸）。
     private const float GridMatchEpsilon = 0.4f;
@@ -54,7 +55,7 @@ public partial class LevelCtrl
             nextFootprintCells.Add(new Vector2Int(col, row));
         }
 
-        // 全部移出棋盘，视为“出界离场”移动，直接允许。
+        // 全部移出棋盘，视为"出界离场"移动，直接允许。
         if (!hasInsideGridCell)
             return true;
 
@@ -73,7 +74,7 @@ public partial class LevelCtrl
     }
 
     /// <summary>
-    /// 判断目标位置是否满足“可回收（回农场）”条件。
+    /// 判断目标位置是否满足"可回收（回农场）"条件。
     /// </summary>
     public bool IsAnimCanBack(Vector3 targetPos)
     {
@@ -89,15 +90,14 @@ public partial class LevelCtrl
     }
 
     /// <summary>
-    /// 返回农场。将 animal 切到 Back 状态并从缓存移除，但不立即销毁，由 Back 状态控制销毁时机。
+    /// 返回农场。将 animal 切到 Back 状态并从缓存移除，交给 PathManager 控制移动到 EndPoint。
     /// </summary>
-    /// <param name="animal"></param>
     public void BackToFarm(BaseAnimal animal)
     {
         if (animal == null)
             return;
 
-        // 先从运行时缓存移除，避免查询脏数据。
+        // 先从运行时缓存移除，避免查询脏数据
         spawned.Remove(animal);
 
         if (spawnedById.TryGetValue(animal.Id, out var cached) && cached == animal)
@@ -107,16 +107,76 @@ public partial class LevelCtrl
         {
             list.Remove(animal);
             if (list.Count == 0)
-                // 该类型已无实例，移除空列表键。
                 spawnedByType.Remove(animal.Type);
         }
 
-        // 可选：回收前先挪到终点（视觉过渡点）。
-        // if (endPoint != null)
-        //     animal.transform.position = endPoint.position;
-
-        // 切到 Back 状态，由状态机控制销毁时机（如动画播放完成后）。
+        // 切到 Back 状态
         animal.EnterBackState();
+
+        // 如果有 PathManager，将 animal 交给 PathManager 控制
+        if (pathManager != null)
+        {
+            SetupBackPath(animal);
+        }
+        else
+        {
+            Debug.LogWarning("[LevelCtrl] PathManager 未设置，animal 将直接销毁");
+            Destroy(animal.gameObject);
+        }
+    }
+
+    /// <summary>
+    /// 设置 animal 返回农场的路径（使用 A* 算法）
+    /// </summary>
+    private void SetupBackPath(BaseAnimal animal)
+    {
+        if (pathManager == null || endPoint == null || animal == null)
+        {
+            Debug.LogError($"[LevelCtrl] SetupBackPath 失败: pathManager={pathManager}, endPoint={endPoint}, animal={animal}");
+            return;
+        }
+
+        // 使用 A* 算法从 animal 当前位置到 PathManager.EndPoint 寻路
+        // 起点：遍历 pathCells 找到离 animal 最近的一个
+        // 终点：PathManager 预设的 endPointCell
+        List<Vector2Int> path = pathManager.FindPathFromWorldPosition(animal.transform.position);
+
+        if (path.Count == 0)
+        {
+            Debug.LogError($"[LevelCtrl] A* 无法找到从 {animal.transform.position} 到 EndPoint 的路径，直接销毁 animal");
+            Destroy(animal.gameObject);
+            return;
+        }
+
+        // 注册 animal 到 PathManager
+        pathManager.RegisterMoveHandle(animal, animal.transform, path, () =>
+        {
+            OnAnimalReachEndPoint(animal);
+        });
+
+        // 开始移动
+        pathManager.StartMove(animal.transform);
+    }
+
+    /// <summary>
+    /// Animal 到达终点后的回调
+    /// </summary>
+    private void OnAnimalReachEndPoint(BaseAnimal animal)
+    {
+        if (animal == null)
+            return;
+
+        // 从 PathManager 注销
+        if (pathManager != null)
+        {
+            pathManager.UnregisterMoveHandle(animal.transform);
+        }
+
+        // 直接销毁 animal
+        if (Application.isPlaying)
+            Destroy(animal.gameObject);
+        else
+            DestroyImmediate(animal.gameObject);
     }
 
     private HashSet<Vector2Int> BuildOccupiedCellSet(BaseAnimal self, int gridW, int gridH)

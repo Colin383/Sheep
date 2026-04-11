@@ -49,6 +49,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animAnimtorCtrl: {fileID: 4154506364644812971}
+  moveSpeed: 3
+  rotateSpeed: 540
   drawFootprintGizmo: 1
   drawFootprintWhenSelectedOnly: 1
   footprintExtraCells:
@@ -133,7 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetAnimator: {fileID: 4745449491795622188}
   findInChildrenIfNull: 1
-  walkBoolName: walk
+  walkBoolName: walking
   knockTriggerName: knock
 --- !u!1001 &3352005023874794494
 PrefabInstance:

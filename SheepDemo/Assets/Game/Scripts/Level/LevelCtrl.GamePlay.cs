@@ -177,6 +177,25 @@ public partial class LevelCtrl
             Destroy(animal.gameObject);
         else
             DestroyImmediate(animal.gameObject);
+
+        // 检查是否所有动物都已处理完毕
+        CheckFinished();
+    }
+
+    /// <summary>
+    /// 检查是否所有 animals 都已处理完毕（数量为 0 表示游戏结束）
+    /// </summary>
+    /// <returns>是否游戏结束</returns>
+    private bool CheckFinished()
+    {
+        int remainingCount = spawned.Count;
+        if (remainingCount == 0)
+        {
+            Debug.Log("[LevelCtrl] 所有动物已处理完毕，游戏结束！");
+            // TODO: 触发游戏结束逻辑（如显示胜利界面、上报关卡完成等）
+            return true;
+        }
+        return false;
     }
 
     private HashSet<Vector2Int> BuildOccupiedCellSet(BaseAnimal self, int gridW, int gridH)

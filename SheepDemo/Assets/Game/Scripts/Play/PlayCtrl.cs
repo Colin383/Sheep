@@ -125,7 +125,18 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
 
     private void OnEnterNextLevel(EnterNextLevelEvent evt)
     {
+        DestroyLevel();
+        int sortId = Level.CurrentLevelSort.Id;
+        Level.SetCurrentLevelId(sortId);
 
+        var data = Level.CurrentLevelSort;
+        Level.CurrentLevelState.StartLevel(sortId, data.LevelConfig);
+
+        ClickTransformPanel.Create(() =>
+        {
+            CreateLevel(Level.CurrentLevelSort);
+            _machine.Enter(GamePlayStateName.PLAYING);
+        });
     }
 
     public bool CheckState(string state)

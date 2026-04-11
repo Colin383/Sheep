@@ -103,7 +103,7 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
 
     private void OnTipsUsed(UseTipsEvent evt)
     {
-        Level.CurrentLevelState.SwitchTips(true);
+
     }
 
     private void OnGameEnter(EnterLevelEvent evt)
@@ -120,38 +120,11 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
             CreateLevel(Level.CurrentLevelData.Path);
             _machine.Enter(GamePlayStateName.PLAYING);
         });
-
-        TrackLevelStart(sortId);
-        // 打点需要刷新 levelId
-        GameAttribute.Instance.SetLevelId(DB.GameData.CurrentLevel);
     }
 
     private void OnEnterNextLevel(EnterNextLevelEvent evt)
     {
-        var data = Level.CurrentLevelData;
-        if (data == null)
-        {
-            DestroyLevel();
-            // switch panel
-            ClickTransformPanel.Create(() =>
-            {
-                ChoiceLevelPanel.Create();
-            });
-        }
-        else
-        {
-            Level.CurrentLevelState.StartLevel(Level.CurrentLevel, data.Path);
-            EnterLevelLoading.Create(() =>
-            {
-                DestroyLevel();
-                CreateLevel(data.Path);
-                _machine.Enter(GamePlayStateName.PLAYING);
-            });
-        }
 
-        TrackLevelStart(Level.CurrentLevel);
-        // 打点需要刷新 levelId
-        GameAttribute.Instance.SetLevelId(DB.GameData.CurrentLevel);
     }
 
     public bool CheckState(string state)
@@ -167,24 +140,11 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
 
     private void OnGameResetEvent(GameResetEvent evt)
     {
-        if (evt.Type == GameResetType.Manually)
-            Level.CurrentLevelState.RecordReset();
-        else
-            Level.CurrentLevelState.RecordFail();
-
-        // 失败重试打点 ===========================================================
-        GameSDKService.Instance.LevelEndEvent(GameSDKService.LevelEndTypeFailed);
-        GameSDKService.Instance.LevelStartEvent(GameSDKService.LevelStartTypeReplay);
-        // 重置局间时间
-        Level.CurrentLevelState.ResetAttemptPlayTime();
-
-        ResetGame().Forget();
+        
     }
 
     private async UniTask ResetGame()
     {
-        InterstitialAdHelper.TryToShowInterstitial(Config.Game.InterstitialPlacement.InGameFailed.ToString(), OnInterstitialCallback);
-
         await UniTask.WaitForSeconds(0.5f, ignoreTimeScale: true);
 
         // Show Ask 
@@ -206,23 +166,6 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
     private void OnInterstitialCallback(string placement, bool isSuc)
     {
 
-    }
-
-    /// <summary>
-    /// LevelStart 打点
-    /// </summary>
-    /// <param name="sortId"></param>
-    private void TrackLevelStart(int sortId)
-    {
-        // 打点 =============================================== 
-        if (DB.GameData.PassedLevels.Contains(sortId))
-        {
-            GameSDKService.Instance.LevelStartEvent(GameSDKService.LevelStartTypeReplay);
-        }
-        else
-        {
-            GameSDKService.Instance.LevelStartEvent(GameSDKService.LevelStartTypeNewGame);
-        }
     }
 
     /// <summary>
@@ -268,20 +211,7 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
     /// </summary>
     private void RefreshGamePanel()
     {
-        if (CurrentGamePlayPanel != null)
-        {
-            UIManager.Instance.DestroyUI(CurrentGamePlayPanel);
-        }
-
-        CurrentGamePlayPanel = GamePlayPanel.Create(LevelCtrl.GamePlayPanelName);
-        CurrentGamePlayPanel.SetData(Level.CurrentLevel);
-        CurrentGamePlayPanel.PlayShowPanelAnim().Forget();
-
-        // TBC 关卡播放音效
-        if (Level.IsLastLevel)
-        {
-            AudioManager.PlaySound("TBC");
-        }
+        
     }
 
     public void Update()

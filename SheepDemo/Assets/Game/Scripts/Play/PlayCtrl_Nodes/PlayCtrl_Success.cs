@@ -23,22 +23,7 @@ namespace Game.Play
 
             owner = _owner as PlayCtrl;
 
-            // 记录通关
-            owner.Level.CurrentLevelState.TryToAddSuccessCount();
-            // 播放插屏广告
-            InterstitialAdHelper.TryToShowInterstitial(Config.Game.InterstitialPlacement.InGameVictory.ToString(), OnInterstitialCallback);
-
-            // 关卡成功事件 ========================================================= 
-            GameSDKService.Instance.LevelEndEvent(GameSDKService.LevelEndTypeSuccess);
-
-            if (RatingPopupPolicy.TryToShowRating(owner.Level.CurrentLevel))
-            {
-                RatingPopup.Create(null, ShowVictory);
-            }
-            else
-            {
-                ShowVictory();
-            }
+            ShowVictory();
         }
 
         private void ShowVictory()

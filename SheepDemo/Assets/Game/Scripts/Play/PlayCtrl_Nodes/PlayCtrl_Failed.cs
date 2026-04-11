@@ -14,16 +14,6 @@ namespace Game.Play
         public override void OnEnter()
         {
             Debug.Log($"{nameof(PlayCtrl_Failed)} Enter");
-
-            var owner = _owner as PlayCtrl;
-            if (owner == null) return;
-
-            if (!AudioManager.IsCurrentMusicTag("musicOutGame"))
-                AudioManager.PlayMusic("musicOutGame", fadeInSeconds: 8f);
-            
-            owner.DestroyLevel();
-            // 退出关卡
-            GameSDKService.Instance.LevelEndEvent(GameSDKService.LevelEndTypeExit);
         }
 
         public override void OnExecute()

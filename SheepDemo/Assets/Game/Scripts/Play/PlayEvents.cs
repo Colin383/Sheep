@@ -34,6 +34,13 @@ namespace Game.Events
         public int EventId => Field1;
     }
 
+    /// <summary>
+    /// 游戏失败事件
+    /// </summary>
+    public class  GameFailedEvent : EventBase {}
+
+    
+
     #endregion
 
     #region GameState 

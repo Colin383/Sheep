@@ -43,6 +43,7 @@ public partial class GMPanel : BaseUIView, IEventSender
         EnterLevelLoadingBtn.OnClick += EnterLevelLoadingPanel;
         DeleteBtn.OnClick += DeleteAllData;
         VictoryBtn.OnClick += SendVictoryEvent;
+        FailedBtn.OnClick += SendFailedEvent;
         // Purchase1Btn.OnClick += TryToPurchase5Tips;
         RestoreBtn.OnClick += TryToRestorePurchase;
 
@@ -53,6 +54,11 @@ public partial class GMPanel : BaseUIView, IEventSender
         SetView1Visible(false);
 
         InitGmConfigDisplay();
+    }
+
+    private void SendFailedEvent(CustomButton btn)
+    {
+         this.DispatchEvent(Witness<GameFailedEvent>._);
     }
 
     private void ShowRating(CustomButton btn)

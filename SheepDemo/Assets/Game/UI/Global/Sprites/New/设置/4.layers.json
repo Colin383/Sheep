@@ -1,0 +1,159 @@
+{
+  "document": {
+    "exportMeta": {
+      "format": "json+polyfill",
+      "scriptVersion": "2.2.0"
+    },
+    "height": 2340,
+    "mode": "DocumentMode.RGB",
+    "name": "4.psd",
+    "resolution": 72,
+    "width": 1440
+  },
+  "layers": [
+    {
+      "bounds": {
+        "bottom": 778,
+        "height": 132,
+        "left": 1072,
+        "right": 1188,
+        "top": 646,
+        "width": 116
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "UI_conmon_btn_x_01",
+      "opacity": 100,
+      "src": "UI_conmon_btn_x_01.png",
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1629,
+        "height": 187,
+        "left": 446,
+        "right": 994,
+        "top": 1442,
+        "width": 548
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "UI_settings_btn_1_01",
+      "opacity": 100,
+      "src": "UI_settings_btn_1_01.png",
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1421,
+        "height": 187,
+        "left": 446,
+        "right": 994,
+        "top": 1234,
+        "width": 548
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "UI_settings_btn_2_01",
+      "opacity": 100,
+      "src": "UI_settings_btn_2_01.png",
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1053,
+        "height": 160,
+        "left": 848,
+        "right": 1008,
+        "top": 893,
+        "width": 160
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "UI_settings_img_jinyong_01",
+      "opacity": 100,
+      "src": "UI_settings_img_jinyong_01.png",
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1072,
+        "height": 179,
+        "left": 848,
+        "right": 1008,
+        "top": 893,
+        "width": 160
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "UI_settings_btn_zhendong_01",
+      "opacity": 100,
+      "src": "UI_settings_btn_zhendong_01.png",
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1072,
+        "height": 179,
+        "left": 641,
+        "right": 801,
+        "top": 893,
+        "width": 160
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "UI_settings_btn_yinyue_01",
+      "opacity": 100,
+      "src": "UI_settings_btn_yinyue_01.png",
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1072,
+        "height": 179,
+        "left": 433,
+        "right": 593,
+        "top": 893,
+        "width": 160
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "UI_settings_btn_yinxiao_01",
+      "opacity": 100,
+      "src": "UI_settings_btn_yinxiao_01.png",
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1739,
+        "height": 1193,
+        "left": 277,
+        "right": 1163,
+        "top": 546,
+        "width": 886
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "UI_settings_img_bk_01",
+      "opacity": 100,
+      "src": "UI_settings_img_bk_01.png",
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 2340,
+        "height": 2340,
+        "left": 0,
+        "right": 1440,
+        "top": 0,
+        "width": 1440
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "bg",
+      "opacity": 100,
+      "src": "bg.png",
+      "visible": true
+    }
+  ]
+}

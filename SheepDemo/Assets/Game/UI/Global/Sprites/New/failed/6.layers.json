@@ -1,0 +1,118 @@
+{
+  "document": {
+    "exportMeta": {
+      "format": "json+polyfill",
+      "scriptVersion": "2.2.0"
+    },
+    "height": 2340,
+    "mode": "DocumentMode.RGB",
+    "name": "6.psd",
+    "resolution": 72,
+    "width": 1440
+  },
+  "layers": [
+    {
+      "bounds": {
+        "bottom": 768,
+        "height": 132,
+        "left": 1072,
+        "right": 1188,
+        "top": 636,
+        "width": 116
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "UI_conmon_btn_x_01",
+      "opacity": 100,
+      "src": "UI_conmon_btn_x_01.png",
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1471,
+        "height": 187,
+        "left": 446,
+        "right": 994,
+        "top": 1284,
+        "width": 548
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "UI_boom_btn_1_01",
+      "opacity": 100,
+      "src": "UI_boom_btn_1_01.png",
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1209,
+        "height": 37,
+        "left": 460,
+        "right": 981,
+        "top": 1172,
+        "width": 521
+      },
+      "color": {
+        "b": 138,
+        "g": 182,
+        "hex": "#d4b68a",
+        "r": 212
+      },
+      "content": "Revive and continue?",
+      "fontSize": 45.5999984741211,
+      "isGroup": false,
+      "kind": "LayerKind.TEXT",
+      "name": "UI_boomi_01_txt",
+      "opacity": 100,
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1138,
+        "height": 368,
+        "left": 404,
+        "right": 1036,
+        "top": 770,
+        "width": 632
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "UI_boom_img_tu_01",
+      "opacity": 100,
+      "src": "UI_boom_img_tu_01.png",
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1619,
+        "height": 1083,
+        "left": 277,
+        "right": 1163,
+        "top": 536,
+        "width": 886
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "UI_boom_img_bk_01",
+      "opacity": 100,
+      "src": "UI_boom_img_bk_01.png",
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 2340,
+        "height": 2340,
+        "left": 0,
+        "right": 1440,
+        "top": 0,
+        "width": 1440
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "bg",
+      "opacity": 100,
+      "src": "bg.png",
+      "visible": true
+    }
+  ]
+}

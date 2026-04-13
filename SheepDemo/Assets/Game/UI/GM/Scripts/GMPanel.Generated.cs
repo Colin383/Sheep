@@ -12,6 +12,7 @@ using TMPro;
         [SerializeField] private CustomButton DebugBtn;
         [SerializeField] private CustomButton DeleteBtn;
         [SerializeField] private CustomButton EnterLevelLoadingBtn;
+        [SerializeField] private CustomButton FailedBtn;
         [SerializeField] private CustomButton InterstitialBtn;
         [SerializeField] private CustomButton LastLevelBtn;
         [SerializeField] private CustomButton NextLevelBtn;

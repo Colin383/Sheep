@@ -45,7 +45,7 @@ public static class RewardAdHelper
             {
                 SystemTips.Show(LocalizationManager.GetTranslation(success));
                 PlayCtrl.Instance.DispatchEvent(Witness<PlayRewardADEvent>._);
-                GameSDKService.Instance.LoadRewardAd();
+                // GameSDKService.Instance.LoadRewardAd();
             }
             else
             {

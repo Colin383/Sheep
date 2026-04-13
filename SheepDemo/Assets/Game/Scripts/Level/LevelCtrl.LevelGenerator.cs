@@ -23,7 +23,13 @@ public partial class LevelCtrl
     [SerializeField] private float spawnYOffset = 0f;
 
     [Header("Animal Prefabs")]
-    [SerializeField] private BaseAnimal[] animalPrefabs;
+    [SerializeField]
+    private readonly Dictionary<AnimalType, string> animalPrefabsPath = new Dictionary<AnimalType, string>()
+    {
+        {AnimalType.Sheep, "Animals/Sheep"},
+        {AnimalType.BombSheep, "Animals/BombSheep"}
+    };
+
 
     [Header("Parents")]
     [SerializeField] private Transform instancesRoot;
@@ -186,7 +192,7 @@ public partial class LevelCtrl
 
             animal.Init(inst.id, inst.row, inst.col, inst.direction);
             animal.SetLevelOwner(this);
-            
+
             CacheSpawned(animal, instType);
         }
     }
@@ -238,29 +244,33 @@ public partial class LevelCtrl
     {
         prefabByType.Clear();
 
-        if (animalPrefabs == null || animalPrefabs.Length == 0)
+        if (animalPrefabsPath == null || animalPrefabsPath.Count == 0)
         {
             return;
         }
 
-        for (int i = 0; i < animalPrefabs.Length; i++)
+        foreach (var kvp in animalPrefabsPath)
         {
-            var prefab = animalPrefabs[i];
+            var type = kvp.Key;
+            var path = kvp.Value;
+
+            if (string.IsNullOrEmpty(path))
+            {
+                Debug.LogWarning($"[LevelGenerator] Prefab path is empty for type '{type}'.");
+                continue;
+            }
+
+            var prefab = Resources.Load<BaseAnimal>(path);
             if (prefab == null)
             {
+                Debug.LogWarning($"[LevelGenerator] Failed to load prefab for type '{type}' at path '{path}'.");
                 continue;
             }
 
-            var type = prefab.Type;
-            if (type == AnimalType.Unknown)
+            if (prefab.Type != type)
             {
-                Debug.LogWarning($"[LevelGenerator] Prefab '{prefab.name}' has Unknown type, skip.");
+                Debug.LogWarning($"[LevelGenerator] Prefab type mismatch. Expected '{type}', prefab.Type='{prefab.Type}' at path '{path}'.");
                 continue;
-            }
-
-            if (prefabByType.TryGetValue(type, out var existed) && existed != null)
-            {
-                Debug.LogWarning($"[LevelGenerator] Duplicate prefab type '{type}'. '{existed.name}' will be replaced by '{prefab.name}'.");
             }
 
             prefabByType[type] = prefab;
@@ -609,16 +619,16 @@ public partial class LevelCtrl
 
         // 使 PathManager 的位置和设置与 LevelCtrl 一致
         // pathManager.transform.position = transform.position;
-        
+
         // 计算 originOffset 使网格对齐
         // LevelCtrl 的 GridToWorld: leftX = rootPos.x - halfW + origin.x
         // PathManager 的 _gridOrigin: leftX = rootPos.x - halfW + originOffset.x
         // 所以我们需要 originOffset = origin
-        
+
         // 通过反射或直接设置（暂时用简单方法）
-/*         Debug.Log($"[LevelCtrl] AlignPathManager: 请手动设置 PathManager 的 Origin Offset 为 ({origin.x}, {origin.y})");
-        Debug.Log($"[LevelCtrl] 当前 PathManager GridOrigin={pathManager.GridOrigin}"); */
-        
+        /*         Debug.Log($"[LevelCtrl] AlignPathManager: 请手动设置 PathManager 的 Origin Offset 为 ({origin.x}, {origin.y})");
+                Debug.Log($"[LevelCtrl] 当前 PathManager GridOrigin={pathManager.GridOrigin}"); */
+
         // 尝试自动对齐
         // pathManager.AlignToGrid(transform.position, cellSize.x, width, height);
     }

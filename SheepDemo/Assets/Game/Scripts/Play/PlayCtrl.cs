@@ -95,11 +95,17 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
         EventsUtils.ResetEvents(ref _subscriber);
         _subscriber.Subscribe<SwitchGameStateEvent>(OnSwitchState);
         _subscriber.Subscribe<GameResetEvent>(OnGameResetEvent);
+        _subscriber.Subscribe<GameFailedEvent>(OnGameFailed);
 
         _subscriber.Subscribe<EnterLevelEvent>(OnGameEnter);
         _subscriber.Subscribe<EnterNextLevelEvent>(OnEnterNextLevel);
 
         _subscriber.Subscribe<UseTipsEvent>(OnTipsUsed);
+    }
+
+    private void OnGameFailed(GameFailedEvent evt)
+    {
+        _machine.Enter(GamePlayStateName.FAILED);
     }
 
     private void OnTipsUsed(UseTipsEvent evt)

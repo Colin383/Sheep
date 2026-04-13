@@ -305,4 +305,31 @@ public partial class LevelCtrl : IEventSender
         // 当前玩法规则：碰到任意边界格即可回农场。
         return row == 0 || col == 0 || row == gridH - 1 || col == gridW - 1;
     }
+
+
+
+
+    #region Click Trigger 
+
+    /// <summary>
+    /// Click Trigger 触发时，获取 transform BaseAnimal，触发 OnClickTrigger 事件
+    /// </summary>
+    /// <param name="transform"></param>
+    public void OnClickAnimal(Transform transform)
+    {
+        if (transform == null)
+            return;
+
+        if (PlayCtrl.Instance == null || !PlayCtrl.Instance.CheckState(GamePlayStateName.PLAYING))
+            return;
+
+        var animal = transform.GetComponent<BaseAnimal>();
+        if (animal == null)
+            animal = transform.GetComponentInParent<BaseAnimal>();
+
+        if (animal != null)
+            animal.OnClickTrigger();
+    }
+
+    #endregion 
 }

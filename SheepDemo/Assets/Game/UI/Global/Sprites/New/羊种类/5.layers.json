@@ -1,0 +1,118 @@
+{
+  "document": {
+    "exportMeta": {
+      "format": "json+polyfill",
+      "scriptVersion": "2.2.0"
+    },
+    "height": 2340,
+    "mode": "DocumentMode.RGB",
+    "name": "5.psd",
+    "resolution": 72,
+    "width": 1440
+  },
+  "layers": [
+    {
+      "bounds": {
+        "bottom": 678,
+        "height": 132,
+        "left": 1072,
+        "right": 1188,
+        "top": 546,
+        "width": 116
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "UI_conmon_btn_x_01",
+      "opacity": 100,
+      "src": "UI_conmon_btn_x_01.png",
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1571,
+        "height": 187,
+        "left": 446,
+        "right": 994,
+        "top": 1384,
+        "width": 548
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "UI_yangzhonglei_btn_ok_01",
+      "opacity": 100,
+      "src": "UI_yangzhonglei_btn_ok_01.png",
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1354,
+        "height": 97,
+        "left": 372,
+        "right": 1067,
+        "top": 1257,
+        "width": 695
+      },
+      "color": {
+        "b": 138,
+        "g": 182,
+        "hex": "#d4b68a",
+        "r": 212
+      },
+      "content": "After 3 hits, you will fail the level.",
+      "fontSize": 45.5999984741211,
+      "isGroup": false,
+      "kind": "LayerKind.TEXT",
+      "name": "UI_yangzhonglei_01_txt",
+      "opacity": 100,
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1217,
+        "height": 537,
+        "left": 404,
+        "right": 1036,
+        "top": 680,
+        "width": 632
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "UI_yangzhonglei_img_tu_01",
+      "opacity": 100,
+      "src": "UI_yangzhonglei_img_tu_01.png",
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 1699,
+        "height": 1253,
+        "left": 277,
+        "right": 1163,
+        "top": 446,
+        "width": 886
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "UI_yangzhonglei_img_bk_01",
+      "opacity": 100,
+      "src": "UI_yangzhonglei_img_bk_01.png",
+      "visible": true
+    },
+    {
+      "bounds": {
+        "bottom": 2340,
+        "height": 2340,
+        "left": 0,
+        "right": 1440,
+        "top": 0,
+        "width": 1440
+      },
+      "isGroup": false,
+      "kind": "LayerKind.NORMAL",
+      "name": "bg",
+      "opacity": 100,
+      "src": "bg.png",
+      "visible": true
+    }
+  ]
+}

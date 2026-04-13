@@ -14,5 +14,20 @@ public enum AnimalType
     /// Config type id: "sheep".
     /// </summary>
     Sheep = 1,
+
+    /// <summary>
+    /// 爆炸羊 config type id  "bombsheep" 
+    /// </summary>
+    BombSheep = 2,
+
+    /// <summary>
+    /// 鸡 "chick"
+    /// </summary>
+    Chick = 3,
+
+    /// <summary>
+    /// 大象 "elephant"
+    /// </summary>
+    Elephant = 4
 }
 

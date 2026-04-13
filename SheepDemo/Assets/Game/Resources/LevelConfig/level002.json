@@ -35,7 +35,7 @@
       "row": 4,
       "col": 5,
       "direction": "up",
-      "type": "bombsheep"
+      "type": "sheep"
     },
     {
       "id": 3,
@@ -46,7 +46,7 @@
       "row": 2,
       "col": 5,
       "direction": "up",
-      "type": "bombsheep"
+      "type": "chick"
     },
     {
       "id": 4,
@@ -79,7 +79,7 @@
       "row": 4,
       "col": 2,
       "direction": "down",
-      "type": "sheep"
+      "type": "bombsheep"
     },
     {
       "id": 7,
@@ -90,7 +90,7 @@
       "row": 4,
       "col": 3,
       "direction": "down",
-      "type": "sheep"
+      "type": "chick"
     }
   ]
 }

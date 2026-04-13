@@ -29,7 +29,7 @@ public partial class GameFailedPanel : BaseUIView, IEventSender
 
     public static GameFailedPanel Create()
     {
-        var panel = UIManager.Instance.OpenUI<GameFailedPanel>($"{typeof(GameFailedPanel).Name}", UILayer.Normal);
+        var panel = UIManager.Instance.OpenUI<GameFailedPanel>($"{typeof(GameFailedPanel).Name}", UILayer.Popup);
         return panel;
     }
 }

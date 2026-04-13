@@ -31,14 +31,32 @@ public partial class LevelCtrl : IEventSender
         if (animal == null)
             return false;
 
+        var directions = animal.GetMovableDirections();
+        if (directions == null || directions.Count == 0)
+            return false;
+
+        foreach (var direction in directions)
+        {
+            if (CheckMoveTarget(animal, direction, out nextTarget))
+                return true;
+        }
+
+        return false;
+    }
+
+    public bool CheckMoveTarget(BaseAnimal animal, DirectionEnum movingDirection, out Vector3 nextTarget)
+    {
+        nextTarget = Vector3.zero;
+
+        if (animal == null)
+            return false;
+
         if (!TryGetConfigDimensions(out var gridW, out var gridH))
             return false;
 
         if (!TryGetAnimalAnchor(animal, gridW, gridH, out var anchorRow, out var anchorCol))
             return false;
 
-        // 按当前朝向/移动方向，计算一步（1格）位移。
-        var movingDirection = animal.GetMovableDirections();
         var step = DirectionToGridStep(movingDirection);
         if (step == Vector2Int.zero)
             return false;
@@ -116,6 +134,9 @@ public partial class LevelCtrl : IEventSender
             if (list.Count == 0)
                 spawnedByType.Remove(animal.Type);
         }
+
+        if (animal is Chick chick)
+            chicks.Remove(chick);
 
         // 切到 Back 状态，并加入返回缓存
         animal.EnterBackState();
@@ -225,7 +246,8 @@ public partial class LevelCtrl : IEventSender
                 continue;
 
             // 占位方向取运行时当前朝向（含 footprint 旋转结果）。
-            var direction = other.GetMovableDirections();
+            var directions = other.GetMovableDirections();
+            var direction = directions != null && directions.Count > 0 ? directions[0] : other.FacingDirection;
             foreach (var offset in GetWorldFootprintOffsets(other, direction))
             {
                 int r = row + offset.y;
@@ -305,31 +327,4 @@ public partial class LevelCtrl : IEventSender
         // 当前玩法规则：碰到任意边界格即可回农场。
         return row == 0 || col == 0 || row == gridH - 1 || col == gridW - 1;
     }
-
-
-
-
-    #region Click Trigger 
-
-    /// <summary>
-    /// Click Trigger 触发时，获取 transform BaseAnimal，触发 OnClickTrigger 事件
-    /// </summary>
-    /// <param name="transform"></param>
-    public void OnClickAnimal(Transform transform)
-    {
-        if (transform == null)
-            return;
-
-        if (PlayCtrl.Instance == null || !PlayCtrl.Instance.CheckState(GamePlayStateName.PLAYING))
-            return;
-
-        var animal = transform.GetComponent<BaseAnimal>();
-        if (animal == null)
-            animal = transform.GetComponentInParent<BaseAnimal>();
-
-        if (animal != null)
-            animal.OnClickTrigger();
-    }
-
-    #endregion 
 }

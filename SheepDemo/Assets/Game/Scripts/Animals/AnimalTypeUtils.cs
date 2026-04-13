@@ -19,6 +19,12 @@ public static class AnimalTypeUtils
         {
             case "sheep":
                 return AnimalType.Sheep;
+            case "bombsheep":
+                return AnimalType.BombSheep;
+            case "chick":
+                return AnimalType.Chick;
+            case "elephant":
+                return AnimalType.Elephant;
             default:
                 return AnimalType.Unknown;
         }
@@ -33,6 +39,9 @@ public static class AnimalTypeUtils
         return type switch
         {
             AnimalType.Sheep => "sheep",
+            AnimalType.BombSheep => "bombsheep",
+            AnimalType.Chick => "chick",
+            AnimalType.Elephant => "elephant",
             _ => string.Empty,
         };
     }

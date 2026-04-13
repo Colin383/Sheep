@@ -27,7 +27,9 @@ public partial class LevelCtrl
     private readonly Dictionary<AnimalType, string> animalPrefabsPath = new Dictionary<AnimalType, string>()
     {
         {AnimalType.Sheep, "Animals/Sheep"},
-        {AnimalType.BombSheep, "Animals/BombSheep"}
+        {AnimalType.BombSheep, "Animals/BombSheep"},
+         {AnimalType.Chick, "Animals/Chick"},
+          {AnimalType.Elephant, "Animals/Elephant"}
     };
 
 
@@ -214,6 +216,7 @@ public partial class LevelCtrl
         spawned.Clear();
         spawnedById.Clear();
         spawnedByType.Clear();
+        chicks.Clear();
     }
 
     public bool TryGetSpawnedById(int id, out BaseAnimal animal)
@@ -238,6 +241,9 @@ public partial class LevelCtrl
         }
 
         list.Add(animal);
+
+        if (animal is Chick chick)
+            chicks.Add(chick);
     }
 
     private void BuildPrefabMap()

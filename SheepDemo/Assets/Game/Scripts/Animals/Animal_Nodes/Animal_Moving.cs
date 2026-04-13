@@ -27,8 +27,30 @@ public class Animal_Moving : StateNode, IDebuger
     public override void OnEnter()
     {
         owner = _owner as BaseAnimal;
-        currentStepDirection = owner != null ? owner.GetMovableDirections() : DirectionEnum.Down;
-        canMove = owner != null && owner.Level != null && owner.Level.CheckMoveTarget(owner, out nextTarget);
+        canMove = false;
+        if (owner != null && owner.Level != null)
+        {
+            var directions = owner.GetMovableDirections();
+            if (directions != null && directions.Count > 0)
+            {
+                var prevPos = owner.CurrentPos;
+                foreach (var dir in directions)
+                {
+                    if (owner.Level.CheckMoveTarget(owner, dir, out nextTarget))
+                    {
+                        if (!owner.CanMoveTo(owner.CurrentPos))
+                        {
+                            owner.RollbackCurrentPos(prevPos);
+                            continue;
+                        }
+                        owner.OnMoveStepConfirmed(owner.CurrentPos);
+                        currentStepDirection = dir;
+                        canMove = true;
+                        break;
+                    }
+                }
+            }
+        }
 
         if (canMove)
             PrepareCurrentStep();
@@ -82,11 +104,32 @@ public class Animal_Moving : StateNode, IDebuger
             return;
         }
 
-        // 继续计算下一步目标；若可移动则继续“先转后移”。
-        currentStepDirection = owner.GetMovableDirections();
-        canMove = owner.Level.CheckMoveTarget(owner, out nextTarget);
+        // 继续计算下一步目标；若可移动则继续"先转后移"。
+        canMove = false;
+        var directions = owner.GetMovableDirections();
+        if (directions != null && directions.Count > 0)
+        {
+            var prevPos = owner.CurrentPos;
+            foreach (var dir in directions)
+            {
+                if (owner.Level.CheckMoveTarget(owner, dir, out nextTarget))
+                {
+                    if (!owner.CanMoveTo(owner.CurrentPos))
+                    {
+                        owner.RollbackCurrentPos(prevPos);
+                        continue;
+                    }
+                    owner.OnMoveStepConfirmed(owner.CurrentPos);
+                    currentStepDirection = dir;
+                    canMove = true;
+                    break;
+                }
+            }
+        }
         if (canMove)
+        {
             PrepareCurrentStep();
+        }
     }
 
     private void PrepareCurrentStep()

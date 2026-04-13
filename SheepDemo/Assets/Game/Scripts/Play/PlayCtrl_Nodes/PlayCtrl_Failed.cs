@@ -14,6 +14,8 @@ namespace Game.Play
         public override void OnEnter()
         {
             Debug.Log($"{nameof(PlayCtrl_Failed)} Enter");
+
+            GameFailedPanel.Create();
         }
 
         public override void OnExecute()

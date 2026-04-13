@@ -81,4 +81,28 @@ public static class DirectionEnumUtility
 
         return Quaternion.LookRotation(forward, Vector3.up);
     }
+
+    public static DirectionEnum TurnLeft(this DirectionEnum direction)
+    {
+        return direction switch
+        {
+            DirectionEnum.Up => DirectionEnum.Left,
+            DirectionEnum.Left => DirectionEnum.Down,
+            DirectionEnum.Down => DirectionEnum.Right,
+            DirectionEnum.Right => DirectionEnum.Up,
+            _ => DirectionEnum.Down,
+        };
+    }
+
+    public static DirectionEnum TurnRight(this DirectionEnum direction)
+    {
+        return direction switch
+        {
+            DirectionEnum.Up => DirectionEnum.Right,
+            DirectionEnum.Right => DirectionEnum.Down,
+            DirectionEnum.Down => DirectionEnum.Left,
+            DirectionEnum.Left => DirectionEnum.Up,
+            _ => DirectionEnum.Down,
+        };
+    }
 }

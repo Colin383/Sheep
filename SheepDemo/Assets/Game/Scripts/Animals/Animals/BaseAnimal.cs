@@ -34,7 +34,7 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
     /// <summary>
     /// 当前占用格（x=col, y=row）。
     /// </summary>
-    public Vector2Int CurrentPos { get; private set; }
+    public Vector2Int CurrentPos { get; protected set; }
 
     /// <summary>
     /// 上一次占用格（x=col, y=row）。
@@ -76,7 +76,7 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
         return _machine != null && _machine.IsRunning(stateName);
     }
 
-    public void EnterIdleState()
+    public virtual void EnterIdleState()
     {
         EnterState(AnimalStateName.IDLE);
         // Idle 默认关闭 walk。
@@ -92,14 +92,14 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
     {
     }
 
-    public void EnterMovingState()
+    public virtual void EnterMovingState()
     {
         EnterState(AnimalStateName.MOVING);
         // Moving 默认开启 walk。
         SetWalkAnim(true);
     }
 
-    public void EnterBackState()
+    public virtual void EnterBackState()
     {
         EnterState(AnimalStateName.BACK);
         // Back 默认关闭 walk。
@@ -132,9 +132,24 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
     }
 
     // 检测移动方向，每个动物的检测方式不一样。大多是朝向检测。
-    public virtual DirectionEnum GetMovableDirections()
+    public virtual IReadOnlyList<DirectionEnum> GetMovableDirections()
     {
-        return FacingDirection;
+        return new[] { FacingDirection };
+    }
+
+    /// <summary>
+    /// 校验是否允许移动到目标格子，供子类定制规则。
+    /// </summary>
+    public virtual bool CanMoveTo(Vector2Int gridPos)
+    {
+        return true;
+    }
+
+    /// <summary>
+    /// 每确定一步移动后调用，供子类记录已走过的格子。
+    /// </summary>
+    public virtual void OnMoveStepConfirmed(Vector2Int gridPos)
+    {
     }
 
     
@@ -159,6 +174,14 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
     {
         PreviousPos = CurrentPos;
         CurrentPos = new Vector2Int(col, row);
+    }
+
+    /// <summary>
+    /// 仅回滚 CurrentPos（不修改 PreviousPos）。
+    /// </summary>
+    public void RollbackCurrentPos(Vector2Int pos)
+    {
+        CurrentPos = pos;
     }
 
     /// <summary>
@@ -293,7 +316,7 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
     [SerializeField] private float gizmoHeightBias = 0.02f;
 
 #if UNITY_EDITOR
-    private void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
         if (!drawFootprintGizmo || drawFootprintWhenSelectedOnly)
             return;
@@ -301,7 +324,7 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
         DrawFootprint();
     }
 
-    private void OnDrawGizmosSelected()
+    protected virtual void OnDrawGizmosSelected()
     {
         if (!drawFootprintGizmo || !drawFootprintWhenSelectedOnly)
             return;
@@ -309,7 +332,7 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
         DrawFootprint();
     }
 
-    private void DrawFootprint()
+    protected virtual void DrawFootprint()
     {
         float dx = Mathf.Max(1e-4f, cellSizeXZ.x);
         float dz = Mathf.Max(1e-4f, cellSizeXZ.y);
@@ -397,13 +420,13 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
 
         Gizmos.matrix = prevMatrix;
     }
+#endif
+
+    #endregion
 
     public void OnComplete()
     {
         // 路径移动完成回调，由 PathManager 调用
         // 具体的销毁逻辑已在 LevelCtrl.OnAnimalReachEndPoint 中处理
     }
-#endif
-
-    #endregion
 }

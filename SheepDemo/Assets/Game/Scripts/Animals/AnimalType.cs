@@ -28,6 +28,8 @@ public enum AnimalType
     /// <summary>
     /// 大象 "elephant"
     /// </summary>
-    Elephant = 4
+    Elephant = 4,
+
+    
 }
 

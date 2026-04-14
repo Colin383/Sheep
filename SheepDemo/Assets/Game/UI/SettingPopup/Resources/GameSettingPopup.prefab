@@ -3534,13 +3534,12 @@ MonoBehaviour:
   isGamePause: 1
   CloseBtn: {fileID: 2759437835891404654}
   ContactBtn: {fileID: 6217261544491631610}
+  HomeBtn: {fileID: 110876907128571205}
   LanguageBtn: {fileID: 7790306020015187577}
   MenuBtn: {fileID: 5885559854151643254}
   PrivacyPolicyBtn: {fileID: 1738120172737915998}
   ResumeBtn: {fileID: 8408360898817810212}
   TermsOfBtn: {fileID: 4072568288222571566}
-  UISettings101Btn: {fileID: 110876907128571205}
-  UISettings201Btn: {fileID: 0}
   LanguageTxt: {fileID: 154088077057754118}
   MenuTxt: {fileID: 1779480123937002962}
   ResumeTxt: {fileID: 8481698128917294470}

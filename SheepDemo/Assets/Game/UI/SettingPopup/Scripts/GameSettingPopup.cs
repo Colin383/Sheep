@@ -198,7 +198,7 @@ public partial class GameSettingPopup : BaseUIView, IEventSender, IDebuger
         this.DispatchEvent(Witness<SwitchGameStateEvent>._, GamePlayStateName.START);
         ClickTransformPanel.Create(() =>
         {
-            ChoiceLevelPanel.Create();
+            // ChoiceLevelPanel.Create();
         });
         UIManager.Instance.CloseUI(this);
     }

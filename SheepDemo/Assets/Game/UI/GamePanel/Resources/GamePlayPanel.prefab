@@ -1788,8 +1788,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blackMask: {fileID: 7473071453443217776}
   clickBlock: {fileID: 5323227841874266840}
-  SkillBtns: {fileID: 0}
-  SkillDesc: {fileID: 0}
+  SkillBtns: {fileID: 88224826914294074}
+  SkillDesc: {fileID: 968454193599495133}
   useBtn: {fileID: 0}
   sequentialScaleAnim: {fileID: 3722792721115858900}
   PauseBtn: {fileID: 6584363646932030180}
@@ -1848,7 +1848,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8107945571962801704}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b28e577419491e2479b77b238ad70782, type: 3}
   m_Name: 

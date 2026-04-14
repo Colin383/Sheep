@@ -18,6 +18,7 @@ namespace Game.Play
                 AudioManager.PlayMusic("musicOutGame", fadeInSeconds: 8f);
 
             (_owner as PlayCtrl).DestroyLevel();
+            StartPanel.Create();
         }
 
         public override void OnExecute()

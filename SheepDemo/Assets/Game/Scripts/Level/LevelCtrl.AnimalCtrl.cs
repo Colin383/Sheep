@@ -117,6 +117,7 @@ public partial class LevelCtrl : IDebuger
     {
         this.Log("[AnimalCtrl] ExitSkillMode -> PLAYING");
         this.DispatchEvent(Witness<SwitchGameStateEvent>._, GamePlayStateName.PLAYING);
+        // this.DispatchEvent(Witness<ExitSkillEvent>._);
     }
 
     private void ExecuteRandomRotate5()
@@ -139,9 +140,75 @@ public partial class LevelCtrl : IDebuger
         for (int i = 0; i < count; i++)
         {
             var animal = candidates[i];
-            animal.SetFacingDirection(animal.FacingDirection.TurnLeft().TurnLeft());
+            RotateAnimal(animal);
             this.Log($"[AnimalCtrl] RandomRotate5 rotated animal id={animal.Id}, type={animal.Type}");
         }
+    }
+
+    /// <summary>
+    /// 将 animal 180° 转向并同步移动 pivot，使 footprint 几何中心保持不变。
+    /// </summary>
+    private void RotateAnimal(BaseAnimal animal)
+    {
+        if (animal == null)
+            return;
+
+        var oldFacing = animal.FacingDirection;
+        var newFacing = oldFacing.TurnLeft().TurnLeft();
+
+        var oldCenter = CalculateFootprintCenterOffset(animal, oldFacing);
+        var newCenter = CalculateFootprintCenterOffset(animal, newFacing);
+        var delta = oldCenter - newCenter;
+
+        if (delta.sqrMagnitude > 1e-6f)
+        {
+            int newRow = animal.CurrentPos.y + Mathf.RoundToInt(delta.y);
+            int newCol = animal.CurrentPos.x + Mathf.RoundToInt(delta.x);
+            animal.SetCurrentGridPos(newRow, newCol);
+
+            if (TryGetConfigDimensions(out var gridW, out var gridH))
+            {
+                animal.transform.position = GridToWorld(newRow, newCol, gridW, gridH);
+            }
+            else
+            {
+                this.LogWarning($"[AnimalCtrl] RotateAnimal: failed to get grid dimensions for id={animal.Id}");
+            }
+        }
+
+        animal.SetFacingDirection(newFacing);
+    }
+
+    private Vector2 CalculateFootprintCenterOffset(BaseAnimal animal, DirectionEnum facing)
+    {
+        var occupied = new List<Vector2Int> { Vector2Int.zero };
+        var extras = animal.FootprintSizeCells;
+        if (extras != null)
+        {
+            for (int i = 0; i < extras.Count; i++)
+            {
+                var o = extras[i];
+                if (o == Vector2Int.zero)
+                    continue;
+                occupied.Add(RotateOffset(o, facing));
+            }
+        }
+
+        int minX = occupied[0].x;
+        int maxX = occupied[0].x;
+        int minY = occupied[0].y;
+        int maxY = occupied[0].y;
+
+        for (int i = 1; i < occupied.Count; i++)
+        {
+            var o = occupied[i];
+            minX = Mathf.Min(minX, o.x);
+            maxX = Mathf.Max(maxX, o.x);
+            minY = Mathf.Min(minY, o.y);
+            maxY = Mathf.Max(maxY, o.y);
+        }
+
+        return new Vector2((minX + maxX) * 0.5f, (minY + maxY) * 0.5f);
     }
 
     private void OnSkillClickAnimal(Transform transform)
@@ -163,7 +230,7 @@ public partial class LevelCtrl : IDebuger
         {
             case SkillType.Rotate:
                 this.Log($"[AnimalCtrl] Skill Rotate: rotate animal id={animal.Id}, type={animal.Type}");
-                animal.SetFacingDirection(animal.FacingDirection.TurnLeft().TurnLeft());
+                RotateAnimal(animal);
                 ExitSkillMode();
                 break;
 

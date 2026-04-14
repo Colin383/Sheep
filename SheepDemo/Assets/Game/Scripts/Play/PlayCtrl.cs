@@ -103,8 +103,6 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
         _machine.Apply(GetType());
         _machine.Enter(GamePlayStateName.START);
 
-        StartPanel.Create();
-
         AddListener();
     }
 

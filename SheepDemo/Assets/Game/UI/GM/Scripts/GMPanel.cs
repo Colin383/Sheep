@@ -354,6 +354,7 @@ public partial class GMPanel : BaseUIView, IEventSender
 
     private void ShowInterstitialData()
     {
+        return;
         var style = new GUIStyle(GUI.skin.label)
         {
             fontSize = 30,

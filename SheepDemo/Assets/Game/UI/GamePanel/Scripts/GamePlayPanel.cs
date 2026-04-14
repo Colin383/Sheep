@@ -55,6 +55,7 @@ public partial class GamePlayPanel : BaseUIView, IDebuger, IEventSender
         clickBlock.SetActive(false);
 
         AddListener();
+        ResetSkillMode();
     }
 
     private void AddListener()
@@ -115,14 +116,22 @@ public partial class GamePlayPanel : BaseUIView, IDebuger, IEventSender
             };
         }
 
+        if (type == SkillType.RandomRotate5)
+            return;
+            
         SkillDesc.SetActive(true);
         SkillBtns.SetActive(false);
     }
 
     private void ExitSkillMode(ExitSkillEvent evt)
     {
+        ResetSkillMode();
+    }
+
+    private void ResetSkillMode()
+    {
         SkillDesc.SetActive(false);
-        SkillBtns.gameObject.SetActive(true);
+        SkillBtns.SetActive(true);
     }
 
     #endregion

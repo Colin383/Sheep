@@ -7,6 +7,8 @@
   const GAME_EXPORT_KIND = 'map-editor-game';
   const LOCAL_STORAGE_KEY = 'map-editor-elements-v2';
   const LOCAL_STORAGE_MAPS_KEY = 'map-editor-saved-maps-v1';
+  /** 地图页：锚点 / 实例 ID / 实例参数 等工具栏复选框 */
+  const LOCAL_STORAGE_MAP_VIEW_PREFS_KEY = 'map-editor-map-view-prefs-v1';
   const WORKSPACE_KIND = 'map-editor-workspace';
   const WORKSPACE_JSON_PATH = 'data/workspace.json';
   const CELL_EL = 28;
@@ -16,7 +18,7 @@
   const MAP_AXIS_TOP_PX = 22;
   const MAP_AXIS_LEFT_PX = 36;
 
-  /** @type {{ id: string, name: string, type: string, gridN: number, cells: {r:number,c:number}[], anchor?: {r:number,c:number}, image: string, color: string, direction?: string }}[] */
+  /** @type {{ id: string, name: string, type: string, gridN: number, cells: {r:number,c:number}[], anchor?: {r:number,c:number}, image: string, color: string, direction?: string, hasParam?: boolean }}[] */
   let elements = [];
 
   let elGridN = 4;
@@ -38,7 +40,7 @@
 
   let mapW = 14;
   let mapH = 20;
-  /** @type {{ id: number | string, elementId: string, row: number, col: number, rotation?: number }[]} */
+  /** @type {{ id: number | string, elementId: string, row: number, col: number, rotation?: number, param?: string }[]} */
   let placements = [];
 
   /** 下一个地图实例 id（从 0 递增，均为非负整数） */
@@ -74,6 +76,10 @@
   /** @type {object | null} */
   let pendingImportPayload = null;
   let showMapAnchors = true;
+  /** 左上角 #id 徽标 */
+  let showPlacementIds = true;
+  /** 带参数元素的参数文本（半透明底） */
+  let showPlacementParams = true;
 
   // --- DOM ---
   const $ = (id) => document.getElementById(id);
@@ -90,6 +96,7 @@
   const elImageInput = $('el-image');
   const elColorInput = $('el-color');
   const elDirectionInput = $('el-direction');
+  const elHasParamInput = $('el-has-param');
   const elImagePreview = $('el-image-preview');
   const btnSaveElement = $('btn-save-element');
   const btnClearSelection = $('btn-clear-selection');
@@ -102,6 +109,7 @@
   const elModalName = $('el-modal-name');
   const elModalType = $('el-modal-type');
   const elModalDirection = $('el-modal-direction');
+  const elModalHasParamInput = $('el-modal-has-param');
   const elModalImageInput = $('el-modal-image');
   const elModalColorInput = $('el-modal-color');
   const elModalImagePreview = $('el-modal-image-preview');
@@ -124,6 +132,8 @@
   const mapPlacementLabels = $('map-placement-labels');
   const mapStatus = $('map-status');
   const mapShowAnchorToggle = $('map-show-anchor-toggle');
+  const mapShowPlacementIdToggle = $('map-show-placement-id-toggle');
+  const mapShowPlacementParamToggle = $('map-show-placement-param-toggle');
   const mapElementList = $('map-element-list');
   const btnSaveMap = $('btn-save-map');
   const btnExportGameJson = $('btn-export-game-json');
@@ -141,7 +151,16 @@
   const mapUnsavedDiscard = $('map-unsaved-discard');
   const mapUnsavedCancel = $('map-unsaved-cancel');
 
+  const placementParamDialog = $('placement-param-dialog');
+  const placementParamHint = $('placement-param-hint');
+  const placementParamInput = $('placement-param-input');
+  const placementParamOk = $('placement-param-ok');
+  const placementParamCancel = $('placement-param-cancel');
+
   const toastEl = $('toast');
+
+  /** @type {string | number | null} */
+  let placementParamEditPid = null;
 
   // --- Map axis labels (row/col numbers) ---
   let mapAxisCorner = null;
@@ -323,6 +342,20 @@
       color: x.color && /^#[0-9a-fA-F]{6}$/.test(x.color) ? x.color : '#4488cc',
       image: x.image || '',
       direction: direction,
+      hasParam: Boolean(x.hasParam),
+    };
+  }
+
+  /** 从文件/列表加载地图时统一实例字段 */
+  function normalizePlacementRow(p) {
+    const rot = typeof p.rotation === 'number' ? ((p.rotation % 4) + 4) % 4 : 0;
+    return {
+      id: p.id,
+      elementId: p.elementId,
+      row: p.row,
+      col: p.col,
+      rotation: rot,
+      param: typeof p.param === 'string' ? p.param : '',
     };
   }
 
@@ -785,6 +818,39 @@
     return elementEditDialog && !elementEditDialog.hidden;
   }
 
+  function isPlacementParamDialogOpen() {
+    return placementParamDialog && !placementParamDialog.hidden;
+  }
+
+  function closePlacementParamDialog() {
+    if (placementParamDialog) placementParamDialog.hidden = true;
+    placementParamEditPid = null;
+    if (placementParamInput) placementParamInput.value = '';
+  }
+
+  function openPlacementParamDialog(pid) {
+    const p = placements.find((x) => x.id == pid);
+    if (!p) return;
+    const el = elements.find((e) => e.id === p.elementId);
+    if (!el || !el.hasParam) return;
+    placementParamEditPid = pid;
+    if (placementParamHint) {
+      placementParamHint.textContent = '元素「' + (el.name || '') + '」· 实例 id ' + p.id;
+    }
+    if (placementParamInput) {
+      placementParamInput.value = typeof p.param === 'string' ? p.param : '';
+    }
+    if (placementParamDialog) placementParamDialog.hidden = false;
+    if (placementParamInput) {
+      try {
+        placementParamInput.focus();
+        placementParamInput.select();
+      } catch (e) {
+        /* ignore */
+      }
+    }
+  }
+
   function updateModalElStatus() {
     if (!elModalStatus) return;
     const n = normalizeCells(modalElSelection, modalElGridN).length;
@@ -943,6 +1009,7 @@
     if (elModalType) elModalType.value = fresh.type || '';
     if (elModalColorInput) elModalColorInput.value = getElementColor(fresh);
     if (elModalDirection) elModalDirection.value = getDirection(fresh);
+    if (elModalHasParamInput) elModalHasParamInput.checked = !!fresh.hasParam;
     modalElImageDataUrl = fresh.image ? String(fresh.image) : '';
     if (elModalImageInput) elModalImageInput.value = '';
     if (elModalImagePreview) {
@@ -989,6 +1056,7 @@
           col: p.col,
           rotation: rot,
           direction: effectivePlacementDirection(el, rot),
+          param: typeof p.param === 'string' ? p.param : '',
         };
       }),
       activeMapId,
@@ -1003,13 +1071,7 @@
     if (mapGridWInput) mapGridWInput.value = String(mapW);
     if (mapGridHInput) mapGridHInput.value = String(mapH);
     if (mapName) mapName.value = s.mapName || '';
-    placements = (s.placements || []).map((p) => ({
-      id: p.id,
-      elementId: p.elementId,
-      row: p.row,
-      col: p.col,
-      rotation: typeof p.rotation === 'number' ? ((p.rotation % 4) + 4) % 4 : 0,
-    }));
+    placements = (s.placements || []).map((p) => normalizePlacementRow(p));
     placements.forEach((p) => {
       if (typeof p.id === 'string' && /^\d+$/.test(p.id)) p.id = parseInt(p.id, 10);
     });
@@ -1097,13 +1159,7 @@
     const byId = new Map(elements.map((e) => [e.id, e]));
     incoming.forEach((e) => byId.set(e.id, normalizeElement(e)));
     elements = Array.from(byId.values());
-    placements = (data.placements || []).map((p) => ({
-      id: p.id,
-      elementId: p.elementId,
-      row: p.row,
-      col: p.col,
-      rotation: typeof p.rotation === 'number' ? ((p.rotation % 4) + 4) % 4 : 0,
-    }));
+    placements = (data.placements || []).map((p) => normalizePlacementRow(p));
     migratePlacementIdsIfNeeded();
     selectedElementId = null;
     selectedPlacementId = null;
@@ -1134,6 +1190,38 @@
       localStorage.setItem(LOCAL_STORAGE_MAPS_KEY, JSON.stringify({ version: VERSION, maps: savedMaps }));
     } catch (e) {
       console.warn('persistMapLibrary', e);
+    }
+  }
+
+  function loadMapViewPrefs() {
+    try {
+      const raw = localStorage.getItem(LOCAL_STORAGE_MAP_VIEW_PREFS_KEY);
+      if (!raw) return;
+      const o = JSON.parse(raw);
+      if (typeof o !== 'object' || !o) return;
+      if (typeof o.showAnchors === 'boolean' && mapShowAnchorToggle) mapShowAnchorToggle.checked = o.showAnchors;
+      if (typeof o.showPlacementIds === 'boolean' && mapShowPlacementIdToggle) mapShowPlacementIdToggle.checked = o.showPlacementIds;
+      if (typeof o.showPlacementParams === 'boolean' && mapShowPlacementParamToggle) mapShowPlacementParamToggle.checked = o.showPlacementParams;
+      showMapAnchors = mapShowAnchorToggle ? !!mapShowAnchorToggle.checked : showMapAnchors;
+      showPlacementIds = mapShowPlacementIdToggle ? !!mapShowPlacementIdToggle.checked : showPlacementIds;
+      showPlacementParams = mapShowPlacementParamToggle ? !!mapShowPlacementParamToggle.checked : showPlacementParams;
+    } catch (e) {
+      console.warn('loadMapViewPrefs', e);
+    }
+  }
+
+  function persistMapViewPrefs() {
+    try {
+      localStorage.setItem(
+        LOCAL_STORAGE_MAP_VIEW_PREFS_KEY,
+        JSON.stringify({
+          showAnchors: !!(mapShowAnchorToggle && mapShowAnchorToggle.checked),
+          showPlacementIds: !!(mapShowPlacementIdToggle && mapShowPlacementIdToggle.checked),
+          showPlacementParams: !!(mapShowPlacementParamToggle && mapShowPlacementParamToggle.checked),
+        })
+      );
+    } catch (e) {
+      console.warn('persistMapViewPrefs', e);
     }
   }
 
@@ -1258,6 +1346,7 @@
           col: p.col,
           rotation: rot,
           direction: effectivePlacementDirection(el, rot),
+          param: typeof p.param === 'string' ? p.param : '',
         };
       }),
       updatedAt: Date.now(),
@@ -1560,6 +1649,7 @@
         el.cells.length +
         ' 格' +
         (isColorOnlyElement(el) ? ' · 纯色' : '') +
+        (el.hasParam ? ' · 参数' : '') +
         '</span>';
 
       const btnEdit = document.createElement('button');
@@ -1641,7 +1731,13 @@
 
       const meta = document.createElement('div');
       meta.className = 'meta';
-      meta.innerHTML = '<strong>' + escapeHtml(el.name) + '</strong><span>' + escapeHtml(el.type) + '</span>';
+      meta.innerHTML =
+        '<strong>' +
+        escapeHtml(el.name) +
+        '</strong><span>' +
+        escapeHtml(el.type) +
+        (el.hasParam ? ' · 参数' : '') +
+        '</span>';
 
       li.appendChild(meta);
 
@@ -1913,13 +2009,30 @@
           mapPlacementLabels.appendChild(span);
         }
 
-        // 所有实例：显示 id（小徽标，贴左上角）
-        const idBadge = document.createElement('div');
-        idBadge.className = 'placement-id-badge';
-        idBadge.textContent = '#' + String(p.id);
-        idBadge.style.left = p.col * STEP_MAP + 4 + 'px';
-        idBadge.style.top = p.row * STEP_MAP + 4 + 'px';
-        mapPlacementLabels.appendChild(idBadge);
+        // 所有实例：显示 id（小徽标，贴左上角），可由工具栏复选框关闭
+        if (showPlacementIds) {
+          const idBadge = document.createElement('div');
+          idBadge.className = 'placement-id-badge';
+          idBadge.textContent = '#' + String(p.id);
+          idBadge.style.left = p.col * STEP_MAP + 4 + 'px';
+          idBadge.style.top = p.row * STEP_MAP + 4 + 'px';
+          mapPlacementLabels.appendChild(idBadge);
+        }
+
+        if (showPlacementParams && el.hasParam) {
+          const paramText = typeof p.param === 'string' ? p.param.trim() : '';
+          if (paramText) {
+            const paramEl = document.createElement('div');
+            paramEl.className = 'map-placement-param-label';
+            paramEl.textContent = paramText;
+            const leftParam = p.col * STEP_MAP + (bb.w * STEP_MAP - GAP) / 2;
+            const topParam = p.row * STEP_MAP + (bb.h * STEP_MAP - GAP) - 4;
+            paramEl.style.left = leftParam + 'px';
+            paramEl.style.top = topParam + 'px';
+            paramEl.style.maxWidth = Math.max(48, bb.w * STEP_MAP - GAP - 6) + 'px';
+            mapPlacementLabels.appendChild(paramEl);
+          }
+        }
       });
     }
 
@@ -2011,6 +2124,16 @@
 
       if (!selectedElementId) {
         if (pid) {
+          const pl = placements.find((x) => x.id == pid);
+          const elHit = pl && elements.find((e) => e.id === pl.elementId);
+          if (elHit && elHit.hasParam) {
+            selectedPlacementId = pid;
+            renderMap();
+            renderMapElementList();
+            openPlacementParamDialog(pid);
+            mapStatus.textContent = '可编辑参数；拖拽移动实例，按 R 旋转';
+            return;
+          }
           selectedPlacementId = pid;
           renderMap();
           renderMapElementList();
@@ -2053,9 +2176,22 @@
         return;
       }
       pushMapHistory();
-      placements.push({ id: allocatePlacementId(), elementId: element.id, row: aPlace.row, col: aPlace.col, rotation: pendingRotation });
+      const newPid = allocatePlacementId();
+      placements.push({
+        id: newPid,
+        elementId: element.id,
+        row: aPlace.row,
+        col: aPlace.col,
+        rotation: pendingRotation,
+        param: '',
+      });
       renderMap();
-      showToast('已放置「' + element.name + '」', 'ok');
+      if (element.hasParam) {
+        openPlacementParamDialog(newPid);
+        showToast('已放置「' + element.name + '」，请填写参数', 'ok');
+      } else {
+        showToast('已放置「' + element.name + '」', 'ok');
+      }
     });
 
     mapCanvas.addEventListener('contextmenu', (e) => {
@@ -2100,9 +2236,22 @@
         return;
       }
       pushMapHistory();
-      placements.push({ id: allocatePlacementId(), elementId: element.id, row: aDrop.row, col: aDrop.col, rotation: pendingRotation });
+      const newPidDrop = allocatePlacementId();
+      placements.push({
+        id: newPidDrop,
+        elementId: element.id,
+        row: aDrop.row,
+        col: aDrop.col,
+        rotation: pendingRotation,
+        param: '',
+      });
       renderMap();
-      showToast('已放置「' + element.name + '」', 'ok');
+      if (element.hasParam) {
+        openPlacementParamDialog(newPidDrop);
+        showToast('已放置「' + element.name + '」，请填写参数', 'ok');
+      } else {
+        showToast('已放置「' + element.name + '」', 'ok');
+      }
     });
   }
 
@@ -2396,6 +2545,7 @@
 
   function onMapKeyDown(e) {
     if (isElementEditModalOpen()) return;
+    if (isPlacementParamDialogOpen()) return;
     if (panelMap.hidden) return;
     const t = e.target;
     if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT')) return;
@@ -2553,12 +2703,14 @@
       image: elImageDataUrl || '',
       color: color,
       direction: direction,
+      hasParam: !!(elHasParamInput && elHasParamInput.checked),
     };
     const normalized = normalizeElement(elPayload);
     elements.push(normalized);
     persistElements();
     elName.value = '';
     elType.value = '';
+    if (elHasParamInput) elHasParamInput.checked = false;
     elImageInput.value = '';
     elImageDataUrl = '';
     elImagePreview.innerHTML = '';
@@ -2658,6 +2810,7 @@
         image: modalElImageDataUrl || '',
         color: color,
         direction: direction,
+        hasParam: !!(elModalHasParamInput && elModalHasParamInput.checked),
       };
       const normalized = normalizeElement(elPayload);
       const idx = elements.findIndex((x) => x.id === modalEditElementId);
@@ -2693,8 +2846,47 @@
     }
   }
 
+  if (placementParamOk) {
+    placementParamOk.addEventListener('click', () => {
+      if (placementParamEditPid == null) return;
+      const p = placements.find((x) => x.id == placementParamEditPid);
+      if (!p) {
+        closePlacementParamDialog();
+        return;
+      }
+      const next = placementParamInput ? placementParamInput.value : '';
+      const prev = typeof p.param === 'string' ? p.param : '';
+      if (next !== prev) {
+        pushMapHistory();
+        p.param = next;
+      }
+      closePlacementParamDialog();
+      renderMap();
+      renderMapElementList();
+      if (next !== prev) showToast('参数已保存', 'ok');
+    });
+  }
+  if (placementParamCancel) {
+    placementParamCancel.addEventListener('click', () => {
+      closePlacementParamDialog();
+    });
+  }
+  if (placementParamDialog) {
+    const pbd = placementParamDialog.querySelector('.modal-backdrop[data-placement-param-dismiss]');
+    if (pbd) {
+      pbd.addEventListener('click', () => {
+        closePlacementParamDialog();
+      });
+    }
+  }
+
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
+    if (isPlacementParamDialogOpen()) {
+      closePlacementParamDialog();
+      e.preventDefault();
+      return;
+    }
     if (!isElementEditModalOpen()) return;
     closeElementEditModal();
     e.preventDefault();
@@ -2741,8 +2933,27 @@
     showMapAnchors = !!mapShowAnchorToggle.checked;
     mapShowAnchorToggle.addEventListener('change', () => {
       showMapAnchors = !!mapShowAnchorToggle.checked;
+      persistMapViewPrefs();
       renderMap();
       updateMapHoverLayer();
+    });
+  }
+
+  if (mapShowPlacementIdToggle) {
+    showPlacementIds = !!mapShowPlacementIdToggle.checked;
+    mapShowPlacementIdToggle.addEventListener('change', () => {
+      showPlacementIds = !!mapShowPlacementIdToggle.checked;
+      persistMapViewPrefs();
+      renderMap();
+    });
+  }
+
+  if (mapShowPlacementParamToggle) {
+    showPlacementParams = !!mapShowPlacementParamToggle.checked;
+    mapShowPlacementParamToggle.addEventListener('change', () => {
+      showPlacementParams = !!mapShowPlacementParamToggle.checked;
+      persistMapViewPrefs();
+      renderMap();
     });
   }
 
@@ -2767,6 +2978,7 @@
           id: p.id,
           rotation: rot,
           direction: effectivePlacementDirection(el, rot),
+          param: typeof p.param === 'string' ? p.param : '',
         };
       }),
     };
@@ -2792,7 +3004,7 @@
           // 游戏导出坐标系：左下角为 (0,0)，x 向右，y 向上。
           const gameX = anchor.col;
           const gameY = mapH - 1 - anchor.row;
-          return {
+          const inst = {
             id: p.id,
             position: { x: gameX, y: gameY },
             row: gameY,
@@ -2800,6 +3012,8 @@
             direction: el ? effectivePlacementDirection(el, rot) : 'down',
             type: typeStr || '默认',
           };
+          if (el && el.hasParam) inst.param = typeof p.param === 'string' ? p.param : '';
+          return inst;
         }),
       };
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
@@ -2953,6 +3167,7 @@
   (async function () {
     loadElementsFromStorage();
     loadMapLibraryFromStorage();
+    loadMapViewPrefs();
     let bundled = false;
     try {
       bundled = await tryLoadBundledWorkspace();

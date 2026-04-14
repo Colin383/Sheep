@@ -37,6 +37,12 @@
               <div id="element-canvas" class="grid-canvas" aria-label="元素格子选择"></div>
             </div>
             <div class="row">
+              <label class="inline-checkbox">
+                <input type="checkbox" id="el-has-param" />
+                <span>是否添加参数（放置后输入；地图上点击可改，拖拽仍可移动）</span>
+              </label>
+            </div>
+            <div class="row">
               <label>元素名称 <input type="text" id="el-name" placeholder="例如：草丛" /></label>
               <label>元素类型（必填） <input type="text" id="el-type" placeholder="例如：装饰 / 障碍" required /></label>
               <label>朝向（预览箭头）
@@ -116,6 +122,14 @@
                 <input type="checkbox" id="map-show-anchor-toggle" checked />
                 在场景中显示锚点
               </label>
+              <label class="map-anchor-toggle">
+                <input type="checkbox" id="map-show-placement-id-toggle" checked />
+                在场景中显示实例 ID
+              </label>
+              <label class="map-anchor-toggle">
+                <input type="checkbox" id="map-show-placement-param-toggle" checked />
+                在场景中显示实例参数
+              </label>
             </div>
             <div id="map-canvas-wrap" class="canvas-wrap map-canvas-wrap">
               <div id="map-canvas" class="grid-canvas map-grid" aria-label="地图场景"></div>
@@ -169,6 +183,12 @@
         <div id="element-modal-canvas" class="grid-canvas" aria-label="元素格子选择"></div>
       </div>
       <div class="row">
+        <label class="inline-checkbox">
+          <input type="checkbox" id="el-modal-has-param" />
+          <span>是否添加参数（放置后输入；地图上点击可改，拖拽仍可移动）</span>
+        </label>
+      </div>
+      <div class="row">
         <label>元素名称 <input type="text" id="el-modal-name" placeholder="例如：草丛" /></label>
         <label>元素类型（必填） <input type="text" id="el-modal-type" placeholder="例如：装饰 / 障碍" required /></label>
         <label>朝向（预览箭头）
@@ -206,6 +226,21 @@
         <button type="button" id="btn-modal-clear-selection" class="btn">清空格子选择</button>
       </div>
       <p id="el-modal-status" class="status" role="status"></p>
+    </div>
+  </div>
+
+  <div id="placement-param-dialog" class="modal" hidden aria-modal="true" role="dialog" aria-labelledby="placement-param-title">
+    <div class="modal-backdrop" data-placement-param-dismiss="1"></div>
+    <div class="modal-box">
+      <h3 id="placement-param-title" class="modal-title">实例参数</h3>
+      <p id="placement-param-hint" class="hint small-hint"></p>
+      <label class="placement-param-dialog-label" for="placement-param-input">参数
+        <textarea id="placement-param-input" class="modal-textarea" rows="4" placeholder="可填写任意文本，将随地图保存、导出"></textarea>
+      </label>
+      <div class="modal-actions">
+        <button type="button" id="placement-param-ok" class="btn primary">确定</button>
+        <button type="button" id="placement-param-cancel" class="btn">取消</button>
+      </div>
     </div>
   </div>
 

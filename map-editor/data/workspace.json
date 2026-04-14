@@ -1,6 +1,658 @@
 {
   "version": 4,
   "kind": "map-editor-workspace",
-  "elements": [],
-  "maps": []
+  "elements": [
+    {
+      "id": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+      "name": "羊",
+      "type": "sheep",
+      "gridN": 2,
+      "cells": [
+        {
+          "r": 0,
+          "c": 0
+        },
+        {
+          "r": 1,
+          "c": 0
+        }
+      ],
+      "image": "",
+      "color": "#ffffff",
+      "direction": "down",
+      "hasParam": false
+    },
+    {
+      "id": "022c878e-96cb-4131-80d2-d08b755ca8df",
+      "name": "鸡",
+      "type": "鸡",
+      "gridN": 4,
+      "cells": [
+        {
+          "r": 0,
+          "c": 0
+        }
+      ],
+      "image": "",
+      "color": "#ffee38",
+      "direction": "down",
+      "hasParam": false
+    }
+  ],
+  "maps": [
+    {
+      "id": "level14x20-auto-001",
+      "name": "农场参考图（逐格一致·10×14 嵌入 14×20）",
+      "width": 14,
+      "height": 20,
+      "elements": [
+        {
+          "id": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "name": "羊",
+          "type": "sheep",
+          "gridN": 2,
+          "cells": [
+            {
+              "r": 0,
+              "c": 0
+            },
+            {
+              "r": 1,
+              "c": 0
+            }
+          ],
+          "image": "",
+          "color": "#ffffff",
+          "direction": "down",
+          "hasParam": false
+        },
+        {
+          "id": "022c878e-96cb-4131-80d2-d08b755ca8df",
+          "name": "鸡",
+          "type": "鸡",
+          "gridN": 4,
+          "cells": [
+            {
+              "r": 0,
+              "c": 0
+            }
+          ],
+          "image": "",
+          "color": "#ffee38",
+          "direction": "down",
+          "hasParam": false
+        }
+      ],
+      "placements": [
+        {
+          "id": 0,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 10,
+          "col": 10,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 1,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 10,
+          "col": 11,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 2,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 10,
+          "col": 3,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 3,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 10,
+          "col": 4,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 4,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 10,
+          "col": 5,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 5,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 9,
+          "col": 6,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 6,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 9,
+          "col": 7,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 7,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 10,
+          "col": 8,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 8,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 10,
+          "col": 9,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 9,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 11,
+          "col": 6,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 10,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 12,
+          "col": 11,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 11,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 12,
+          "col": 3,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 12,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 12,
+          "col": 4,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 13,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 12,
+          "col": 5,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 14,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 12,
+          "col": 9,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 15,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 13,
+          "col": 10,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 16,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 14,
+          "col": 11,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 17,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 14,
+          "col": 3,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 18,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 14,
+          "col": 4,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 19,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 14,
+          "col": 5,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 20,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 14,
+          "col": 6,
+          "rotation": 1,
+          "direction": "right",
+          "param": ""
+        },
+        {
+          "id": 21,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 14,
+          "col": 8,
+          "rotation": 1,
+          "direction": "right",
+          "param": ""
+        },
+        {
+          "id": 22,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 15,
+          "col": 9,
+          "rotation": 1,
+          "direction": "right",
+          "param": ""
+        },
+        {
+          "id": 23,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 15,
+          "col": 6,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 24,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 15,
+          "col": 7,
+          "rotation": 1,
+          "direction": "right",
+          "param": ""
+        },
+        {
+          "id": 25,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 3,
+          "col": 7,
+          "rotation": 1,
+          "direction": "right",
+          "param": ""
+        },
+        {
+          "id": 26,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 4,
+          "col": 10,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 27,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 4,
+          "col": 3,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 28,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 4,
+          "col": 4,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 29,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 4,
+          "col": 5,
+          "rotation": 1,
+          "direction": "right",
+          "param": ""
+        },
+        {
+          "id": 30,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 4,
+          "col": 8,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 31,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 4,
+          "col": 9,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 32,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 5,
+          "col": 5,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 33,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 6,
+          "col": 10,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 34,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 6,
+          "col": 11,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 35,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 6,
+          "col": 2,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 36,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 6,
+          "col": 3,
+          "rotation": 1,
+          "direction": "right",
+          "param": ""
+        },
+        {
+          "id": 37,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 6,
+          "col": 6,
+          "rotation": 1,
+          "direction": "right",
+          "param": ""
+        },
+        {
+          "id": 38,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 7,
+          "col": 4,
+          "rotation": 1,
+          "direction": "right",
+          "param": ""
+        },
+        {
+          "id": 39,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 7,
+          "col": 7,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 40,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 7,
+          "col": 8,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 41,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 7,
+          "col": 9,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 42,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 8,
+          "col": 10,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 43,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 8,
+          "col": 11,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 44,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 8,
+          "col": 2,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 45,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 8,
+          "col": 3,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 46,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 9,
+          "col": 4,
+          "rotation": 1,
+          "direction": "right",
+          "param": ""
+        },
+        {
+          "id": 47,
+          "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+          "row": 9,
+          "col": 8,
+          "rotation": 1,
+          "direction": "right",
+          "param": ""
+        },
+        {
+          "id": 48,
+          "elementId": "022c878e-96cb-4131-80d2-d08b755ca8df",
+          "row": 5,
+          "col": 7,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 49,
+          "elementId": "022c878e-96cb-4131-80d2-d08b755ca8df",
+          "row": 6,
+          "col": 8,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 50,
+          "elementId": "022c878e-96cb-4131-80d2-d08b755ca8df",
+          "row": 6,
+          "col": 9,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 51,
+          "elementId": "022c878e-96cb-4131-80d2-d08b755ca8df",
+          "row": 7,
+          "col": 3,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 52,
+          "elementId": "022c878e-96cb-4131-80d2-d08b755ca8df",
+          "row": 7,
+          "col": 6,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 53,
+          "elementId": "022c878e-96cb-4131-80d2-d08b755ca8df",
+          "row": 8,
+          "col": 4,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 54,
+          "elementId": "022c878e-96cb-4131-80d2-d08b755ca8df",
+          "row": 8,
+          "col": 5,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 55,
+          "elementId": "022c878e-96cb-4131-80d2-d08b755ca8df",
+          "row": 8,
+          "col": 6,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 56,
+          "elementId": "022c878e-96cb-4131-80d2-d08b755ca8df",
+          "row": 11,
+          "col": 7,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 57,
+          "elementId": "022c878e-96cb-4131-80d2-d08b755ca8df",
+          "row": 12,
+          "col": 7,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 58,
+          "elementId": "022c878e-96cb-4131-80d2-d08b755ca8df",
+          "row": 12,
+          "col": 8,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 59,
+          "elementId": "022c878e-96cb-4131-80d2-d08b755ca8df",
+          "row": 12,
+          "col": 10,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 60,
+          "elementId": "022c878e-96cb-4131-80d2-d08b755ca8df",
+          "row": 13,
+          "col": 6,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 61,
+          "elementId": "022c878e-96cb-4131-80d2-d08b755ca8df",
+          "row": 13,
+          "col": 7,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        },
+        {
+          "id": 62,
+          "elementId": "022c878e-96cb-4131-80d2-d08b755ca8df",
+          "row": 13,
+          "col": 8,
+          "rotation": 0,
+          "direction": "down",
+          "param": ""
+        }
+      ],
+      "updatedAt": 1776147413925
+    }
+  ]
 }

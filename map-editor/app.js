@@ -1796,6 +1796,40 @@
     };
   }
 
+  /** 从已保存地图条目生成单张 .game.json 的 payload */
+  function buildGameJsonPayloadFromSavedMap(m) {
+    const name = (m.name && String(m.name).trim()) || '未命名地图';
+    const rawEls = Array.isArray(m.elements) ? m.elements : [];
+    const elems = rawEls.map((e) => normalizeElement(e));
+    const byId = new Map(elems.map((e) => [e.id, e]));
+    const placementsNorm = normalizePlacementsCopyForExport(m.placements);
+    const mapH = m.height || 1;
+    return {
+      kind: GAME_EXPORT_KIND,
+      version: GAME_EXPORT_VERSION,
+      name,
+      width: m.width,
+      height: mapH,
+      instances: placementsNorm.map((p) => {
+        const el = byId.get(p.elementId);
+        const rot = p.rotation || 0;
+        const typeStr = el && el.type != null ? String(el.type).trim() : '';
+        const gameX = p.col;
+        const gameY = mapH - 1 - p.row;
+        const inst = {
+          id: p.id,
+          position: { x: gameX, y: gameY },
+          row: gameY,
+          col: gameX,
+          direction: el ? effectivePlacementDirection(el, rot) : 'down',
+          type: typeStr || '默认',
+        };
+        if (el && el.hasParam) inst.param = typeof p.param === 'string' ? p.param : '';
+        return inst;
+      }),
+    };
+  }
+
   /** 按列表顺序生成文件名；同名时加 id 后缀，避免单次导出互相覆盖 */
   function batchExportFilenamesForOrderedMaps(maps) {
     const seen = Object.create(null);
@@ -1827,7 +1861,7 @@
       const fnames = batchExportFilenamesForOrderedMaps(ordered);
       const items = ordered.map((m, i) => ({
         fname: fnames[i],
-        json: JSON.stringify(buildMapJsonPayloadFromSavedMap(m), null, 2),
+        json: JSON.stringify(buildGameJsonPayloadFromSavedMap(m), null, 2),
       }));
 
       async function writeItemsToDirectory(dirHandle) {
@@ -3476,10 +3510,9 @@
           const el = elements.find((e) => e.id === p.elementId);
           const rot = p.rotation || 0;
           const typeStr = el && el.type != null ? String(el.type).trim() : '';
-          const anchor = el ? anchorCellFromTopLeft(el, p.row, p.col, rot) : { row: p.row, col: p.col };
           // 游戏导出坐标系：左下角为 (0,0)，x 向右，y 向上。
-          const gameX = anchor.col;
-          const gameY = mapH - 1 - anchor.row;
+          const gameX = p.col;
+          const gameY = mapH - 1 - p.row;
           const inst = {
             id: p.id,
             position: { x: gameX, y: gameY },
@@ -3493,7 +3526,7 @@
         }),
       };
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-      downloadBlob(blob, sanitizeFilename(name) + '.game.json');
+      downloadBlob(blob, sanitizeFilename(name) + '.json');
       showToast('游戏 JSON 已导出', 'ok');
     });
   }

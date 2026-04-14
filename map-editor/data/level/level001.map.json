@@ -1,0 +1,106 @@
+{
+  "version": 4,
+  "name": "level001",
+  "width": 8,
+  "height": 8,
+  "elements": [
+    {
+      "id": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+      "name": "羊",
+      "type": "sheep",
+      "gridN": 2,
+      "cells": [
+        {
+          "r": 0,
+          "c": 0
+        },
+        {
+          "r": 1,
+          "c": 0
+        }
+      ],
+      "anchor": {
+        "r": 0,
+        "c": 0
+      },
+      "image": "",
+      "color": "#ffffff",
+      "direction": "down",
+      "hasParam": false
+    }
+  ],
+  "placements": [
+    {
+      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+      "row": 2,
+      "col": 2,
+      "id": 0,
+      "rotation": 3,
+      "direction": "left",
+      "param": ""
+    },
+    {
+      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+      "row": 2,
+      "col": 4,
+      "id": 1,
+      "rotation": 0,
+      "direction": "down",
+      "param": ""
+    },
+    {
+      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+      "row": 2,
+      "col": 5,
+      "id": 2,
+      "rotation": 2,
+      "direction": "up",
+      "param": ""
+    },
+    {
+      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+      "row": 4,
+      "col": 5,
+      "id": 3,
+      "rotation": 2,
+      "direction": "up",
+      "param": ""
+    },
+    {
+      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+      "row": 4,
+      "col": 4,
+      "id": 4,
+      "rotation": 0,
+      "direction": "down",
+      "param": ""
+    },
+    {
+      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+      "row": 5,
+      "col": 2,
+      "id": 5,
+      "rotation": 3,
+      "direction": "left",
+      "param": ""
+    },
+    {
+      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+      "row": 3,
+      "col": 2,
+      "id": 6,
+      "rotation": 0,
+      "direction": "down",
+      "param": ""
+    },
+    {
+      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+      "row": 3,
+      "col": 3,
+      "id": 7,
+      "rotation": 0,
+      "direction": "down",
+      "param": ""
+    }
+  ]
+}

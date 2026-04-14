@@ -10,13 +10,13 @@
   /** 地图页：锚点 / 实例 ID / 实例参数 等工具栏复选框 */
   const LOCAL_STORAGE_MAP_VIEW_PREFS_KEY = 'map-editor-map-view-prefs-v1';
   const WORKSPACE_KIND = 'map-editor-workspace';
-  /** 批量导出多地图 JSON */
-  const MAP_BUNDLE_KIND = 'map-editor-map-bundle';
   const WORKSPACE_JSON_PATH = 'data/workspace.json';
   /** IndexedDB：记住「导出工作台」写入的本地文件句柄，便于下次覆盖 */
   const IDB_FS_NAME = 'map-editor-fs';
   const IDB_FS_STORE = 'handles';
   const IDB_WORKSPACE_EXPORT_KEY = 'workspaceExport';
+  /** IndexedDB：记住「批量导出地图」所选文件夹句柄，便于下次直接写入 */
+  const IDB_BATCH_EXPORT_DIR_KEY = 'batchExportDir';
   const CELL_EL = 28;
   const CELL_MAP = 32;
   const GAP = 2;
@@ -184,6 +184,8 @@
 
   /** @type {FileSystemFileHandle | null} */
   let workspaceExportFileHandle = null;
+  /** @type {FileSystemDirectoryHandle | null} */
+  let batchExportDirHandle = null;
 
   // --- Map axis labels (row/col numbers) ---
   let mapAxisCorner = null;
@@ -1298,6 +1300,18 @@
     }
   }
 
+  async function loadBatchExportDirHandleFromIdb() {
+    if (typeof indexedDB === 'undefined') return;
+    try {
+      const h = await idbGetFs(IDB_BATCH_EXPORT_DIR_KEY);
+      if (h && typeof h.getFileHandle === 'function') {
+        batchExportDirHandle = h;
+      }
+    } catch (e) {
+      console.warn('loadBatchExportDirHandleFromIdb', e);
+    }
+  }
+
   async function exportWorkspacePortable() {
     try {
       const payload = {
@@ -1736,29 +1750,139 @@
     if (batchExportDialog) batchExportDialog.hidden = false;
   }
 
-  function performBatchExport() {
-    const maps = [];
+  /** 与编辑器内「保存地图到文件」一致：对副本规范化实例 id */
+  function normalizePlacementsCopyForExport(placementsIn) {
+    const arr = JSON.parse(JSON.stringify(placementsIn || []));
+    if (arr.some((p) => !isPlainNumericId(p.id))) {
+      arr.forEach((p, i) => {
+        p.id = i;
+      });
+    } else {
+      arr.forEach((p) => {
+        if (typeof p.id === 'string' && /^\d+$/.test(p.id)) p.id = parseInt(p.id, 10);
+      });
+    }
+    return arr;
+  }
+
+  /** 从已保存地图条目生成单张 .map.json 的 payload（与 btnSaveMap 结构一致） */
+  function buildMapJsonPayloadFromSavedMap(m) {
+    const name = (m.name && String(m.name).trim()) || '未命名地图';
+    const rawEls = Array.isArray(m.elements) ? m.elements : [];
+    const elems = rawEls.map((e) => normalizeElement(e));
+    const byId = new Map(elems.map((e) => [e.id, e]));
+    const placementsNorm = normalizePlacementsCopyForExport(m.placements);
+    const usedIds = new Set(placementsNorm.map((p) => p.elementId));
+    const mapElements = elems.filter((e) => usedIds.has(e.id));
+    return {
+      version: VERSION,
+      name,
+      width: m.width,
+      height: m.height,
+      elements: mapElements,
+      placements: placementsNorm.map((p) => {
+        const el = byId.get(p.elementId);
+        const rot = p.rotation || 0;
+        return {
+          elementId: p.elementId,
+          row: p.row,
+          col: p.col,
+          id: p.id,
+          rotation: rot,
+          direction: effectivePlacementDirection(el, rot),
+          param: typeof p.param === 'string' ? p.param : '',
+        };
+      }),
+    };
+  }
+
+  /** 按列表顺序生成文件名；同名时加 id 后缀，避免单次导出互相覆盖 */
+  function batchExportFilenamesForOrderedMaps(maps) {
+    const seen = Object.create(null);
+    return maps.map((m, i) => {
+      const base = sanitizeFilename((m.name && String(m.name).trim()) || '未命名地图');
+      let fname = base + '.map.json';
+      if (seen[fname]) {
+        const idSuffix = String(m.id).replace(/[/\\?%*:|"<>]/g, '-').slice(0, 36);
+        fname = base + '-' + idSuffix + '.map.json';
+      }
+      if (seen[fname]) fname = base + '-n' + i + '.map.json';
+      seen[fname] = true;
+      return fname;
+    });
+  }
+
+  async function performBatchExport() {
+    const ordered = [];
     batchExportOrderIds.forEach((id) => {
       if (!batchExportChecked[id]) return;
       const m = savedMaps.find((x) => x.id === id);
-      if (m) maps.push(JSON.parse(JSON.stringify(m)));
+      if (m) ordered.push(m);
     });
-    if (!maps.length) {
+    if (!ordered.length) {
       showToast('请至少勾选一张地图', 'err');
       return;
     }
     try {
-      const payload = {
-        version: VERSION,
-        kind: MAP_BUNDLE_KIND,
-        exportedAt: Date.now(),
-        maps,
-      };
-      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-      const fname = 'maps-export-' + sanitizeFilename(new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-')) + '.json';
-      downloadBlob(blob, fname);
+      const fnames = batchExportFilenamesForOrderedMaps(ordered);
+      const items = ordered.map((m, i) => ({
+        fname: fnames[i],
+        json: JSON.stringify(buildMapJsonPayloadFromSavedMap(m), null, 2),
+      }));
+
+      async function writeItemsToDirectory(dirHandle) {
+        for (let i = 0; i < items.length; i++) {
+          const fh = await dirHandle.getFileHandle(items[i].fname, { create: true });
+          const w = await fh.createWritable();
+          await w.write(items[i].json);
+          await w.close();
+        }
+      }
+
+      if (typeof window.showDirectoryPicker === 'function') {
+        let dirHandle = batchExportDirHandle;
+        if (dirHandle && typeof dirHandle.getFileHandle === 'function') {
+          try {
+            let perm = await dirHandle.queryPermission({ mode: 'readwrite' });
+            if (perm !== 'granted') perm = await dirHandle.requestPermission({ mode: 'readwrite' });
+            if (perm === 'granted') {
+              await writeItemsToDirectory(dirHandle);
+              closeBatchExportDialog();
+              showToast('已写入 ' + items.length + ' 个 .map.json（同名已覆盖）', 'ok');
+              return;
+            }
+          } catch (e) {
+            console.warn('batch export dir reuse', e);
+            batchExportDirHandle = null;
+          }
+        }
+        try {
+          dirHandle = await window.showDirectoryPicker();
+          batchExportDirHandle = dirHandle;
+          await idbPutFs(IDB_BATCH_EXPORT_DIR_KEY, dirHandle);
+          await writeItemsToDirectory(dirHandle);
+          closeBatchExportDialog();
+          showToast('已写入 ' + items.length + ' 个 .map.json；下次导出可复用该文件夹', 'ok');
+          return;
+        } catch (e) {
+          if (e && e.name === 'AbortError') {
+            showToast('已取消', 'err');
+            return;
+          }
+          throw e;
+        }
+      }
+
+      for (let i = 0; i < items.length; i++) {
+        const blob = new Blob([items[i].json], { type: 'application/json' });
+        downloadBlob(blob, items[i].fname);
+        if (i < items.length - 1) await new Promise((r) => setTimeout(r, 150));
+      }
       closeBatchExportDialog();
-      showToast('已导出 ' + maps.length + ' 张地图', 'ok');
+      showToast(
+        '已触发 ' + items.length + ' 个文件下载（请自行放入同一文件夹）。若浏览器拦截多文件下载，请允许本站下载后重试。',
+        'ok'
+      );
     } catch (e) {
       showToast('导出失败：' + (e && e.message ? e.message : String(e)), 'err');
     }
@@ -3504,6 +3628,7 @@
   // init：若本机尚无 localStorage 数据且通过 http(s) 打开，尝试加载 data/workspace.json
   (async function () {
     await loadWorkspaceExportHandleFromIdb();
+    await loadBatchExportDirHandleFromIdb();
     loadElementsFromStorage();
     loadMapLibraryFromStorage();
     loadMapViewPrefs();

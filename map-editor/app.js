@@ -1,7 +1,9 @@
 (function () {
   'use strict';
 
-  const VERSION = 4;
+  const VERSION = 5;
+  /** v5+ 地图 JSON 中 placements 的 row/col 表示锚点格（与场景中黄点一致）；v4 及更早为左上角 */
+  const PLACEMENT_COORD_MODE_ANCHOR = 'anchor';
   /** 精简游戏导出（与编辑器 .map.json 无关的独立格式） */
   const GAME_EXPORT_VERSION = 1;
   const GAME_EXPORT_KIND = 'map-editor-game';
@@ -384,6 +386,25 @@
     };
   }
 
+  /**
+   * v5+ 或 placementCoordMode === 'anchor'：row/col 为锚点格，需转成编辑器内部的左上角。
+   * v4 及更早：row/col 已为左上角。
+   */
+  function placementsFromImportedMapData(data, elementById) {
+    const raw = (data.placements || []).map((p) => normalizePlacementRow(p));
+    const anchorMode =
+      data.placementCoordMode === PLACEMENT_COORD_MODE_ANCHOR ||
+      (typeof data.version === 'number' && data.version >= 5);
+    if (!anchorMode) return raw;
+    return raw.map((p) => {
+      const el = elementById.get(p.elementId);
+      const rot = p.rotation || 0;
+      if (!el) return p;
+      const tl = topLeftFromAnchorCell(el, p.row, p.col, rot);
+      return { ...p, row: tl.row, col: tl.col };
+    });
+  }
+
   function getDirection(el) {
     const d = el && el.direction;
     return DIR_ORDER.indexOf(d) >= 0 ? d : 'down';
@@ -606,6 +627,14 @@
     const a = anchorForElement(el);
     const d = getRotatedCellsAndAnchorRel(el.cells || [], a, rotation);
     return { row: row + d.anchorRel.r, col: col + d.anchorRel.c };
+  }
+
+  /** 写入 .map.json 时：row/col 为锚点格坐标（与「在场景中显示锚点」一致） */
+  function mapJsonRowColForExport(el, p) {
+    const rot = p.rotation || 0;
+    if (!el) return { row: p.row, col: p.col };
+    const a = anchorCellFromTopLeft(el, p.row, p.col, rot);
+    return { row: a.row, col: a.col };
   }
 
   function isColorOnlyElement(el) {
@@ -1184,7 +1213,8 @@
     const byId = new Map(elements.map((e) => [e.id, e]));
     incoming.forEach((e) => byId.set(e.id, normalizeElement(e)));
     elements = Array.from(byId.values());
-    placements = (data.placements || []).map((p) => normalizePlacementRow(p));
+    const elementById = new Map(elements.map((e) => [e.id, e]));
+    placements = placementsFromImportedMapData(data, elementById);
     migratePlacementIdsIfNeeded();
     selectedElementId = null;
     selectedPlacementId = null;
@@ -1776,6 +1806,7 @@
     const mapElements = elems.filter((e) => usedIds.has(e.id));
     return {
       version: VERSION,
+      placementCoordMode: PLACEMENT_COORD_MODE_ANCHOR,
       name,
       width: m.width,
       height: m.height,
@@ -1783,10 +1814,11 @@
       placements: placementsNorm.map((p) => {
         const el = byId.get(p.elementId);
         const rot = p.rotation || 0;
+        const rc = mapJsonRowColForExport(el, p);
         return {
           elementId: p.elementId,
-          row: p.row,
-          col: p.col,
+          row: rc.row,
+          col: rc.col,
           id: p.id,
           rotation: rot,
           direction: effectivePlacementDirection(el, rot),
@@ -1814,8 +1846,9 @@
         const el = byId.get(p.elementId);
         const rot = p.rotation || 0;
         const typeStr = el && el.type != null ? String(el.type).trim() : '';
-        const gameX = p.col;
-        const gameY = mapH - 1 - p.row;
+        const rc = mapJsonRowColForExport(el, p);
+        const gameX = rc.col;
+        const gameY = mapH - 1 - rc.row;
         const inst = {
           id: p.id,
           position: { x: gameX, y: gameY },
@@ -3474,6 +3507,7 @@
     const mapElements = elements.filter((e) => usedIds.has(e.id));
     const payload = {
       version: VERSION,
+      placementCoordMode: PLACEMENT_COORD_MODE_ANCHOR,
       name,
       width: mapW,
       height: mapH,
@@ -3481,10 +3515,11 @@
       placements: placements.map((p) => {
         const el = elements.find((e) => e.id === p.elementId);
         const rot = p.rotation || 0;
+        const rc = mapJsonRowColForExport(el, p);
         return {
           elementId: p.elementId,
-          row: p.row,
-          col: p.col,
+          row: rc.row,
+          col: rc.col,
           id: p.id,
           rotation: rot,
           direction: effectivePlacementDirection(el, rot),
@@ -3510,9 +3545,10 @@
           const el = elements.find((e) => e.id === p.elementId);
           const rot = p.rotation || 0;
           const typeStr = el && el.type != null ? String(el.type).trim() : '';
+          const rc = mapJsonRowColForExport(el, p);
           // 游戏导出坐标系：左下角为 (0,0)，x 向右，y 向上。
-          const gameX = p.col;
-          const gameY = mapH - 1 - p.row;
+          const gameX = rc.col;
+          const gameY = mapH - 1 - rc.row;
           const inst = {
             id: p.id,
             position: { x: gameX, y: gameY },

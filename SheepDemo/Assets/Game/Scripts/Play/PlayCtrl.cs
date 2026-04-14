@@ -27,6 +27,16 @@ public enum GameResetType
 }
 
 /// <summary>
+/// 技能类型
+/// </summary>
+public enum SkillType
+{
+    Hint = 1, 
+    TransformRandom5 = 2,
+    Transform = 3
+}
+
+/// <summary>
 /// 
 /// </summary>
 public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEventSender

@@ -30,6 +30,9 @@ public enum AnimalType
     /// </summary>
     Elephant = 4,
 
-    
+    /// <summary>
+    /// 倒计时 羊
+    /// </summary>
+    CdSheep = 5,    
 }
 

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6874427621909341198}
   - component: {fileID: 555427464292025242}
   m_Layer: 3
-  m_Name: leftFailCount
+  m_Name: cdText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 12f68b3f2983cc441b88f268e04f9783, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 358620d51cfd0af4e98079e050c5ba23, type: 2}
@@ -145,11 +145,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 393393422938600926}
-  - component: {fileID: 4012777349777020571}
+  - component: {fileID: 7670933877846489895}
   - component: {fileID: 673715152299086558}
   - component: {fileID: 4154506364644812971}
   m_Layer: 3
-  m_Name: BombSheep 1
+  m_Name: CdSheep
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -171,7 +171,7 @@ Transform:
   - {fileID: 6609879965626569892}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4012777349777020571
+--- !u!114 &7670933877846489895
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -180,12 +180,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2660533379382003613}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9daab2ae0e52d24b808d89029e68497, type: 3}
+  m_Script: {fileID: 11500000, guid: 0775b448d8064ceaa7f1e017cb2044e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animAnimtorCtrl: {fileID: 4154506364644812971}
   moveSpeed: 3
-  rotateSpeed: 360
+  rotateSpeed: 540
   drawFootprintGizmo: 1
   drawFootprintWhenSelectedOnly: 1
   footprintExtraCells:
@@ -197,7 +197,8 @@ MonoBehaviour:
   gizmoCenterFillColor: {r: 1, g: 0.15, b: 0.15, a: 0.4}
   gizmoCenterWireColor: {r: 1, g: 0.2, b: 0.2, a: 1}
   gizmoHeightBias: 0.02
-  leftFailCount: {fileID: 555427464292025242}
+  cdText: {fileID: 0}
+  maxWaitTime: 300
 --- !u!65 &673715152299086558
 BoxCollider:
   m_ObjectHideFlags: 0

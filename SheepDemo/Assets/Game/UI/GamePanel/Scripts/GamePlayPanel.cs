@@ -161,7 +161,7 @@ public partial class GamePlayPanel : BaseUIView, IDebuger, IEventSender
 
     public void SetData(int level)
     {
-        LevelTxt.text = level.ToString();
+        LevelTxt.text = string.Format("Level {0}", level.ToString());
     }
 
     public void HideAllBtns()

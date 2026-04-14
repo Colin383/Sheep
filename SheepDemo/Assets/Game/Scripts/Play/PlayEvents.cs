@@ -39,7 +39,16 @@ namespace Game.Events
     /// </summary>
     public class  GameFailedEvent : EventBase {}
 
-    
+    /// <summary>
+    /// 进入技能状态
+    /// </summary>
+    public class EnterSkillEvent : EventBase<SkillType>
+    {
+        public SkillType SkillType => Field1;
+    }
+
+    // 退出技能模式
+    public class ExitSkillEvent : EventBase {}
 
     #endregion
 

@@ -25,6 +25,8 @@ public static class AnimalTypeUtils
                 return AnimalType.Chick;
             case "elephant":
                 return AnimalType.Elephant;
+            case "cdsheep":
+                return AnimalType.CdSheep;
             default:
                 return AnimalType.Unknown;
         }
@@ -42,6 +44,7 @@ public static class AnimalTypeUtils
             AnimalType.BombSheep => "bombsheep",
             AnimalType.Chick => "chick",
             AnimalType.Elephant => "elephant",
+            AnimalType.CdSheep => "cdsheep",
             _ => string.Empty,
         };
     }

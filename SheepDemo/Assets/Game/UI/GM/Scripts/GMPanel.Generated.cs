@@ -14,6 +14,7 @@ using TMPro;
         [SerializeField] private CustomButton EnterLevelLoadingBtn;
         [SerializeField] private CustomButton FailedBtn;
         [SerializeField] private CustomButton InterstitialBtn;
+        [SerializeField] private CustomButton JumpToLevelBtn;
         [SerializeField] private CustomButton LastLevelBtn;
         [SerializeField] private CustomButton NextLevelBtn;
         [SerializeField] private CustomButton RatingPopupBtn;

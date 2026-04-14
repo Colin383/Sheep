@@ -11,9 +11,9 @@ public class Chick : BaseAnimal
 
     public override AnimalType Type => AnimalType.Chick;
 
-    public override void Init(int id, int row, int col, string direction)
+    public override void Init(int id, int row, int col, string direction, string param = null)
     {
-        base.Init(id, row, col, direction);
+        base.Init(id, row, col, direction, param);
         _visitedGrids.Clear();
     }
 

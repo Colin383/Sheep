@@ -219,7 +219,7 @@ MonoBehaviour:
   _door: {fileID: 2279350659909620492}
   _waitingDuration: 0.3
   _radiusDuration: 0.6
-  _fadeDuration: 0.4
+  _fadeDuration: 1
 --- !u!223 &2238685039119841502
 Canvas:
   m_ObjectHideFlags: 0
@@ -271,7 +271,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4095
+    m_Bits: 127
 --- !u!1 &8314493291495251401
 GameObject:
   m_ObjectHideFlags: 0

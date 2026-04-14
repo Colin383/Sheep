@@ -44,7 +44,8 @@ public class BombSheepAnimal : BaseAnimal, IEventSender
 
         if (_currentFailCount <= 0)
         {
-            this.DispatchEvent(Witness<GameFailedEvent>._);
+            Level?.DestroyAnimal(this);
+            this.DispatchEvent(Witness<GameFailedEvent>._, GameFailedType.Bomb);
         }
     }
 

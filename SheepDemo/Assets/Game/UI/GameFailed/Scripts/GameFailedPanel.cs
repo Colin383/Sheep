@@ -24,7 +24,7 @@ public partial class GameFailedPanel : BaseUIView, IEventSender
     void RestartGame(CustomButton btn) 
     {
         UIManager.Instance.CloseUI(this);
-        this.DispatchEvent(Witness<GameResetEvent>._, GameResetType.Failed);
+        this.DispatchEvent(Witness<GameResetEvent>._, GameResetType.Manually);
     }
 
     public static GameFailedPanel Create()

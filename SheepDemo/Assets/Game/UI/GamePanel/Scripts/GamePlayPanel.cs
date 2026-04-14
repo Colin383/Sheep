@@ -1,3 +1,4 @@
+using System;
 using Bear.EventSystem;
 using Bear.Logger;
 using Bear.UI;
@@ -21,6 +22,9 @@ public partial class GamePlayPanel : BaseUIView, IDebuger, IEventSender
 
     [SerializeField] private Image blackMask;
     [SerializeField] private GameObject clickBlock;
+
+    [SerializeField] private GameObject SkillBtns;
+    [SerializeField] private GameObject SkillDesc;
 
     [SerializeField] private CustomButton useBtn;
 
@@ -61,6 +65,7 @@ public partial class GamePlayPanel : BaseUIView, IDebuger, IEventSender
         _subscriber.Subscribe<SwitchGameStateEvent>(OnGameStateChanged);
         _subscriber.Subscribe<GamePlayPanelFadeInEvent>(OnGamePlayFadeIn);
         _subscriber.Subscribe<GamePlayPanelSwitchBlockEvent>(OnSwichEventBlock);
+        _subscriber.Subscribe<ExitSkillEvent>(ExitSkillMode);
     }
 
     private void OnSwichEventBlock(GamePlayPanelSwitchBlockEvent @event)
@@ -74,6 +79,50 @@ public partial class GamePlayPanel : BaseUIView, IDebuger, IEventSender
         ResetBtn.OnClick += OnClickReset;
         PauseBtn.OnClick += OnClickSetting;
         ShopBtn.OnClick += OnClickShop;
+
+        Skill1Btn.OnClick += ShowSkill1;
+        Skill2Btn.OnClick += ShowSkill2;
+        Skill3Btn.OnClick += ShowSkill3;
+    }
+
+    private void ShowSkill1(CustomButton btn)
+    {
+        EnterSkillMode(SkillType.Hint);
+    }
+
+    private void ShowSkill2(CustomButton btn)
+    {
+        EnterSkillMode(SkillType.RandomRotate5);
+    }
+
+    private void ShowSkill3(CustomButton btn)
+    {
+        EnterSkillMode(SkillType.Rotate);
+    }
+
+    private void EnterSkillMode(SkillType type)
+    {
+        this.DispatchEvent(Witness<EnterSkillEvent>._, type);
+
+        if (SkillContentTxt != null)
+        {
+            SkillContentTxt.text = type switch
+            {
+                SkillType.Hint => "提示模式：高亮可移动的动物",
+                SkillType.RandomRotate5 => "随机变换：随机变换5只动物方向",
+                SkillType.Rotate => "变换模式：选择一只动物变换方向",
+                _ => string.Empty
+            };
+        }
+
+        SkillDesc.SetActive(true);
+        SkillBtns.SetActive(false);
+    }
+
+    private void ExitSkillMode(ExitSkillEvent evt)
+    {
+        SkillDesc.SetActive(false);
+        SkillBtns.gameObject.SetActive(true);
     }
 
     #endregion
@@ -82,10 +131,10 @@ public partial class GamePlayPanel : BaseUIView, IDebuger, IEventSender
         if (isPause)
             return;
 
-/*         if (isRightDown)
-            this.DispatchEvent(Witness<PlayerRightMoveEvent>._);
-        else if (isLeftDown)
-            this.DispatchEvent(Witness<PlayerLeftMoveEvent>._); */
+        /*         if (isRightDown)
+                    this.DispatchEvent(Witness<PlayerRightMoveEvent>._);
+                else if (isLeftDown)
+                    this.DispatchEvent(Witness<PlayerLeftMoveEvent>._); */
     }
 
     private void OnClickReset(CustomButton btn)

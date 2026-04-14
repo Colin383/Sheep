@@ -1,106 +1,97 @@
 {
-  "version": 4,
+  "kind": "map-editor-game",
+  "version": 1,
   "name": "level001",
   "width": 8,
   "height": 8,
-  "elements": [
+  "instances": [
     {
-      "id": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
-      "name": "羊",
-      "type": "sheep",
-      "gridN": 2,
-      "cells": [
-        {
-          "r": 0,
-          "c": 0
-        },
-        {
-          "r": 1,
-          "c": 0
-        }
-      ],
-      "anchor": {
-        "r": 0,
-        "c": 0
-      },
-      "image": "",
-      "color": "#ffffff",
-      "direction": "down",
-      "hasParam": false
-    }
-  ],
-  "placements": [
-    {
-      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
-      "row": 2,
-      "col": 2,
       "id": 0,
-      "rotation": 3,
-      "direction": "left",
-      "param": ""
-    },
-    {
-      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
-      "row": 2,
-      "col": 4,
-      "id": 1,
-      "rotation": 0,
-      "direction": "down",
-      "param": ""
-    },
-    {
-      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
-      "row": 2,
-      "col": 5,
-      "id": 2,
-      "rotation": 2,
-      "direction": "up",
-      "param": ""
-    },
-    {
-      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
-      "row": 4,
-      "col": 5,
-      "id": 3,
-      "rotation": 2,
-      "direction": "up",
-      "param": ""
-    },
-    {
-      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
-      "row": 4,
-      "col": 4,
-      "id": 4,
-      "rotation": 0,
-      "direction": "down",
-      "param": ""
-    },
-    {
-      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
+      "position": {
+        "x": 3,
+        "y": 5
+      },
       "row": 5,
-      "col": 2,
-      "id": 5,
-      "rotation": 3,
-      "direction": "left",
-      "param": ""
-    },
-    {
-      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
-      "row": 3,
-      "col": 2,
-      "id": 6,
-      "rotation": 0,
-      "direction": "down",
-      "param": ""
-    },
-    {
-      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
-      "row": 3,
       "col": 3,
-      "id": 7,
-      "rotation": 0,
+      "direction": "left",
+      "type": "sheep"
+    },
+    {
+      "id": 1,
+      "position": {
+        "x": 4,
+        "y": 5
+      },
+      "row": 5,
+      "col": 4,
       "direction": "down",
-      "param": ""
+      "type": "sheep"
+    },
+    {
+      "id": 2,
+      "position": {
+        "x": 5,
+        "y": 4
+      },
+      "row": 4,
+      "col": 5,
+      "direction": "up",
+      "type": "sheep"
+    },
+    {
+      "id": 3,
+      "position": {
+        "x": 5,
+        "y": 2
+      },
+      "row": 2,
+      "col": 5,
+      "direction": "up",
+      "type": "sheep"
+    },
+    {
+      "id": 4,
+      "position": {
+        "x": 4,
+        "y": 3
+      },
+      "row": 3,
+      "col": 4,
+      "direction": "down",
+      "type": "sheep"
+    },
+    {
+      "id": 5,
+      "position": {
+        "x": 3,
+        "y": 2
+      },
+      "row": 2,
+      "col": 3,
+      "direction": "left",
+      "type": "sheep"
+    },
+    {
+      "id": 6,
+      "position": {
+        "x": 2,
+        "y": 4
+      },
+      "row": 4,
+      "col": 2,
+      "direction": "down",
+      "type": "sheep"
+    },
+    {
+      "id": 7,
+      "position": {
+        "x": 3,
+        "y": 4
+      },
+      "row": 4,
+      "col": 3,
+      "direction": "down",
+      "type": "sheep"
     }
   ]
 }

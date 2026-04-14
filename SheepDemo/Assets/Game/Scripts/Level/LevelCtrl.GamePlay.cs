@@ -189,6 +189,35 @@ public partial class LevelCtrl : IEventSender
     }
 
     /// <summary>
+    /// 直接销毁指定 animal（用于技能等即时销毁场景）。
+    /// </summary>
+    public void DestroyAnimal(BaseAnimal animal)
+    {
+        if (animal == null)
+            return;
+
+        spawned.Remove(animal);
+        spawnedById.Remove(animal.Id);
+
+        if (spawnedByType.TryGetValue(animal.Type, out var list))
+        {
+            list.Remove(animal);
+            if (list.Count == 0)
+                spawnedByType.Remove(animal.Type);
+        }
+
+        if (animal is Chick chick)
+            chicks.Remove(chick);
+
+        if (Application.isPlaying)
+            Destroy(animal.gameObject);
+        else
+            DestroyImmediate(animal.gameObject);
+
+        CheckFinished();
+    }
+
+    /// <summary>
     /// Animal 到达终点后的回调
     /// </summary>
     private void OnAnimalReachEndPoint(BaseAnimal animal)

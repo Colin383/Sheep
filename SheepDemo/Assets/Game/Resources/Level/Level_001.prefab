@@ -327,7 +327,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3fac557f8fbd2164a8e36f61cdc8a998, type: 2}
+  - {fileID: 2100000, guid: c2e6e2f8054b34249b490983644bb141, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -419,6 +419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92c5e3685ef1abf4e9ac8f5753660483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clickHandle: {fileID: 0}
   pathManager: {fileID: 8417419101866163179}
   levelJson: {fileID: 4900000, guid: 60dfb5a942ec30a448f8787b17558166, type: 3}
   cellSize: {x: 1, y: 1}
@@ -614,7 +615,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8ea31f9fd0e9c404489a0731506e142c, type: 2}
+  - {fileID: 2100000, guid: 134d12a6e30e61346831a5548d4808e1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

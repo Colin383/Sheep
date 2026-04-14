@@ -15,7 +15,8 @@ namespace Game.Play
         {
             Debug.Log($"{nameof(PlayCtrl_Failed)} Enter");
 
-            GameFailedPanel.Create();
+            
+            RevivePopup.Create();
         }
 
         public override void OnExecute()

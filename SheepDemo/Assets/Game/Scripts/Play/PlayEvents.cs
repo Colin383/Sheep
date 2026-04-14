@@ -37,7 +37,15 @@ namespace Game.Events
     /// <summary>
     /// 游戏失败事件
     /// </summary>
-    public class  GameFailedEvent : EventBase {}
+    public class  GameFailedEvent : EventBase<GameFailedType>
+    {
+        public GameFailedType Type => Field1;
+    }
+
+    /// <summary>
+    /// 游戏复活事件
+    /// </summary>
+    public class GameReviveEvent : EventBase {}
 
     /// <summary>
     /// 进入技能状态

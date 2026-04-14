@@ -1,93 +1,53 @@
 {
-  "version": 4,
+  "kind": "map-editor-game",
+  "version": 1,
   "name": "level013",
   "width": 14,
   "height": 20,
-  "elements": [
+  "instances": [
     {
-      "id": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
-      "name": "羊",
-      "type": "sheep",
-      "gridN": 2,
-      "cells": [
-        {
-          "r": 0,
-          "c": 0
-        },
-        {
-          "r": 1,
-          "c": 0
-        }
-      ],
-      "anchor": {
-        "r": 0,
-        "c": 0
-      },
-      "image": "",
-      "color": "#ffffff",
-      "direction": "down",
-      "hasParam": false
-    },
-    {
-      "id": "94f5098c-a3a0-4c96-b669-361c6c24dad4",
-      "name": "倒计时羊",
-      "type": "cdsheep",
-      "gridN": 2,
-      "cells": [
-        {
-          "r": 0,
-          "c": 0
-        },
-        {
-          "r": 1,
-          "c": 0
-        }
-      ],
-      "anchor": {
-        "r": 0,
-        "c": 0
-      },
-      "image": "",
-      "color": "#ff0fa7",
-      "direction": "down",
-      "hasParam": true
-    }
-  ],
-  "placements": [
-    {
-      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
-      "row": 2,
-      "col": 2,
       "id": 0,
-      "rotation": 3,
-      "direction": "left",
-      "param": ""
-    },
-    {
-      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
-      "row": 3,
+      "position": {
+        "x": 3,
+        "y": 17
+      },
+      "row": 17,
       "col": 3,
+      "direction": "left",
+      "type": "sheep"
+    },
+    {
       "id": 1,
-      "rotation": 3,
+      "position": {
+        "x": 4,
+        "y": 16
+      },
+      "row": 16,
+      "col": 4,
       "direction": "left",
-      "param": ""
+      "type": "sheep"
     },
     {
-      "elementId": "1e32c1d8-3574-4e65-bbba-ddcef5f17a89",
-      "row": 3,
-      "col": 2,
       "id": 2,
-      "rotation": 2,
+      "position": {
+        "x": 2,
+        "y": 15
+      },
+      "row": 15,
+      "col": 2,
       "direction": "up",
-      "param": ""
+      "type": "sheep"
     },
     {
-      "elementId": "94f5098c-a3a0-4c96-b669-361c6c24dad4",
-      "row": 6,
-      "col": 5,
       "id": 3,
-      "rotation": 3,
+      "position": {
+        "x": 6,
+        "y": 13
+      },
+      "row": 13,
+      "col": 6,
       "direction": "left",
+      "type": "cdsheep",
       "param": "240"
     }
   ]

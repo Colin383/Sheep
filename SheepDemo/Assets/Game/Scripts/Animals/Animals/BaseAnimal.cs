@@ -250,6 +250,19 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
     /// <summary>由 json <c>direction</c> 解析；空或非法时为 <see cref="DirectionEnum.Down"/>（朝下）。</summary>
     public DirectionEnum FacingDirection { get; private set; } = DirectionEnum.Down;
 
+    /// <summary>
+    /// 设置动物朝向并同步 transform 旋转。
+    /// </summary>
+    public void SetFacingDirection(DirectionEnum direction)
+    {
+        if (FacingDirection == direction)
+            return;
+
+        var baseRot = Quaternion.Inverse(DirectionEnumUtility.ToWorldRotation(FacingDirection)) * transform.rotation;
+        FacingDirection = direction;
+        transform.rotation = DirectionEnumUtility.ToWorldRotation(direction) * baseRot;
+    }
+
     /// <summary>与配置 type / prefab 对应的动物种类。</summary>
     public abstract AnimalType Type { get; }
 

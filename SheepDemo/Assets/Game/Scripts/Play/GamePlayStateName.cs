@@ -10,6 +10,7 @@ namespace Game.Play
         public const string PAUSE = "PAUSE";
         public const string SUCCESS = "SUCCESS";
         public const string FAILED = "FAILED";
+        public const string SKILL = "SKILL";
     }
 }
 

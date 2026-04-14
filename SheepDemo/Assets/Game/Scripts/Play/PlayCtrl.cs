@@ -21,9 +21,16 @@ using UnityEngine;
 public enum GameResetType
 {
     // 手动重置
-    Manually,
-    // 触发陷阱
-    Failed,
+    Manually
+}
+
+/// <summary>
+/// 失败类型
+/// </summary>
+public enum GameFailedType
+{
+    // 炸弹
+    Bomb
 }
 
 /// <summary>
@@ -31,9 +38,9 @@ public enum GameResetType
 /// </summary>
 public enum SkillType
 {
-    Hint = 1, 
-    TransformRandom5 = 2,
-    Transform = 3
+    Hint = 1,
+    RandomRotate5 = 2,
+    Rotate = 3
 }
 
 /// <summary>
@@ -90,7 +97,8 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
         typeof(PlayCtrl_Playing),
         typeof(PlayCtrl_Pause),
         typeof(PlayCtrl_Success),
-        typeof(PlayCtrl_Failed));
+        typeof(PlayCtrl_Failed),
+        typeof(PlayCtrl_Skill));
 
         _machine.Apply(GetType());
         _machine.Enter(GamePlayStateName.START);
@@ -111,6 +119,7 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
         _subscriber.Subscribe<EnterNextLevelEvent>(OnEnterNextLevel);
 
         _subscriber.Subscribe<UseTipsEvent>(OnTipsUsed);
+        _subscriber.Subscribe<EnterSkillEvent>(OnEnterSkill);
     }
 
     private void OnGameFailed(GameFailedEvent evt)
@@ -121,6 +130,11 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
     private void OnTipsUsed(UseTipsEvent evt)
     {
 
+    }
+
+    private void OnEnterSkill(EnterSkillEvent evt)
+    {
+        _machine.Enter(GamePlayStateName.SKILL);
     }
 
     private void OnGameEnter(EnterLevelEvent evt)

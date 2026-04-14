@@ -179,7 +179,7 @@ namespace Game.Level
         private async void TryToRestart()
         {
             await UniTask.WaitForSeconds(0.5f, cancellationToken: this.GetCancellationTokenOnDestroy());
-            this.DispatchEvent(Witness<GameResetEvent>._, GameResetType.Failed);
+            this.DispatchEvent(Witness<GameResetEvent>._, GameResetType.Manually);
         }
 
         #endregion

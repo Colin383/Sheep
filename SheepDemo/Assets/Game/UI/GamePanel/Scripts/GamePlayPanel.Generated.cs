@@ -19,6 +19,7 @@ using TMPro;
 
         #region Texts
         [SerializeField] private TextMeshProUGUI LevelTxt;
+        [SerializeField] private TextMeshProUGUI SkillContentTxt;
         #endregion
 
         #region Images

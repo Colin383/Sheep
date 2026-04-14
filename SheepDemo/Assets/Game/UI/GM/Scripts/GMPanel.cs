@@ -61,7 +61,7 @@ public partial class GMPanel : BaseUIView, IEventSender
 
     private void SendFailedEvent(CustomButton btn)
     {
-        this.DispatchEvent(Witness<GameFailedEvent>._);
+        this.DispatchEvent(Witness<GameFailedEvent>._, GameFailedType.Bomb);
     }
 
     private void ShowRating(CustomButton btn)

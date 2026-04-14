@@ -1751,6 +1751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92c5e3685ef1abf4e9ac8f5753660483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clickHandle: {fileID: 721827135968266395}
   pathManager: {fileID: 5053803710703968953}
   levelJson: {fileID: 4900000, guid: c71ca384b791bff4e814133e218fda8a, type: 3}
   cellSize: {x: 1, y: 1}

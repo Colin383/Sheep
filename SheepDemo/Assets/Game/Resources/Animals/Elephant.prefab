@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 393393422938600926}
-  - component: {fileID: -672784017968726249}
+  - component: {fileID: 5371928168462871253}
   - component: {fileID: 673715152299086558}
   - component: {fileID: 4154506364644812971}
   m_Layer: 3
@@ -35,7 +35,7 @@ Transform:
   - {fileID: 2548422333470716373}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-672784017968726249
+--- !u!114 &5371928168462871253
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,14 +44,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2660533379382003613}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e60c689a36da3ca49be0ac647a1e6408, type: 3}
+  m_Script: {fileID: 11500000, guid: eaff1904f5d97ed4eaf43632a5cc58ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animAnimtorCtrl: {fileID: 4154506364644812971}
-  moveSpeed: 2
-  rotateSpeed: 360
+  moveSpeed: 3
+  rotateSpeed: 540
   drawFootprintGizmo: 1
-  drawFootprintWhenSelectedOnly: 0
+  drawFootprintWhenSelectedOnly: 1
   footprintExtraCells:
   - {x: 0, y: 1}
   - {x: 1, y: 0}

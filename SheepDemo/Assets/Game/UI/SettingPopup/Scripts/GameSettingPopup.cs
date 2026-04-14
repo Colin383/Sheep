@@ -50,6 +50,11 @@ public partial class GameSettingPopup : BaseUIView, IEventSender, IDebuger
             var data = Guru.GuruAppVersion.Load();
             VersionTxt.text = data.ToString();
         }
+
+        if (HomeBtn)
+        {
+            HomeBtn.OnClick += ExitLevel;
+        }
     }
 
     private int _gmClickCount;
@@ -190,7 +195,7 @@ public partial class GameSettingPopup : BaseUIView, IEventSender, IDebuger
 
     private void ExitLevel(CustomButton btn)
     {
-        this.DispatchEvent(Witness<SwitchGameStateEvent>._, GamePlayStateName.FAILED);
+        this.DispatchEvent(Witness<SwitchGameStateEvent>._, GamePlayStateName.START);
         ClickTransformPanel.Create(() =>
         {
             ChoiceLevelPanel.Create();

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Bear.EventSystem;
+using Bear.Logger;
 using Game.Events;
 using Game.Play;
 using UnityEngine;
 
-public partial class LevelCtrl
+public partial class LevelCtrl : IDebuger
 {
     [SerializeField] private ClickTriggerHandle clickHandle;
 
@@ -35,6 +36,7 @@ public partial class LevelCtrl
 
     private void OnSwitchState(SwitchGameStateEvent evt)
     {
+        this.Log($"[AnimalCtrl] SwitchState: {evt.NewState}");
         if (evt.NewState == GamePlayStateName.PLAYING)
         {
             UnbindSkillClickHandle();
@@ -51,6 +53,7 @@ public partial class LevelCtrl
         _currentSkillType = evt.SkillType;
         _hintUsedCount = 0;
 
+        this.Log($"[AnimalCtrl] EnterSkill: {_currentSkillType}");
         UnbindClickHandle();
 
         switch (_currentSkillType)
@@ -69,10 +72,14 @@ public partial class LevelCtrl
     private void BindClickHandle()
     {
         if (clickHandle == null)
+        {
+            this.LogWarning("[AnimalCtrl] BindClickHandle failed: clickHandle is null");
             return;
+        }
 
         clickHandle.OnClickTransform.RemoveListener(OnClickAnimal);
         clickHandle.OnClickTransform.AddListener(OnClickAnimal);
+        this.Log("[AnimalCtrl] BindClickHandle: normal click bound");
     }
 
     private void UnbindClickHandle()
@@ -81,15 +88,20 @@ public partial class LevelCtrl
             return;
 
         clickHandle.OnClickTransform.RemoveListener(OnClickAnimal);
+        this.Log("[AnimalCtrl] UnbindClickHandle: normal click unbound");
     }
 
     private void BindSkillClickHandle()
     {
         if (clickHandle == null)
+        {
+            this.LogWarning("[AnimalCtrl] BindSkillClickHandle failed: clickHandle is null");
             return;
+        }
 
         clickHandle.OnClickTransform.RemoveListener(OnSkillClickAnimal);
         clickHandle.OnClickTransform.AddListener(OnSkillClickAnimal);
+        this.Log($"[AnimalCtrl] BindSkillClickHandle: skill click bound ({_currentSkillType})");
     }
 
     private void UnbindSkillClickHandle()
@@ -98,10 +110,12 @@ public partial class LevelCtrl
             return;
 
         clickHandle.OnClickTransform.RemoveListener(OnSkillClickAnimal);
+        this.Log("[AnimalCtrl] UnbindSkillClickHandle: skill click unbound");
     }
 
     private void ExitSkillMode()
     {
+        this.Log("[AnimalCtrl] ExitSkillMode -> PLAYING");
         this.DispatchEvent(Witness<SwitchGameStateEvent>._, GamePlayStateName.PLAYING);
     }
 
@@ -112,6 +126,7 @@ public partial class LevelCtrl
             .ToList();
 
         int count = Mathf.Min(5, candidates.Count);
+        this.Log($"[AnimalCtrl] ExecuteRandomRotate5: candidates={candidates.Count}, rotate={count}");
         if (count <= 0)
             return;
 
@@ -125,6 +140,7 @@ public partial class LevelCtrl
         {
             var animal = candidates[i];
             animal.SetFacingDirection(animal.FacingDirection.TurnLeft().TurnLeft());
+            this.Log($"[AnimalCtrl] RandomRotate5 rotated animal id={animal.Id}, type={animal.Type}");
         }
     }
 
@@ -138,16 +154,21 @@ public partial class LevelCtrl
             animal = transform.GetComponentInParent<BaseAnimal>();
 
         if (animal == null)
+        {
+            this.LogWarning("[AnimalCtrl] OnSkillClickAnimal: no BaseAnimal found");
             return;
+        }
 
         switch (_currentSkillType)
         {
             case SkillType.Rotate:
+                this.Log($"[AnimalCtrl] Skill Rotate: rotate animal id={animal.Id}, type={animal.Type}");
                 animal.SetFacingDirection(animal.FacingDirection.TurnLeft().TurnLeft());
                 ExitSkillMode();
                 break;
 
             case SkillType.Hint:
+                this.Log($"[AnimalCtrl] Skill Hint: destroy animal id={animal.Id}, type={animal.Type}, used={_hintUsedCount + 1}/2");
                 DestroyAnimal(animal);
                 _hintUsedCount++;
                 if (_hintUsedCount >= 2)
@@ -170,7 +191,10 @@ public partial class LevelCtrl
             animal = transform.GetComponentInParent<BaseAnimal>();
 
         if (animal != null)
+        {
+            this.Log($"[AnimalCtrl] OnClickAnimal: id={animal.Id}, type={animal.Type}");
             animal.OnClickTrigger();
+        }
 
         for (int i = 0; i < chicks.Count; i++)
         {

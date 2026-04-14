@@ -24,6 +24,8 @@ public partial class GMPanel : BaseUIView, IEventSender
 
     [SerializeField] private TMP_InputField gmConfig;
 
+    [SerializeField] private TMP_InputField levelIndex;
+
     public override void OnCreate()
     {
         base.OnCreate();
@@ -40,6 +42,7 @@ public partial class GMPanel : BaseUIView, IEventSender
 
         NextLevelBtn.OnClick += NextLevel;
         LastLevelBtn.OnClick += LastLevel;
+        JumpToLevelBtn.OnClick += JumpToLevel;
         EnterLevelLoadingBtn.OnClick += EnterLevelLoadingPanel;
         DeleteBtn.OnClick += DeleteAllData;
         VictoryBtn.OnClick += SendVictoryEvent;
@@ -58,7 +61,7 @@ public partial class GMPanel : BaseUIView, IEventSender
 
     private void SendFailedEvent(CustomButton btn)
     {
-         this.DispatchEvent(Witness<GameFailedEvent>._);
+        this.DispatchEvent(Witness<GameFailedEvent>._);
     }
 
     private void ShowRating(CustomButton btn)
@@ -266,6 +269,27 @@ public partial class GMPanel : BaseUIView, IEventSender
         this.DispatchEvent(Witness<Game.Events.EnterLevelEvent>._, level.CurrentLevelSort);
     }
 
+    private void JumpToLevel(CustomButton btn)
+    {
+        if (levelIndex == null || string.IsNullOrWhiteSpace(levelIndex.text))
+        {
+            return;
+        }
+
+        if (!int.TryParse(levelIndex.text, out var index))
+        {
+            return;
+        }
+
+        var levelSort = PlayCtrl.Instance.Level.GetLevelSortById(index);
+        if (levelSort == null)
+        {
+            return;
+        }
+
+        this.DispatchEvent(Witness<Game.Events.EnterLevelEvent>._, levelSort);
+    }
+
     private void EnterLevelLoadingPanel(CustomButton btn)
     {
         EnterLevelLoading.Create();
@@ -287,7 +311,7 @@ public partial class GMPanel : BaseUIView, IEventSender
             if (!DebugModeSwitchAllBtns.isShow)
                 return;
         }
-        
+
         ShowInterstitialData();
         ShowTrackData();
 

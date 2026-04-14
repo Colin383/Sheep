@@ -28,8 +28,9 @@ public partial class LevelCtrl
     {
         {AnimalType.Sheep, "Animals/Sheep"},
         {AnimalType.BombSheep, "Animals/BombSheep"},
-         {AnimalType.Chick, "Animals/Chick"},
-          {AnimalType.Elephant, "Animals/Elephant"}
+        {AnimalType.Chick, "Animals/Chick"},
+        {AnimalType.Elephant, "Animals/Elephant"},
+        {AnimalType.CdSheep, "Animals/CdSheep"}
     };
 
 
@@ -192,7 +193,7 @@ public partial class LevelCtrl
             animal.transform.SetParent(instancesRoot, worldPositionStays: true);
             animal.transform.position = spawnCellCenterWorld;
 
-            animal.Init(inst.id, inst.row, inst.col, inst.direction);
+            animal.Init(inst.id, inst.row, inst.col, inst.direction, inst.param);
             animal.SetLevelOwner(this);
 
             CacheSpawned(animal, instType);

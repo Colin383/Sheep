@@ -233,7 +233,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetAnimator: {fileID: 4745449491795622188}
   findInChildrenIfNull: 1
-  walkBoolName: walking
+  walkBoolName: walk
   knockTriggerName: knock
 --- !u!1 &5472114102694760146
 GameObject:

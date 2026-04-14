@@ -1,152 +1,152 @@
 [
   {
     "id": 1,
-    "levelConfig": "Level001",
+    "levelConfig": "level001",
     "scene": "Level_001"
   },
   {
     "id": 2,
-    "levelConfig": "Level002",
+    "levelConfig": "level002",
     "scene": "Level_001"
   },
   {
     "id": 3,
-    "levelConfig": "Level003",
+    "levelConfig": "level003",
     "scene": "Level_002"
   },
   {
     "id": 4,
-    "levelConfig": "Level004",
+    "levelConfig": "level004",
     "scene": "Level_002"
   },
   {
     "id": 5,
-    "levelConfig": "Level005",
+    "levelConfig": "level005",
     "scene": "Level_002"
   },
   {
     "id": 6,
-    "levelConfig": "Level006",
+    "levelConfig": "level006",
     "scene": "Level_002"
   },
   {
     "id": 7,
-    "levelConfig": "Level007",
+    "levelConfig": "level007",
     "scene": "Level_002"
   },
   {
     "id": 8,
-    "levelConfig": "Level008",
+    "levelConfig": "level008",
     "scene": "Level_002"
   },
   {
     "id": 9,
-    "levelConfig": "Level009",
+    "levelConfig": "level009",
     "scene": "Level_002"
   },
   {
     "id": 10,
-    "levelConfig": "Level010",
+    "levelConfig": "level010",
     "scene": "Level_002"
   },
   {
     "id": 11,
-    "levelConfig": "Level011",
+    "levelConfig": "level011",
     "scene": "Level_002"
   },
   {
     "id": 12,
-    "levelConfig": "Level012",
+    "levelConfig": "level012",
     "scene": "Level_002"
   },
   {
     "id": 13,
-    "levelConfig": "Level013",
+    "levelConfig": "level013",
     "scene": "Level_002"
   },
   {
     "id": 14,
-    "levelConfig": "Level014",
+    "levelConfig": "level014",
     "scene": "Level_002"
   },
   {
     "id": 15,
-    "levelConfig": "Level015",
+    "levelConfig": "level015",
     "scene": "Level_002"
   },
   {
     "id": 16,
-    "levelConfig": "Level016",
+    "levelConfig": "level016",
     "scene": "Level_002"
   },
   {
     "id": 17,
-    "levelConfig": "Level017",
+    "levelConfig": "level017",
     "scene": "Level_002"
   },
   {
     "id": 18,
-    "levelConfig": "Level018",
+    "levelConfig": "level018",
     "scene": "Level_002"
   },
   {
     "id": 19,
-    "levelConfig": "Level019",
+    "levelConfig": "level019",
     "scene": "Level_002"
   },
   {
     "id": 20,
-    "levelConfig": "Level020",
+    "levelConfig": "level020",
     "scene": "Level_002"
   },
   {
     "id": 21,
-    "levelConfig": "Level021",
+    "levelConfig": "level021",
     "scene": "Level_002"
   },
   {
     "id": 22,
-    "levelConfig": "Level022",
+    "levelConfig": "level022",
     "scene": "Level_002"
   },
   {
     "id": 23,
-    "levelConfig": "Level023",
+    "levelConfig": "level023",
     "scene": "Level_002"
   },
   {
     "id": 24,
-    "levelConfig": "Level024",
+    "levelConfig": "level024",
     "scene": "Level_002"
   },
   {
     "id": 25,
-    "levelConfig": "Level025",
+    "levelConfig": "level025",
     "scene": "Level_002"
   },
   {
     "id": 26,
-    "levelConfig": "Level026",
+    "levelConfig": "level026",
     "scene": "Level_002"
   },
   {
     "id": 27,
-    "levelConfig": "Level027",
+    "levelConfig": "level027",
     "scene": "Level_002"
   },
   {
     "id": 28,
-    "levelConfig": "Level028",
+    "levelConfig": "level028",
     "scene": "Level_002"
   },
   {
     "id": 29,
-    "levelConfig": "Level029",
+    "levelConfig": "level029",
     "scene": "Level_002"
   },
   {
     "id": 30,
-    "levelConfig": "Level030",
+    "levelConfig": "level030",
     "scene": "Level_002"
   }
 ]

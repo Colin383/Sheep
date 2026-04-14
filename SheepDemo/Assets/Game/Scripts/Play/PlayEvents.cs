@@ -47,6 +47,9 @@ namespace Game.Events
         public SkillType SkillType => Field1;
     }
 
+    // 退出技能模式
+    public class ExitSkillEvent : EventBase {}
+
     #endregion
 
     #region GameState 

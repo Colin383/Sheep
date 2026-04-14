@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Bear.Fsm;
 using UnityEngine;
@@ -243,6 +244,9 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
     /// <summary>配置里的原始字符串（可能为空）。解析朝向请用 <see cref="FacingDirection"/>。</summary>
     public string Direction { get; private set; }
 
+    /// <summary>配置中的原始 param 字符串。</summary>
+    public string Param { get; private set; }
+
     /// <summary>由 json <c>direction</c> 解析；空或非法时为 <see cref="DirectionEnum.Down"/>（朝下）。</summary>
     public DirectionEnum FacingDirection { get; private set; } = DirectionEnum.Down;
 
@@ -252,17 +256,33 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
     public LevelCtrl Level { get; private set; }
 
     /// <summary>用关卡实例数据初始化，生成器在 Instantiate 后调用。</summary>
-    public virtual void Init(int id, int row, int col, string direction)
+    public virtual void Init(int id, int row, int col, string direction, string param = null)
     {
         Id = id;
         Row = row;
         Col = col;
         Direction = direction ?? string.Empty;
+        Param = param ?? string.Empty;
 
         CurrentPos = new Vector2Int(Col, Row);
         PreviousPos = CurrentPos;
 
         FacingDirection = DirectionEnumUtility.ParseOrDefault(direction);
+        try
+        {
+            ParseParam(Param);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[BaseAnimal] ParseParam failed for {GetType().Name}, param='{Param}': {e}");
+        }
+    }
+
+    /// <summary>
+    /// 解析关卡配置传入的 param 字段，供子类实现自定义参数逻辑。
+    /// </summary>
+    protected virtual void ParseParam(string param)
+    {
     }
 
     /// <summary>
@@ -424,7 +444,7 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
 
     #endregion
 
-    public void OnComplete()
+    public virtual void OnComplete()
     {
         // 路径移动完成回调，由 PathManager 调用
         // 具体的销毁逻辑已在 LevelCtrl.OnAnimalReachEndPoint 中处理

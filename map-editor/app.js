@@ -1801,12 +1801,12 @@
     const seen = Object.create(null);
     return maps.map((m, i) => {
       const base = sanitizeFilename((m.name && String(m.name).trim()) || '未命名地图');
-      let fname = base + '.map.json';
+      let fname = base + '.json';
       if (seen[fname]) {
         const idSuffix = String(m.id).replace(/[/\\?%*:|"<>]/g, '-').slice(0, 36);
-        fname = base + '-' + idSuffix + '.map.json';
+        fname = base + '-' + idSuffix + '.json';
       }
-      if (seen[fname]) fname = base + '-n' + i + '.map.json';
+      if (seen[fname]) fname = base + '-n' + i + '.json';
       seen[fname] = true;
       return fname;
     });
@@ -1848,7 +1848,7 @@
             if (perm === 'granted') {
               await writeItemsToDirectory(dirHandle);
               closeBatchExportDialog();
-              showToast('已写入 ' + items.length + ' 个 .map.json（同名已覆盖）', 'ok');
+              showToast('已写入 ' + items.length + ' 个 .json（同名已覆盖）', 'ok');
               return;
             }
           } catch (e) {
@@ -1862,7 +1862,7 @@
           await idbPutFs(IDB_BATCH_EXPORT_DIR_KEY, dirHandle);
           await writeItemsToDirectory(dirHandle);
           closeBatchExportDialog();
-          showToast('已写入 ' + items.length + ' 个 .map.json；下次导出可复用该文件夹', 'ok');
+          showToast('已写入 ' + items.length + ' 个 .json；下次导出可复用该文件夹', 'ok');
           return;
         } catch (e) {
           if (e && e.name === 'AbortError') {
@@ -3459,7 +3459,7 @@
       }),
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-    downloadBlob(blob, sanitizeFilename(name) + '.map.json');
+    downloadBlob(blob, sanitizeFilename(name) + '.json');
     showToast('地图已保存', 'ok');
   });
 

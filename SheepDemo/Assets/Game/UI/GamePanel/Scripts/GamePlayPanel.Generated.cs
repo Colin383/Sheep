@@ -12,10 +12,17 @@ using TMPro;
         [SerializeField] private CustomButton PauseBtn;
         [SerializeField] private CustomButton ResetBtn;
         [SerializeField] private CustomButton ShopBtn;
+        [SerializeField] private CustomButton Skill1Btn;
+        [SerializeField] private CustomButton Skill2Btn;
+        [SerializeField] private CustomButton Skill3Btn;
         #endregion
 
         #region Texts
         [SerializeField] private TextMeshProUGUI LevelTxt;
+        #endregion
+
+        #region Images
+        [SerializeField] private Image UIYouxizhongZhezhao01Img;
         #endregion
 
     }

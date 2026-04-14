@@ -10,7 +10,13 @@
   /** 地图页：锚点 / 实例 ID / 实例参数 等工具栏复选框 */
   const LOCAL_STORAGE_MAP_VIEW_PREFS_KEY = 'map-editor-map-view-prefs-v1';
   const WORKSPACE_KIND = 'map-editor-workspace';
+  /** 批量导出多地图 JSON */
+  const MAP_BUNDLE_KIND = 'map-editor-map-bundle';
   const WORKSPACE_JSON_PATH = 'data/workspace.json';
+  /** IndexedDB：记住「导出工作台」写入的本地文件句柄，便于下次覆盖 */
+  const IDB_FS_NAME = 'map-editor-fs';
+  const IDB_FS_STORE = 'handles';
+  const IDB_WORKSPACE_EXPORT_KEY = 'workspaceExport';
   const CELL_EL = 28;
   const CELL_MAP = 32;
   const GAP = 2;
@@ -145,6 +151,14 @@
   const btnMapUndo = $('btn-map-undo');
   const btnMapRedo = $('btn-map-redo');
   const mapList = $('map-list');
+  const btnOpenBatchExport = $('btn-open-batch-export');
+  const batchExportDialog = $('batch-export-dialog');
+  const batchExportMapList = $('batch-export-map-list');
+  const batchExportClose = $('batch-export-close');
+  const batchExportSelectAll = $('batch-export-select-all');
+  const batchExportSelectNone = $('batch-export-select-none');
+  const batchExportConfirm = $('batch-export-confirm');
+  const batchExportCancel = $('batch-export-cancel');
 
   const mapUnsavedDialog = $('map-unsaved-dialog');
   const mapUnsavedSave = $('map-unsaved-save');
@@ -161,6 +175,15 @@
 
   /** @type {string | number | null} */
   let placementParamEditPid = null;
+
+  /** 批量导出：地图 id 顺序（与列表拖拽一致） */
+  let batchExportOrderIds = [];
+  /** @type {Record<string, boolean>} */
+  let batchExportChecked = {};
+  let batchExportDragId = null;
+
+  /** @type {FileSystemFileHandle | null} */
+  let workspaceExportFileHandle = null;
 
   // --- Map axis labels (row/col numbers) ---
   let mapAxisCorner = null;
@@ -1225,6 +1248,127 @@
     }
   }
 
+  function idbOpenFs() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(IDB_FS_NAME, 1);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains(IDB_FS_STORE)) {
+          db.createObjectStore(IDB_FS_STORE);
+        }
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  function idbPutFs(key, value) {
+    return idbOpenFs().then(
+      (db) =>
+        new Promise((resolve, reject) => {
+          const tx = db.transaction(IDB_FS_STORE, 'readwrite');
+          tx.objectStore(IDB_FS_STORE).put(value, key);
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => reject(tx.error);
+        })
+    );
+  }
+
+  function idbGetFs(key) {
+    return idbOpenFs().then(
+      (db) =>
+        new Promise((resolve, reject) => {
+          const tx = db.transaction(IDB_FS_STORE, 'readonly');
+          const r = tx.objectStore(IDB_FS_STORE).get(key);
+          r.onsuccess = () => resolve(r.result);
+          r.onerror = () => reject(r.error);
+        })
+    );
+  }
+
+  async function loadWorkspaceExportHandleFromIdb() {
+    if (typeof indexedDB === 'undefined') return;
+    try {
+      const h = await idbGetFs(IDB_WORKSPACE_EXPORT_KEY);
+      if (h && typeof h.createWritable === 'function') {
+        workspaceExportFileHandle = h;
+      }
+    } catch (e) {
+      console.warn('loadWorkspaceExportHandleFromIdb', e);
+    }
+  }
+
+  async function exportWorkspacePortable() {
+    try {
+      const payload = {
+        version: VERSION,
+        kind: WORKSPACE_KIND,
+        exportedAt: Date.now(),
+        elements: JSON.parse(JSON.stringify(elements)),
+        maps: JSON.parse(JSON.stringify(savedMaps)),
+        session: JSON.parse(mapStateSnapshot()),
+      };
+      const json = JSON.stringify(payload, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+
+      async function writeToHandle(handle) {
+        const writable = await handle.createWritable();
+        await writable.write(json);
+        await writable.close();
+      }
+
+      if (workspaceExportFileHandle && typeof workspaceExportFileHandle.createWritable === 'function') {
+        try {
+          let perm = await workspaceExportFileHandle.queryPermission({ mode: 'readwrite' });
+          if (perm !== 'granted') {
+            perm = await workspaceExportFileHandle.requestPermission({ mode: 'readwrite' });
+          }
+          if (perm === 'granted') {
+            await writeToHandle(workspaceExportFileHandle);
+            showToast('已覆盖关联的 workspace.json 文件', 'ok');
+            return;
+          }
+        } catch (e) {
+          console.warn('workspace export overwrite', e);
+          workspaceExportFileHandle = null;
+        }
+      }
+
+      if (typeof window.showSaveFilePicker === 'function') {
+        try {
+          const handle = await window.showSaveFilePicker({
+            suggestedName: 'workspace.json',
+            types: [
+              {
+                description: 'JSON',
+                accept: { 'application/json': ['.json'] },
+              },
+            ],
+          });
+          await writeToHandle(handle);
+          workspaceExportFileHandle = handle;
+          try {
+            await idbPutFs(IDB_WORKSPACE_EXPORT_KEY, handle);
+          } catch (e) {
+            console.warn('idbPutFs workspace handle', e);
+          }
+          showToast('已保存；下次导出将直接覆盖该文件', 'ok');
+          return;
+        } catch (e) {
+          if (e && e.name === 'AbortError') {
+            showToast('已取消保存', 'err');
+            return;
+          }
+        }
+      }
+
+      downloadBlob(blob, 'workspace.json');
+      showToast('已下载 workspace.json（当前环境无法直接写入磁盘；请手动放到 data/）', 'ok');
+    } catch (e) {
+      showToast('导出失败：' + (e && e.message ? e.message : String(e)), 'err');
+    }
+  }
+
   function isStorageEmpty() {
     try {
       if (localStorage.getItem(LOCAL_STORAGE_KEY)) return false;
@@ -1410,6 +1554,17 @@
     showToast('已从列表删除', 'ok');
   }
 
+  /** 按地图名称排序（仅用于展示与批量导出初始顺序，不改变 localStorage 内数组顺序） */
+  function sortedSavedMapsByName() {
+    return savedMaps.slice().sort((a, b) => {
+      const na = String(a.name != null ? a.name : '').trim();
+      const nb = String(b.name != null ? b.name : '').trim();
+      const cmp = na.localeCompare(nb, 'zh-CN');
+      if (cmp !== 0) return cmp;
+      return String(a.id).localeCompare(String(b.id));
+    });
+  }
+
   function renderMapList() {
     if (!mapList) return;
     mapList.innerHTML = '';
@@ -1420,7 +1575,7 @@
       mapList.appendChild(empty);
       return;
     }
-    savedMaps.forEach((m) => {
+    sortedSavedMapsByName().forEach((m) => {
       const li = document.createElement('li');
       li.className = 'map-list-item' + (m.id === activeMapId ? ' selected' : '');
       li.dataset.mapId = m.id;
@@ -1461,6 +1616,152 @@
       li.appendChild(btns);
       mapList.appendChild(li);
     });
+  }
+
+  function isBatchExportDialogOpen() {
+    return batchExportDialog && !batchExportDialog.hidden;
+  }
+
+  function closeBatchExportDialog() {
+    if (batchExportDialog) batchExportDialog.hidden = true;
+    batchExportDragId = null;
+  }
+
+  function reorderBatchExport(fromId, toId) {
+    if (!fromId || !toId || fromId === toId) return;
+    const a = batchExportOrderIds.filter((x) => x !== fromId);
+    const idx = a.indexOf(toId);
+    if (idx < 0) return;
+    a.splice(idx, 0, fromId);
+    batchExportOrderIds = a;
+  }
+
+  function renderBatchExportList() {
+    if (!batchExportMapList) return;
+    batchExportMapList.innerHTML = '';
+    batchExportOrderIds.forEach((id, index) => {
+      const m = savedMaps.find((x) => x.id === id);
+      if (!m) return;
+      const li = document.createElement('li');
+      li.className = 'batch-export-map-item';
+      li.dataset.mapId = String(id);
+      li.draggable = true;
+      li.setAttribute('aria-grabbed', 'false');
+
+      const ord = document.createElement('span');
+      ord.className = 'batch-export-order';
+      ord.textContent = String(index + 1);
+
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = !!batchExportChecked[id];
+      cb.title = '导出此项';
+      cb.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+      cb.addEventListener('change', () => {
+        batchExportChecked[id] = !!cb.checked;
+      });
+
+      const meta = document.createElement('div');
+      meta.className = 'batch-export-map-meta';
+      const n = (m.placements || []).length;
+      meta.innerHTML =
+        '<strong>' +
+        escapeHtml(m.name) +
+        '</strong><span>' +
+        m.width +
+        '×' +
+        m.height +
+        ' · ' +
+        n +
+        ' 实例 · ' +
+        escapeHtml(fmtMapTime(m.updatedAt)) +
+        '</span>';
+
+      const dragHint = document.createElement('span');
+      dragHint.className = 'batch-export-drag-hint';
+      dragHint.textContent = '↕';
+
+      li.appendChild(ord);
+      li.appendChild(cb);
+      li.appendChild(meta);
+      li.appendChild(dragHint);
+
+      li.addEventListener('dragstart', (e) => {
+        batchExportDragId = String(id);
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', String(id));
+        li.classList.add('batch-export-item-dragging');
+        li.setAttribute('aria-grabbed', 'true');
+      });
+      li.addEventListener('dragend', () => {
+        li.classList.remove('batch-export-item-dragging');
+        li.setAttribute('aria-grabbed', 'false');
+        batchExportMapList.querySelectorAll('.batch-export-item-dragover').forEach((el) => el.classList.remove('batch-export-item-dragover'));
+        batchExportDragId = null;
+      });
+      li.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        li.classList.add('batch-export-item-dragover');
+      });
+      li.addEventListener('dragleave', () => {
+        li.classList.remove('batch-export-item-dragover');
+      });
+      li.addEventListener('drop', (e) => {
+        e.preventDefault();
+        li.classList.remove('batch-export-item-dragover');
+        const fromId = e.dataTransfer.getData('text/plain');
+        const toId = String(id);
+        reorderBatchExport(fromId, toId);
+        renderBatchExportList();
+      });
+
+      batchExportMapList.appendChild(li);
+    });
+  }
+
+  function openBatchExportDialog() {
+    if (!savedMaps.length) {
+      showToast('暂无已保存的地图', 'err');
+      return;
+    }
+    batchExportOrderIds = sortedSavedMapsByName().map((m) => m.id);
+    batchExportChecked = {};
+    savedMaps.forEach((m) => {
+      batchExportChecked[m.id] = true;
+    });
+    renderBatchExportList();
+    if (batchExportDialog) batchExportDialog.hidden = false;
+  }
+
+  function performBatchExport() {
+    const maps = [];
+    batchExportOrderIds.forEach((id) => {
+      if (!batchExportChecked[id]) return;
+      const m = savedMaps.find((x) => x.id === id);
+      if (m) maps.push(JSON.parse(JSON.stringify(m)));
+    });
+    if (!maps.length) {
+      showToast('请至少勾选一张地图', 'err');
+      return;
+    }
+    try {
+      const payload = {
+        version: VERSION,
+        kind: MAP_BUNDLE_KIND,
+        exportedAt: Date.now(),
+        maps,
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const fname = 'maps-export-' + sanitizeFilename(new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-')) + '.json';
+      downloadBlob(blob, fname);
+      closeBatchExportDialog();
+      showToast('已导出 ' + maps.length + ' 张地图', 'ok');
+    } catch (e) {
+      showToast('导出失败：' + (e && e.message ? e.message : String(e)), 'err');
+    }
   }
 
   function refreshLiveElementPreview() {
@@ -2546,6 +2847,7 @@
   function onMapKeyDown(e) {
     if (isElementEditModalOpen()) return;
     if (isPlacementParamDialogOpen()) return;
+    if (isBatchExportDialogOpen()) return;
     if (panelMap.hidden) return;
     const t = e.target;
     if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT')) return;
@@ -2880,8 +3182,58 @@
     }
   }
 
+  if (btnOpenBatchExport) {
+    btnOpenBatchExport.addEventListener('click', () => {
+      openBatchExportDialog();
+    });
+  }
+  if (batchExportClose) {
+    batchExportClose.addEventListener('click', () => {
+      closeBatchExportDialog();
+    });
+  }
+  if (batchExportCancel) {
+    batchExportCancel.addEventListener('click', () => {
+      closeBatchExportDialog();
+    });
+  }
+  if (batchExportDialog) {
+    const bbd = batchExportDialog.querySelector('.modal-backdrop[data-batch-export-dismiss]');
+    if (bbd) {
+      bbd.addEventListener('click', () => {
+        closeBatchExportDialog();
+      });
+    }
+  }
+  if (batchExportSelectAll) {
+    batchExportSelectAll.addEventListener('click', () => {
+      batchExportOrderIds.forEach((id) => {
+        batchExportChecked[id] = true;
+      });
+      renderBatchExportList();
+    });
+  }
+  if (batchExportSelectNone) {
+    batchExportSelectNone.addEventListener('click', () => {
+      batchExportOrderIds.forEach((id) => {
+        batchExportChecked[id] = false;
+      });
+      renderBatchExportList();
+    });
+  }
+  if (batchExportConfirm) {
+    batchExportConfirm.addEventListener('click', () => {
+      performBatchExport();
+    });
+  }
+
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
+    if (isBatchExportDialogOpen()) {
+      closeBatchExportDialog();
+      e.preventDefault();
+      return;
+    }
     if (isPlacementParamDialogOpen()) {
       closePlacementParamDialog();
       e.preventDefault();
@@ -3128,21 +3480,7 @@
 
   if (btnExportWorkspace) {
     btnExportWorkspace.addEventListener('click', () => {
-      try {
-        const payload = {
-          version: VERSION,
-          kind: WORKSPACE_KIND,
-          exportedAt: Date.now(),
-          elements: JSON.parse(JSON.stringify(elements)),
-          maps: JSON.parse(JSON.stringify(savedMaps)),
-          session: JSON.parse(mapStateSnapshot()),
-        };
-        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-        downloadBlob(blob, 'workspace.json');
-        showToast('已导出 workspace.json，可复制到项目 data/ 目录便于换电脑使用', 'ok');
-      } catch (e) {
-        showToast('导出失败：' + e.message, 'err');
-      }
+      void exportWorkspacePortable();
     });
   }
   if (importWorkspace) {
@@ -3165,6 +3503,7 @@
 
   // init：若本机尚无 localStorage 数据且通过 http(s) 打开，尝试加载 data/workspace.json
   (async function () {
+    await loadWorkspaceExportHandleFromIdb();
     loadElementsFromStorage();
     loadMapLibraryFromStorage();
     loadMapViewPrefs();

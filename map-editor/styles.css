@@ -990,6 +990,114 @@ select {
   margin-bottom: 0.65rem !important;
 }
 
+.map-library-toolbar {
+  margin-bottom: 0.65rem;
+}
+
+.map-library-toolbar .btn {
+  width: 100%;
+  text-align: center;
+}
+
+@media (min-width: 720px) {
+  .map-library-toolbar .btn {
+    width: auto;
+  }
+}
+
+.batch-export-modal-box {
+  max-width: min(92vw, 520px);
+}
+
+.batch-export-hint {
+  margin-top: 0 !important;
+  margin-bottom: 0.65rem !important;
+}
+
+.batch-export-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.65rem;
+}
+
+.batch-export-map-list {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  max-height: min(52vh, 420px);
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.45rem;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.batch-export-map-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.5rem;
+  margin-bottom: 0.35rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  cursor: grab;
+  user-select: none;
+}
+
+.batch-export-map-item:last-child {
+  margin-bottom: 0;
+}
+
+.batch-export-map-item.batch-export-item-dragging {
+  opacity: 0.55;
+}
+
+.batch-export-map-item.batch-export-item-dragover {
+  outline: 2px dashed var(--accent);
+  outline-offset: 1px;
+}
+
+.batch-export-map-item input[type="checkbox"] {
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.batch-export-order {
+  flex-shrink: 0;
+  min-width: 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: center;
+}
+
+.batch-export-map-meta {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.85rem;
+}
+
+.batch-export-map-meta strong {
+  display: block;
+  word-break: break-word;
+}
+
+.batch-export-map-meta span {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 0.1rem;
+}
+
+.batch-export-drag-hint {
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  color: var(--muted);
+  opacity: 0.85;
+}
+
 .map-library-actions {
   margin-bottom: 0.75rem;
   flex-direction: column;

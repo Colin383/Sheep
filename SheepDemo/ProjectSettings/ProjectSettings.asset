@@ -8,7 +8,7 @@ PlayerSettings:
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
-  defaultScreenOrientation: 3
+  defaultScreenOrientation: 0
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
@@ -17,7 +17,7 @@ PlayerSettings:
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
-  m_ShowUnitySplashScreen: 1
+  m_ShowUnitySplashScreen: 0
   m_ShowUnitySplashLogo: 0
   m_SplashScreenOverlayOpacity: 1
   m_SplashScreenAnimation: 1
@@ -175,8 +175,8 @@ PlayerSettings:
     iPhone: 1
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 26011642
-  AndroidMinSdkVersion: 24
+  AndroidBundleVersionCode: 26041570
+  AndroidMinSdkVersion: 27
   AndroidTargetSdkVersion: 35
   AndroidPreferredInstallLocation: 1
   aotOptions: 
@@ -282,7 +282,7 @@ PlayerSettings:
   AndroidEnableTango: 0
   androidEnableBanner: 1
   androidUseLowAccuracyLocation: 0
-  androidUseCustomKeystore: 0
+  androidUseCustomKeystore: 1
   m_AndroidBanners:
   - width: 320
     height: 180
@@ -809,7 +809,7 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   scriptingDefineSymbols:
-    Android: TextMeshPro;ENABLE_LOG;GURU_APPSFLYER;RELEASE;DOTWEEN;MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;ODIN_INSPECTOR_3_2;ODIN_INSPECTOR_3_3;DEBUG_MODE;GURU_MAX;UNITASK;YOOASSET
+    Android: TextMeshPro;ENABLE_LOG;GURU_APPSFLYER;DOTWEEN;MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;ODIN_INSPECTOR_3_2;ODIN_INSPECTOR_3_3;UNITASK;YOOASSET;GURU_MAX;RELEASE
     EmbeddedLinux: TextMeshPro;DOTWEEN
     GameCoreScarlett: TextMeshPro;DOTWEEN
     GameCoreXboxOne: TextMeshPro;DOTWEEN
@@ -822,12 +822,12 @@ PlayerSettings:
     PS5: TextMeshPro;DOTWEEN
     QNX: TextMeshPro;DOTWEEN
     Stadia: DOTWEEN;TextMeshPro
-    Standalone: TextMeshPro;ENABLE_LOG;GURU_MAX;GURU_APPSFLYER;DEBUG;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;ODIN_INSPECTOR_3_2;ODIN_INSPECTOR_3_3;MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED;DOTWEEN;DEBUG_MODE
+    Standalone: TextMeshPro;ENABLE_LOG;GURU_MAX;GURU_APPSFLYER;DEBUG;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;ODIN_INSPECTOR_3_2;ODIN_INSPECTOR_3_3;MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED;DOTWEEN
     VisionOS: TextMeshPro;DOTWEEN
-    WebGL: TextMeshPro;DOTWEEN;DEBUG_MODE
+    WebGL: TextMeshPro;DOTWEEN
     Windows Store Apps: TextMeshPro;DOTWEEN
     XboxOne: TextMeshPro;DOTWEEN
-    iPhone: TextMeshPro;GURU_APPSFLYER;DOTWEEN;MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;ODIN_INSPECTOR_3_2;ODIN_INSPECTOR_3_3;DEBUG_MODE;GURU_MAX;RELEASE;ENABLE_LOG
+    iPhone: TextMeshPro;GURU_APPSFLYER;DOTWEEN;MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;ODIN_INSPECTOR_3_2;ODIN_INSPECTOR_3_3;RELEASE;ENABLE_LOG;GURU_MAX
     tvOS: TextMeshPro;DOTWEEN
   additionalCompilerArguments: {}
   platformArchitecture: {}

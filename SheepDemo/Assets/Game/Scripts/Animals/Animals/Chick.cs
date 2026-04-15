@@ -50,6 +50,22 @@ public class Chick : BaseAnimal
         _visitedGrids.Add(gridPos);
     }
 
+    public override void OnSpawn()
+    {
+        base.OnSpawn();
+        _cachedPath.Clear();
+        _pathIndex = 0;
+        _visitedGrids.Clear();
+    }
+
+    public override void OnRecycle()
+    {
+        base.OnRecycle();
+        _cachedPath.Clear();
+        _pathIndex = 0;
+        _visitedGrids.Clear();
+    }
+
     public override bool CanMoveTo(Vector2Int gridPos)
     {
         return !_visitedGrids.Contains(gridPos);

@@ -73,6 +73,14 @@ public class CdSheepAnimal : BaseAnimal, IEventSender
         _isTiming = false;
     }
 
+    public override void OnRecycle()
+    {
+        base.OnRecycle();
+        _isTiming = false;
+        _currentTime = _targetWaitingTime;
+        SyncCdUI();
+    }
+
     private void SyncCdUI()
     {
         if (cdText != null)

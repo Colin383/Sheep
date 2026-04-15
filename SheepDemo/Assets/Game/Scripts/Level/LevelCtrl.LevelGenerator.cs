@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Game.Common;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Bear.Logger;
@@ -187,8 +188,15 @@ public partial class LevelCtrl
 
             this.Log($"index: {i}, worldRot: {worldRot} | {facing}, posX: {inst.col}, posY: {inst.row}; spawnCellCenterWorld: {spawnCellCenterWorld}");
 
+            // 从对象池获取 animal
+            var animal = SpawnAnimal(instType);
+            if (animal == null)
+            {
+                Debug.LogError($"[LevelGenerator] Failed to spawn animal from pool for type='{inst.type}', id={inst.id}.");
+                continue;
+            }
+
             // 先旋转再定位：无父级写世界旋转，再挂 instancesRoot，最后 pivot 落在左下角格心
-            var animal = Instantiate(prefab);
             animal.transform.rotation = worldRot;
             animal.transform.SetParent(instancesRoot, worldPositionStays: true);
             animal.transform.position = spawnCellCenterWorld;
@@ -205,13 +213,7 @@ public partial class LevelCtrl
     {
         for (int i = 0; i < spawned.Count; i++)
         {
-            if (spawned[i] != null)
-            {
-                if (Application.isPlaying)
-                    Destroy(spawned[i].gameObject);
-                else
-                    DestroyImmediate(spawned[i].gameObject);
-            }
+            RecycleAnimal(spawned[i]);
         }
 
         spawned.Clear();
@@ -287,6 +289,8 @@ public partial class LevelCtrl
 
             prefabByType[type] = prefab;
         }
+
+        RegisterAnimalPools();
     }
 
     private void LoadConfig()
@@ -705,5 +709,70 @@ public partial class LevelCtrl
         int gridH)
     {
         return GridToWorld(anchorRow, anchorCol, gridW, gridH);
+    }
+
+    private void RegisterAnimalPools()
+    {
+        foreach (var kvp in prefabByType)
+        {
+            RegisterAnimalPool(kvp.Key, kvp.Value);
+        }
+    }
+
+    private void RegisterAnimalPool(AnimalType type, BaseAnimal prefab)
+    {
+        switch (type)
+        {
+            case AnimalType.Sheep:
+                if (!ObjectPoolManager.Instance.IsPoolRegistered<SheepAnimal>())
+                    ObjectPoolManager.Instance.RegisterPool<SheepAnimal>(() => Instantiate(prefab) as SheepAnimal, 10, 0);
+                break;
+            case AnimalType.BombSheep:
+                if (!ObjectPoolManager.Instance.IsPoolRegistered<BombSheepAnimal>())
+                    ObjectPoolManager.Instance.RegisterPool<BombSheepAnimal>(() => Instantiate(prefab) as BombSheepAnimal, 2, 0);
+                break;
+            case AnimalType.Chick:
+                if (!ObjectPoolManager.Instance.IsPoolRegistered<Chick>())
+                    ObjectPoolManager.Instance.RegisterPool<Chick>(() => Instantiate(prefab) as Chick, 10, 0);
+                break;
+            case AnimalType.Elephant:
+                if (!ObjectPoolManager.Instance.IsPoolRegistered<Elephant>())
+                    ObjectPoolManager.Instance.RegisterPool<Elephant>(() => Instantiate(prefab) as Elephant, 2, 0);
+                break;
+            case AnimalType.CdSheep:
+                if (!ObjectPoolManager.Instance.IsPoolRegistered<CdSheepAnimal>())
+                    ObjectPoolManager.Instance.RegisterPool<CdSheepAnimal>(() => Instantiate(prefab) as CdSheepAnimal, 2, 0);
+                break;
+        }
+    }
+
+    private BaseAnimal SpawnAnimal(AnimalType type)
+    {
+        BaseAnimal animal = type switch
+        {
+            AnimalType.Sheep => ObjectPoolManager.Instance.Get<SheepAnimal>(),
+            AnimalType.BombSheep => ObjectPoolManager.Instance.Get<BombSheepAnimal>(),
+            AnimalType.Chick => ObjectPoolManager.Instance.Get<Chick>(),
+            AnimalType.Elephant => ObjectPoolManager.Instance.Get<Elephant>(),
+            AnimalType.CdSheep => ObjectPoolManager.Instance.Get<CdSheepAnimal>(),
+            _ => null
+        };
+        return animal;
+    }
+
+    private void RecycleAnimal(BaseAnimal animal)
+    {
+        if (animal == null)
+            return;
+
+        switch (animal)
+        {
+            case SheepAnimal sheep: ObjectPoolManager.Instance.Recycle(sheep); break;
+            case BombSheepAnimal bomb: ObjectPoolManager.Instance.Recycle(bomb); break;
+            case Chick chick: ObjectPoolManager.Instance.Recycle(chick); break;
+            case Elephant elephant: ObjectPoolManager.Instance.Recycle(elephant); break;
+            case CdSheepAnimal cd: ObjectPoolManager.Instance.Recycle(cd); break;
+            default: Destroy(animal.gameObject); break;
+        }
     }
 }

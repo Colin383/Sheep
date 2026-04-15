@@ -217,6 +217,12 @@ public partial class LevelCtrl : IEventSender
         return !IsInsideGrid(row, col, gridW, gridH) || IsBorderCell(row, col, gridW, gridH);
     }
 
+    public void UnregisterAnimalFromPathManager(BaseAnimal animal)
+    {
+        if (pathManager != null && animal != null)
+            pathManager.UnregisterMoveHandle(animal.transform);
+    }
+
     /// <summary>
     /// 返回农场。将 animal 切到 Back 状态并从缓存移除，交给 PathManager 控制移动到 EndPoint。
     /// </summary>
@@ -240,6 +246,9 @@ public partial class LevelCtrl : IEventSender
 
         if (animal is Chick chick)
             chicks.Remove(chick);
+
+        if (animal is CdSheepAnimal cdSheep)
+            cdSheeps.Remove(cdSheep);
 
         // 切到 Back 状态，并加入返回缓存
         animal.EnterBackState();
@@ -312,10 +321,10 @@ public partial class LevelCtrl : IEventSender
         if (animal is Chick chick)
             chicks.Remove(chick);
 
-        if (Application.isPlaying)
-            Destroy(animal.gameObject);
-        else
-            DestroyImmediate(animal.gameObject);
+        if (animal is CdSheepAnimal cdSheep)
+            cdSheeps.Remove(cdSheep);
+
+        RecycleAnimal(animal);
 
         CheckFinished();
     }
@@ -337,11 +346,7 @@ public partial class LevelCtrl : IEventSender
         // 从返回缓存中移除
         returningAnimals.Remove(animal);
 
-        // 直接销毁 animal
-        if (Application.isPlaying)
-            Destroy(animal.gameObject);
-        else
-            DestroyImmediate(animal.gameObject);
+        RecycleAnimal(animal);
 
         // 检查是否所有动物都已处理完毕
         CheckFinished();

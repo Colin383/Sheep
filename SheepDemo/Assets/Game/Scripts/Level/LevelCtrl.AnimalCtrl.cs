@@ -28,6 +28,9 @@ public partial class LevelCtrl : IDebuger
     private int _hintUsedCount;
     private bool _cdStarted;
 
+    private bool _stunPoolRegistered;
+    private bool _smokePoolRegistered;
+
     #region Click Trigger 
 
     private void OnEnable()
@@ -222,6 +225,60 @@ public partial class LevelCtrl : IDebuger
         }
 
         return new Vector2((minX + maxX) * 0.5f, (minY + maxY) * 0.5f);
+    }
+
+    public void PlayStunEffect(Transform parent)
+    {
+        if (Stun == null || parent == null) return;
+        EnsureStunPool();
+        var instance = ObjectPoolManager.Instance.Get<StunParticle>();
+        if (instance == null) return;
+        instance.transform.position = parent.position;
+        instance.transform.rotation = parent.rotation;
+    }
+
+    public void PlaySmokeEffect(Transform parent)
+    {
+        if (Smoke == null || parent == null) return;
+        EnsureSmokePool();
+        var instance = ObjectPoolManager.Instance.Get<SmokeParticle>();
+        if (instance == null) return;
+        instance.transform.position = parent.position;
+        instance.transform.rotation = parent.rotation;
+    }
+
+    public void PlayExplosionEffect(Transform parent)
+    {
+        if (Explosion == null || parent == null) return;
+        var instance = Instantiate(Explosion, parent);
+        instance.transform.localPosition = Vector3.zero;
+        instance.Play();
+        Destroy(instance.gameObject, instance.main.duration);
+    }
+
+    private void EnsureStunPool()
+    {
+        if (_stunPoolRegistered) return;
+        _stunPoolRegistered = true;
+        RegisterParticlePool<StunParticle>(Stun);
+    }
+
+    private void EnsureSmokePool()
+    {
+        if (_smokePoolRegistered) return;
+        _smokePoolRegistered = true;
+        RegisterParticlePool<SmokeParticle>(Smoke);
+    }
+
+    private void RegisterParticlePool<T>(ParticleSystem prefab) where T : ParticleRecycle
+    {
+        if (prefab == null) return;
+        var go = prefab.gameObject;
+        if (go.GetComponent<T>() == null)
+            go.AddComponent<T>();
+
+        if (!ObjectPoolManager.Instance.IsPoolRegistered<T>())
+            ObjectPoolManager.Instance.RegisterPool<T>(() => Instantiate(go).GetComponent<T>(), 2, 0);
     }
 
     private void OnSkillClickAnimal(Transform transform)

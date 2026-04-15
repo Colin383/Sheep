@@ -20,14 +20,6 @@ public class Chick : BaseAnimal
         _pathIndex = 0;
     }
 
-    /// <summary>
-    /// Chick 被点击不触发移动，由 LevelCtrl 统一触发。
-    /// </summary>
-    public override void OnClickTrigger()
-    {
-        // base.OnClickTrigger();
-    }
-
     public override void EnterIdleState()
     {
         _visitedGrids.Clear();

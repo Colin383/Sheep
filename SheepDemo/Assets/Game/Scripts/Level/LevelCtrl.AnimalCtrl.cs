@@ -349,10 +349,49 @@ public partial class LevelCtrl : IDebuger
             if (chick == null)
                 continue;
 
-            chick.TryMoving();
+            if (animal != null && IsAnimalNearby(animal, chick, 1))
+                chick.TryMoving();
         }
 
         VibrationManager.Instance.Vibrate();
+    }
+
+    private bool IsAnimalNearby(BaseAnimal center, BaseAnimal other, int range)
+    {
+        if (!TryGetConfigDimensions(out var gridW, out var gridH))
+            return false;
+
+        var centerDir = center.GetMovableDirections();
+        var centerFacing = centerDir != null && centerDir.Count > 0 ? centerDir[0] : center.FacingDirection;
+
+        int minR = int.MaxValue, maxR = int.MinValue, minC = int.MaxValue, maxC = int.MinValue;
+        foreach (var offset in GetWorldFootprintOffsets(center, centerFacing))
+        {
+            int r = center.CurrentPos.y + offset.y;
+            int c = center.CurrentPos.x + offset.x;
+            minR = Mathf.Min(minR, r);
+            maxR = Mathf.Max(maxR, r);
+            minC = Mathf.Min(minC, c);
+            maxC = Mathf.Max(maxC, c);
+        }
+
+        minR -= range;
+        maxR += range;
+        minC -= range;
+        maxC += range;
+
+        var otherDir = other.GetMovableDirections();
+        var otherFacing = otherDir != null && otherDir.Count > 0 ? otherDir[0] : other.FacingDirection;
+
+        foreach (var offset in GetWorldFootprintOffsets(other, otherFacing))
+        {
+            int r = other.CurrentPos.y + offset.y;
+            int c = other.CurrentPos.x + offset.x;
+            if (r >= minR && r <= maxR && c >= minC && c <= maxC)
+                return true;
+        }
+
+        return false;
     }
 
     #endregion

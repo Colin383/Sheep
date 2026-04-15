@@ -1,6 +1,7 @@
 using Bear.EventSystem;
 using Bear.Fsm;
 using Bear.Logger;
+using Game.Events;
 using Game.Scripts.Common;
 using UnityEngine;
 
@@ -17,6 +18,8 @@ namespace Game.Play
         {
             if (!AudioManager.IsMusicPlaying || !AudioManager.IsCurrentMusicTag("musicInGame"))
                 AudioManager.PlayMusic("musicInGame");
+
+            this.DispatchEvent(Witness<EnterPlayingEvent>._);
         }
 
         public override void OnExecute()
@@ -32,6 +35,7 @@ namespace Game.Play
         public override void OnExit()
         {
             this.Log($"{nameof(PlayCtrl_Playing)} Exit");
+            this.DispatchEvent(Witness<ExitPlayingEvent>._);
         }
 
     }

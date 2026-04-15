@@ -674,7 +674,7 @@
       "row": 13,
       "col": 6,
       "direction": "down",
-      "type": "bombsheet",
+      "type": "bombsheep",
       "param": "3"
     },
     {
@@ -862,7 +862,7 @@
       "row": 9,
       "col": 10,
       "direction": "left",
-      "type": "bombsheet",
+      "type": "bombsheep",
       "param": "3"
     },
     {

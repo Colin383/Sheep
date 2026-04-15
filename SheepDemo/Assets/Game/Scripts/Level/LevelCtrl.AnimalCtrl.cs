@@ -36,11 +36,9 @@ public partial class LevelCtrl : IDebuger
     private void OnEnable()
     {
         EventsUtils.ResetEvents(ref _animalSubscriber);
-        _animalSubscriber.Subscribe<SwitchGameStateEvent>(OnSwitchState);
+        _animalSubscriber.Subscribe<EnterPlayingEvent>(OnEnterPlaying);
+        _animalSubscriber.Subscribe<ExitPlayingEvent>(OnExitPlaying);
         _animalSubscriber.Subscribe<EnterSkillEvent>(OnEnterSkill);
-
-        if (PlayCtrl.Instance != null && PlayCtrl.Instance.CheckState(GamePlayStateName.PLAYING))
-            BindClickHandle();
     }
 
     private void OnDisable()
@@ -50,18 +48,17 @@ public partial class LevelCtrl : IDebuger
         UnbindSkillClickHandle();
     }
 
-    private void OnSwitchState(SwitchGameStateEvent evt)
+    private void OnEnterPlaying(EnterPlayingEvent evt)
     {
-        this.Log($"[AnimalCtrl] SwitchState: {evt.NewState}");
-        if (evt.NewState == GamePlayStateName.PLAYING)
-        {
-            UnbindSkillClickHandle();
-            BindClickHandle();
-        }
-        else
-        {
-            UnbindClickHandle();
-        }
+        this.Log("[AnimalCtrl] OnEnterPlaying");
+        UnbindSkillClickHandle();
+        BindClickHandle();
+    }
+
+    private void OnExitPlaying(ExitPlayingEvent evt)
+    {
+        this.Log("[AnimalCtrl] OnExitPlaying");
+        UnbindClickHandle();
     }
 
     private void OnEnterSkill(EnterSkillEvent evt)

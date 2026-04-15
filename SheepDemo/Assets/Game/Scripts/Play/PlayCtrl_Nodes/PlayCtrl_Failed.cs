@@ -1,6 +1,5 @@
 using Bear.Fsm;
-using Game.Events;
-using Game.Scripts.Common;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Game.Play
@@ -15,8 +14,15 @@ namespace Game.Play
         {
             Debug.Log($"{nameof(PlayCtrl_Failed)} Enter");
 
-            
+            ShowRevivePopup().Forget();
+
+        }
+
+        private async UniTask ShowRevivePopup()
+        {
+            await UniTask.WaitForSeconds(1f);
             RevivePopup.Create();
+
         }
 
         public override void OnExecute()

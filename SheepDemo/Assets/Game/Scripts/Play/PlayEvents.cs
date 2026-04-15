@@ -58,6 +58,16 @@ namespace Game.Events
     // 退出技能模式
     public class ExitSkillEvent : EventBase {}
 
+    /// <summary>
+    /// 进入 Playing 状态
+    /// </summary>
+    public class EnterPlayingEvent : EventBase {}
+
+    /// <summary>
+    /// 退出 Playing 状态
+    /// </summary>
+    public class ExitPlayingEvent : EventBase {}
+
     #endregion
 
     #region GameState 

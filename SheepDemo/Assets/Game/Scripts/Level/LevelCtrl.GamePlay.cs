@@ -105,7 +105,7 @@ public partial class LevelCtrl : IEventSender
     /// BFS 寻找从 animal 当前位置到最近出口（边界或可直接出界）的路径。
     /// 返回方向列表，找不到时返回 null。
     /// </summary>
-    public List<DirectionEnum> FindExitPath(BaseAnimal animal)
+    public List<DirectionEnum> FindExitPath(BaseAnimal animal, HashSet<Vector2Int> blockedCells = null)
     {
         if (animal == null)
             return null;
@@ -114,16 +114,17 @@ public partial class LevelCtrl : IEventSender
             return null;
 
         var start = new Vector2Int(animal.CurrentPos.x, animal.CurrentPos.y);
+        var startFacing = animal.FacingDirection;
         var occupied = BuildOccupiedCellMap(animal, gridW, gridH);
 
-        var queue = new Queue<(Vector2Int pos, List<DirectionEnum> path)>();
-        var visited = new HashSet<Vector2Int>();
-        queue.Enqueue((start, new List<DirectionEnum>()));
-        visited.Add(start);
+        var queue = new Queue<(Vector2Int pos, DirectionEnum facing, List<DirectionEnum> path)>();
+        var visited = new HashSet<(Vector2Int pos, DirectionEnum facing)>();
+        queue.Enqueue((start, startFacing, new List<DirectionEnum>()));
+        visited.Add((start, startFacing));
 
         while (queue.Count > 0)
         {
-            var (pos, path) = queue.Dequeue();
+            var (pos, facing, path) = queue.Dequeue();
 
             // 当前位置已在边界，可直接离开
             if (IsBorderCell(pos.y, pos.x, gridW, gridH))
@@ -134,7 +135,10 @@ public partial class LevelCtrl : IEventSender
                 var step = DirectionToGridStep(dir);
                 var nextPos = pos + step;
 
-                if (visited.Contains(nextPos))
+                if (blockedCells != null && blockedCells.Contains(nextPos))
+                    continue;
+
+                if (visited.Contains((nextPos, dir)))
                     continue;
 
                 if (!CanAnimalAnchorMoveTo(animal, nextPos, dir, gridW, gridH, occupied, out bool allOutside))
@@ -146,8 +150,8 @@ public partial class LevelCtrl : IEventSender
                     return exitPath;
                 }
 
-                visited.Add(nextPos);
-                queue.Enqueue((nextPos, new List<DirectionEnum>(path) { dir }));
+                visited.Add((nextPos, dir));
+                queue.Enqueue((nextPos, dir, new List<DirectionEnum>(path) { dir }));
             }
         }
 

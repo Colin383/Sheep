@@ -522,6 +522,16 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
         SetWalkAnim(false);
     }
 
+    /// <summary>
+    /// 移动被阻挡时的回调。
+    /// </summary>
+    public virtual void OnMoveBlocked()
+    {
+        EnterIdleState();
+        StopSmoke();
+        PlayStunEffect();
+    }
+
     public virtual void OnRecycle()
     {
         Level?.UnregisterAnimalFromPathManager(this);

@@ -75,9 +75,7 @@ public class Animal_Moving : StateNode, IDebuger
         if (!canMove)
         {
             // 当前不可移动，回到 Idle。
-            owner?.EnterIdleState();
-            owner.StopSmoke();
-            owner.PlayStunEffect();
+            owner?.OnMoveBlocked();
             return;
         }
 

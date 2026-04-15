@@ -106,33 +106,16 @@ public class Chick : BaseAnimal
     }
 
     /// <summary>
-    /// 检查当前位置四个方向是否存在阻挡。
-    /// 若存在至少一个方向被阻挡，则重新计算路径。
+    /// 每到新格都重新计算路径。
     /// </summary>
     public void CheckAndRecalculateIfBlocked()
     {
-        if (Level == null)
-            return;
-
-        var directions = new[] { DirectionEnum.Up, DirectionEnum.Down, DirectionEnum.Left, DirectionEnum.Right };
-        bool anyBlocked = false;
-
-        foreach (var dir in directions)
-        {
-            if (!Level.CanMoveTo(this, dir))
-            {
-                anyBlocked = true;
-                break;
-            }
-        }
-
-        if (anyBlocked)
-            RecalculatePath();
+        RecalculatePath();
     }
 
     private void RecalculatePath()
     {
-        _cachedPath = Level?.FindExitPath(this) ?? new List<DirectionEnum>();
+        _cachedPath = Level?.FindExitPath(this, _visitedGrids) ?? new List<DirectionEnum>();
         _pathIndex = 0;
     }
 

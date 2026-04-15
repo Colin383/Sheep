@@ -1533,10 +1533,7 @@ MonoBehaviour:
   showCoordinates: 1
   coordinateColor: {r: 1, g: 1, b: 1, a: 1}
   pathCells:
-  - {x: 7, y: 1}
-  - {x: 8, y: 1}
   - {x: 16, y: 1}
-  - {x: 17, y: 1}
   - {x: 17, y: 18}
   - {x: 7, y: 18}
   - {x: 8, y: 19}
@@ -1566,7 +1563,6 @@ MonoBehaviour:
   - {x: 6, y: 4}
   - {x: 6, y: 6}
   - {x: 6, y: 3}
-  - {x: 18, y: 1}
   - {x: 19, y: 3}
   - {x: 19, y: 4}
   - {x: 19, y: 5}
@@ -1597,10 +1593,13 @@ MonoBehaviour:
   - {x: 12, y: 1}
   - {x: 13, y: 1}
   - {x: 14, y: 1}
-  - {x: 18, y: 2}
   - {x: 7, y: 2}
   - {x: 18, y: 17}
   - {x: 7, y: 17}
+  - {x: 17, y: 2}
+  - {x: 18, y: 3}
+  - {x: 7, y: 3}
+  - {x: 8, y: 2}
 --- !u!1 &3845307327296321087
 GameObject:
   m_ObjectHideFlags: 0

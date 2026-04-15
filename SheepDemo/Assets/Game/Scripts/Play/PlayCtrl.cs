@@ -146,8 +146,8 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
 
         ClickTransformPanel.Create(() =>
         {
-            _machine.Enter(GamePlayStateName.PLAYING);
             CreateLevel(Level.CurrentLevelSort);
+            _machine.Enter(GamePlayStateName.PLAYING);
         });
     }
 
@@ -162,8 +162,8 @@ public class PlayCtrl : Singleton<PlayCtrl>, IBearMachineOwner, IDebuger, IEvent
 
         ClickTransformPanel.Create(() =>
         {
-            _machine.Enter(GamePlayStateName.PLAYING);
             CreateLevel(Level.CurrentLevelSort);
+            _machine.Enter(GamePlayStateName.PLAYING);
         });
     }
 

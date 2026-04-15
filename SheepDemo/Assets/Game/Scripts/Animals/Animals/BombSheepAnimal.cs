@@ -45,11 +45,13 @@ public class BombSheepAnimal : BaseAnimal, IEventSender
 
         if (_currentFailCount <= 0)
         {
-            Level?.DestroyAnimal(this);
+
             this.DispatchEvent(Witness<GameFailedEvent>._, GameFailedType.Bomb);
 
             AudioManager.PlaySound("bomb");
             PlayExplosionEffect();
+
+            Level?.DestroyAnimal(this);
         }
     }
 

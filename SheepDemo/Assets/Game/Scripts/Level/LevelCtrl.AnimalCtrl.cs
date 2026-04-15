@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Bear.EventSystem;
 using Bear.Logger;
+using BPGame;
 using Game.Common;
 using Game.Events;
 using Game.Play;
@@ -249,10 +250,10 @@ public partial class LevelCtrl : IDebuger
     public void PlayExplosionEffect(Transform parent)
     {
         if (Explosion == null || parent == null) return;
-        var instance = Instantiate(Explosion, parent);
-        instance.transform.localPosition = Vector3.zero;
+        var instance = Instantiate(Explosion, instancesRoot);
+        instance.transform.position = parent.position;
         instance.Play();
-        Destroy(instance.gameObject, instance.main.duration);
+        // Destroy(instance.gameObject, instance.main.duration);
     }
 
     private void EnsureStunPool()

@@ -60,11 +60,13 @@ public class CdSheepAnimal : BaseAnimal, IEventSender
         {
             _currentTime = 0f;
             _isTiming = false;
-            Level?.DestroyAnimal(this);
+
             this.DispatchEvent(Witness<GameFailedEvent>._, GameFailedType.Bomb);
 
             AudioManager.PlaySound("bomb");
             PlayExplosionEffect();
+
+            Level?.DestroyAnimal(this);
         }
     }
 

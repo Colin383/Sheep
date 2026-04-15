@@ -99,7 +99,7 @@ Material:
     - _ReceiveShadows: 0
     - _SHADING_STYLE: 0
     - _SampleGI: 0
-    - _ShadowsFloor: 0.886
+    - _ShadowsFloor: 0.944
     - _Shininess: 0
     - _Smoothness: 0.393
     - _SmoothnessSource: 0

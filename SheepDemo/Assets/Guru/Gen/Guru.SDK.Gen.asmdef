@@ -3,6 +3,7 @@
   "references": [
     "AdjustSdk.Scripts",
     "Guru.SDK.Framework.Core",
-    "Guru.SDK.Framework.Utils"
+    "Guru.SDK.Framework.Utils",
+    "Guru.SDK.Framework.GameService.Core"
   ]
 }

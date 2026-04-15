@@ -75,9 +75,14 @@ internal class BrainPunkAppSpec: AppSpec
 			MrecId: new AdUnitId("", ""),
 			AmazonAppId: new AdAppId("fc8f78b2-ac6d-4d25-afd5-943f3f854d0d", "8aa939c5-662e-4a3f-aad7-13336b22ce28"),
 			AmazonBannerSlotId: new AdSlotId("9e81ce69-d2ba-4ffe-b85a-e4eb6f84d4f6", "5b58f56f-cc6e-4e98-b10a-d5a9417ec360"),
+			null,
 			AmazonInterstitialSlotId: new AdSlotId("72f1809e-4f12-49d2-9ff5-c93eabce2835", "a1e0afe7-309b-427d-98cf-ce4f1663fb12"),
 			AmazonRewardedSlotId: new AdSlotId("dd3ea773-0ac5-4bd2-9ce8-593a6e80504f", "1014df07-aec5-40e7-885d-86007762f41e"),
 			IronsourceAppId: new AdAppId("", ""),
+			null,
+			null,
+			null,
+			null,
 			TradPlusCreativeKey: new AdAppId("", "")          
         ), 
         productProfile: new ProductProfile (
@@ -94,9 +99,9 @@ internal class BrainPunkAppSpec: AppSpec
 				["analytics_config"] = "{\"cap\":[\"firebase\",\"facebook\",\"guru\"], \"init_delay_s\": 10}",
 				["app_rater"] = "{\"entry_enable\": false,\"gap_days\":0,\"last_pop_gap_days\":7,\"validation\":\"2\"}",
 				["bads_config"] = "{\"free_s\":0,\"win_count\":1,\"amazon_enable\":false}",
-				["iads_config"] = "{\"free_s\":0,\"validation\":\"3\",\"scene\":\"game_start|game_continue|p_continue|p_main|game_win|star_complete\",\"retry_min_s\":10,\"retry_max_s\":600,\"amazon_enable\":true,\"imp_gap_s\":10,\"sp_scene\":\"game_start:60\",\"ignore_scene_check\":true}",
-				["rads_config"] = "{\"free_s\":0,\"validation\":\"1\",\"amazon_enable\":true}",
-				["level_config"] = "{\"enabled\":false, \"showRatingLevel\":4, \"ad_interstitialCD\":30,\"ad_rewardResetInterstitialCD\":60,\"ad_interstitialShowMinLevel\":3,\"ad_interstitialShowIntervalCount\":2,\"ad_interstitialShowFailedCount\":8,\"levelsort\":[10001,10002,10003,10004,10006,10007,10008,10010,10013,10019,10011,10012,10042,10014,10009,10036,10017,10021,10015,10018,10020,10016,10027,10022,10024,10023,10029,10026,10028,10025,10030,10031,10032,10033,10034,10035]}",
+				["iads_config"] = "{\"free_s\":0,\"validation\":\"3\",\"scene\":\"game_start|game_continue|p_continue|p_main|game_win|star_complete\",\"retry_min_s\":10,\"retry_max_s\":600,\"amazon_enable\":false,\"imp_gap_s\":10,\"sp_scene\":\"game_start:60\",\"ignore_scene_check\":true}",
+				["rads_config"] = "{\"free_s\":0,\"validation\":\"1\",\"amazon_enable\":false}",
+				["level_config"] = "{\"enabled\":false,\"ad_interstitialCD\":30,\"ad_rewardResetInterstitialCD\":60,\"ad_interstitialShowMinLevel\":3,\"ad_interstitialShowIntervalCount\":2,\"ad_interstitialShowFailedCount\":8,\"levelsort\":[10001,10002,10003,10004,10006,10007,10008,10010,10013,10019,10011,10012,10042,10014,10009,10036,10017,10021,10015,10018,10020,10016,10027,10022,10024,10023,10029,10026,10028,10025,10030,10031,10032,10033,10034,10035]}",
 			},
 			convertedKeys: new Dictionary<string, string>()         
 	    ))

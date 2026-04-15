@@ -1,8 +1,6 @@
 using Bear.EventSystem;
 using Bear.Fsm;
 using Bear.Logger;
-using Game.ConfigModule;
-using Game.Events;
 using Game.Scripts.Common;
 using UnityEngine;
 
@@ -17,8 +15,8 @@ namespace Game.Play
         private PlayCtrl owner;
         public override void OnEnter()
         {
-           
-
+            if (!AudioManager.IsMusicPlaying || !AudioManager.IsCurrentMusicTag("musicInGame"))
+                AudioManager.PlayMusic("musicInGame");
         }
 
         public override void OnExecute()
@@ -28,7 +26,7 @@ namespace Game.Play
 
         public override void OnUpdate()
         {
-            
+
         }
 
         public override void OnExit()

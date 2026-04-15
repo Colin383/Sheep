@@ -55,5 +55,9 @@ namespace MelenitasDev.SoundsGood
 		public static readonly SFX iceCrash2 = new SFX("iceCrash2");
 		public static readonly SFX iceCrash3 = new SFX("iceCrash3");
 		public static readonly SFX FlipPage = new SFX("FlipPage");
+		public static readonly SFX sheep = new SFX("sheep");
+		public static readonly SFX bomb = new SFX("bomb");
+		public static readonly SFX chick = new SFX("chick");
+		public static readonly SFX elephant = new SFX("elephant");
 	}
 }

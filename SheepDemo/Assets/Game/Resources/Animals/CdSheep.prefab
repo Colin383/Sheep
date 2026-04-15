@@ -25,13 +25,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1313806634256721208}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: -17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4783895104325810978}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -0}
@@ -197,8 +197,8 @@ MonoBehaviour:
   gizmoCenterFillColor: {r: 1, g: 0.15, b: 0.15, a: 0.4}
   gizmoCenterWireColor: {r: 1, g: 0.2, b: 0.2, a: 1}
   gizmoHeightBias: 0.02
-  cdText: {fileID: 0}
-  maxWaitTime: 300
+  cdText: {fileID: 555427464292025242}
+  defaultWaitingTime: 10
 --- !u!65 &673715152299086558
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -218,6 +218,8 @@ public partial class LevelCtrl
         spawnedById.Clear();
         spawnedByType.Clear();
         chicks.Clear();
+        cdSheeps.Clear();
+        _cdStarted = false;
     }
 
     public bool TryGetSpawnedById(int id, out BaseAnimal animal)
@@ -245,6 +247,9 @@ public partial class LevelCtrl
 
         if (animal is Chick chick)
             chicks.Add(chick);
+
+        if (animal is CdSheepAnimal cdSheep)
+            cdSheeps.Add(cdSheep);
     }
 
     private void BuildPrefabMap()

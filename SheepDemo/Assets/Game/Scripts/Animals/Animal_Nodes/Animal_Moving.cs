@@ -30,23 +30,32 @@ public class Animal_Moving : StateNode, IDebuger
         canMove = false;
         if (owner != null && owner.Level != null)
         {
-            var directions = owner.GetMovableDirections();
-            if (directions != null && directions.Count > 0)
+            // 优先尝试缓存路径（如 Chick 的 BFS 路径）
+            if (owner.TryGetCachedNextMove(out nextTarget))
             {
-                var prevPos = owner.CurrentPos;
-                foreach (var dir in directions)
+                owner.OnMoveStepConfirmed(owner.CurrentPos);
+                canMove = true;
+            }
+            else
+            {
+                var directions = owner.GetMovableDirections();
+                if (directions != null && directions.Count > 0)
                 {
-                    if (owner.Level.CheckMoveTarget(owner, dir, out nextTarget))
+                    var prevPos = owner.CurrentPos;
+                    foreach (var dir in directions)
                     {
-                        if (!owner.CanMoveTo(owner.CurrentPos))
+                        if (owner.Level.CheckMoveTarget(owner, dir, out nextTarget))
                         {
-                            owner.RollbackCurrentPos(prevPos);
-                            continue;
+                            if (!owner.CanMoveTo(owner.CurrentPos))
+                            {
+                                owner.RollbackCurrentPos(prevPos);
+                                continue;
+                            }
+                            owner.OnMoveStepConfirmed(owner.CurrentPos);
+                            currentStepDirection = dir;
+                            canMove = true;
+                            break;
                         }
-                        owner.OnMoveStepConfirmed(owner.CurrentPos);
-                        currentStepDirection = dir;
-                        canMove = true;
-                        break;
                     }
                 }
             }
@@ -104,28 +113,45 @@ public class Animal_Moving : StateNode, IDebuger
             return;
         }
 
+        // Chick：如果当前位置四个方向存在阻挡，重新计算路径
+        if (owner is Chick chick)
+        {
+            chick.CheckAndRecalculateIfBlocked();
+        }
+
         // 继续计算下一步目标；若可移动则继续"先转后移"。
         canMove = false;
-        var directions = owner.GetMovableDirections();
-        if (directions != null && directions.Count > 0)
+
+        // 优先尝试缓存路径
+        if (owner.TryGetCachedNextMove(out nextTarget))
         {
-            var prevPos = owner.CurrentPos;
-            foreach (var dir in directions)
+            owner.OnMoveStepConfirmed(owner.CurrentPos);
+            canMove = true;
+        }
+        else
+        {
+            var directions = owner.GetMovableDirections();
+            if (directions != null && directions.Count > 0)
             {
-                if (owner.Level.CheckMoveTarget(owner, dir, out nextTarget))
+                var prevPos = owner.CurrentPos;
+                foreach (var dir in directions)
                 {
-                    if (!owner.CanMoveTo(owner.CurrentPos))
+                    if (owner.Level.CheckMoveTarget(owner, dir, out nextTarget))
                     {
-                        owner.RollbackCurrentPos(prevPos);
-                        continue;
+                        if (!owner.CanMoveTo(owner.CurrentPos))
+                        {
+                            owner.RollbackCurrentPos(prevPos);
+                            continue;
+                        }
+                        owner.OnMoveStepConfirmed(owner.CurrentPos);
+                        currentStepDirection = dir;
+                        canMove = true;
+                        break;
                     }
-                    owner.OnMoveStepConfirmed(owner.CurrentPos);
-                    currentStepDirection = dir;
-                    canMove = true;
-                    break;
                 }
             }
         }
+
         if (canMove)
         {
             PrepareCurrentStep();

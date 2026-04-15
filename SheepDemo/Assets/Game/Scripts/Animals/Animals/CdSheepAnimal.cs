@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using Bear.EventSystem;
 using Game.Events;
+using Game.Scripts.Common;
 
 /// <summary>
 /// 倒计时羊：生成后开始倒计时，时间到则发送游戏失败消息。
@@ -24,7 +25,7 @@ public class CdSheepAnimal : BaseAnimal, IEventSender
     {
         base.Init(id, row, col, direction, param);
         _currentTime = _targetWaitingTime;
-        _isTiming = true;
+        // _isTiming = true;
         SyncCdUI();
     }
 
@@ -38,6 +39,11 @@ public class CdSheepAnimal : BaseAnimal, IEventSender
         {
             _targetWaitingTime = defaultWaitingTime;
         }
+    }
+
+    public void StartCD()
+    {
+        _isTiming = true;
     }
 
     protected override void Update()
@@ -56,6 +62,8 @@ public class CdSheepAnimal : BaseAnimal, IEventSender
             _isTiming = false;
             Level?.DestroyAnimal(this);
             this.DispatchEvent(Witness<GameFailedEvent>._, GameFailedType.Bomb);
+
+            AudioManager.PlaySound("bomb");
         }
     }
 

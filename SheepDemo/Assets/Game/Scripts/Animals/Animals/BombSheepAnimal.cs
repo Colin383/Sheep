@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using Bear.EventSystem;
 using Game.Events;
+using Game.Scripts.Common;
 
 /// <summary>
 /// "sheep" implementation placeholder.
@@ -46,6 +47,8 @@ public class BombSheepAnimal : BaseAnimal, IEventSender
         {
             Level?.DestroyAnimal(this);
             this.DispatchEvent(Witness<GameFailedEvent>._, GameFailedType.Bomb);
+
+            AudioManager.PlaySound("bomb");
         }
     }
 

@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// "sheep" implementation placeholder.
-/// Add sheep-specific behavior here later.
+/// Chick：采用 BFS 缓存路径寻路，优先寻找最近出口。
 /// </summary>
 public class Chick : BaseAnimal
 {
     private readonly HashSet<Vector2Int> _visitedGrids = new();
+    private List<DirectionEnum> _cachedPath = new();
+    private int _pathIndex;
 
     public override AnimalType Type => AnimalType.Chick;
 
@@ -15,6 +16,8 @@ public class Chick : BaseAnimal
     {
         base.Init(id, row, col, direction, param);
         _visitedGrids.Clear();
+        _cachedPath.Clear();
+        _pathIndex = 0;
     }
 
     /// <summary>
@@ -28,6 +31,8 @@ public class Chick : BaseAnimal
     public override void EnterIdleState()
     {
         _visitedGrids.Clear();
+        _cachedPath.Clear();
+        _pathIndex = 0;
         base.EnterIdleState();
     }
 
@@ -35,6 +40,8 @@ public class Chick : BaseAnimal
     {
         _visitedGrids.Clear();
         _visitedGrids.Add(CurrentPos);
+        _cachedPath.Clear();
+        _pathIndex = 0;
         base.TryMoving();
     }
 
@@ -46,6 +53,79 @@ public class Chick : BaseAnimal
     public override bool CanMoveTo(Vector2Int gridPos)
     {
         return !_visitedGrids.Contains(gridPos);
+    }
+
+    /// <summary>
+    /// 尝试获取缓存路径的下一个移动目标。
+    /// 如果没有缓存路径或路径已走完，会尝试 BFS 计算新路径。
+    /// </summary>
+    public override bool TryGetCachedNextMove(out Vector3 nextTarget)
+    {
+        nextTarget = Vector3.zero;
+
+        if (Level == null)
+            return false;
+
+        if (_pathIndex >= _cachedPath.Count || _cachedPath.Count == 0)
+            RecalculatePath();
+
+        if (_pathIndex >= _cachedPath.Count)
+            return false;
+
+        var dir = _cachedPath[_pathIndex];
+        var prevPos = CurrentPos;
+
+        if (!Level.CheckMoveTarget(this, dir, out nextTarget))
+        {
+            RecalculatePath();
+            if (_pathIndex >= _cachedPath.Count)
+                return false;
+
+            dir = _cachedPath[_pathIndex];
+            prevPos = CurrentPos;
+            if (!Level.CheckMoveTarget(this, dir, out nextTarget))
+                return false;
+        }
+
+        if (!CanMoveTo(CurrentPos))
+        {
+            RollbackCurrentPos(prevPos);
+            return false;
+        }
+
+        _pathIndex++;
+        return true;
+    }
+
+    /// <summary>
+    /// 检查当前位置四个方向是否存在阻挡。
+    /// 若存在至少一个方向被阻挡，则重新计算路径。
+    /// </summary>
+    public void CheckAndRecalculateIfBlocked()
+    {
+        if (Level == null)
+            return;
+
+        var directions = new[] { DirectionEnum.Up, DirectionEnum.Down, DirectionEnum.Left, DirectionEnum.Right };
+        bool anyBlocked = false;
+
+        foreach (var dir in directions)
+        {
+            if (!Level.CanMoveTo(this, dir))
+            {
+                anyBlocked = true;
+                break;
+            }
+        }
+
+        if (anyBlocked)
+            RecalculatePath();
+    }
+
+    private void RecalculatePath()
+    {
+        _cachedPath = Level?.FindExitPath(this) ?? new List<DirectionEnum>();
+        _pathIndex = 0;
     }
 
     /// <summary>

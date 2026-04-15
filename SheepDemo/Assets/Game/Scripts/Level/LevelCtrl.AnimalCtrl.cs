@@ -11,9 +11,11 @@ public partial class LevelCtrl : IDebuger
     [SerializeField] private ClickTriggerHandle clickHandle;
 
     private readonly List<Chick> chicks = new();
+    private readonly List<CdSheepAnimal> cdSheeps = new();
     private EventSubscriber _animalSubscriber;
     private SkillType _currentSkillType;
     private int _hintUsedCount;
+    private bool _cdStarted;
 
     #region Click Trigger 
 
@@ -260,7 +262,17 @@ public partial class LevelCtrl : IDebuger
         if (animal != null)
         {
             this.Log($"[AnimalCtrl] OnClickAnimal: id={animal.Id}, type={animal.Type}");
+            animal.Bark();
             animal.OnClickTrigger();
+
+            if (!_cdStarted)
+            {
+                _cdStarted = true;
+                for (int i = 0; i < cdSheeps.Count; i++)
+                {
+                    cdSheeps[i]?.StartCD();
+                }
+            }
         }
 
         for (int i = 0; i < chicks.Count; i++)

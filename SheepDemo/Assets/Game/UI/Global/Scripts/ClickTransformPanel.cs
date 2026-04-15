@@ -43,7 +43,7 @@ public partial class ClickTransformPanel : BaseUIView, IDebuger
         {
             _radius = x;
             SetCircleRadius(x);
-        }, 3f, _radiusDuration).SetEase(Ease.OutCubic).SetUpdate(true).OnComplete(CompleteAnimation);
+        }, 3f, _radiusDuration).SetEase(Ease.Linear).SetUpdate(true).OnComplete(CompleteAnimation);
     }
 
     /// <summary>

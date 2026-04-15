@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Bear.Fsm;
+using Game.Scripts.Common;
 using UnityEngine;
 
 /// <summary>
@@ -136,6 +137,15 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
     public virtual IReadOnlyList<DirectionEnum> GetMovableDirections()
     {
         return new[] { FacingDirection };
+    }
+
+    /// <summary>
+    /// 尝试获取缓存路径中的下一个移动目标。供需要预计算路径的子类（如 Chick）重写。
+    /// </summary>
+    public virtual bool TryGetCachedNextMove(out Vector3 nextTarget)
+    {
+        nextTarget = Vector3.zero;
+        return false;
     }
 
     /// <summary>
@@ -461,5 +471,20 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
     {
         // 路径移动完成回调，由 PathManager 调用
         // 具体的销毁逻辑已在 LevelCtrl.OnAnimalReachEndPoint 中处理
+    }
+
+    /// <summary>
+    /// 播放动物叫声。
+    /// </summary>
+    public virtual void Bark()
+    {
+        string soundTag = Type switch
+        {
+            AnimalType.Sheep or AnimalType.BombSheep or AnimalType.CdSheep => "sheep",
+            AnimalType.Chick => "chick",
+            AnimalType.Elephant => "elephant",
+            _ => Type.ToString().ToLower()
+        };
+        AudioManager.PlaySound(soundTag, randomPitch: true);
     }
 }

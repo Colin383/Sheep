@@ -279,3 +279,28 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 7c435610affd75748a31b2439c487566, type: 3}
     compressionPreset: 1
     forceToMono: 0
+  - tag: sheep
+    clips:
+    - {fileID: 8300000, guid: c8afca2ac1abd124c95ca62165c273dd, type: 3}
+    - {fileID: 8300000, guid: cde9dae8344bbac48accf14bcd61fdb3, type: 3}
+    - {fileID: 8300000, guid: e85361131e7567c458f87a270b7d4447, type: 3}
+    - {fileID: 8300000, guid: 98752e822e7a4b74695c98b3ddeaa088, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: bomb
+    clips:
+    - {fileID: 8300000, guid: 6f75267a57cda524baf97d10a0b7fe4b, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: chick
+    clips:
+    - {fileID: 8300000, guid: 20b361047c2303347a04c0704e4578ad, type: 3}
+    - {fileID: 8300000, guid: 288ad57f7949cc84ab819afc250e454e, type: 3}
+    compressionPreset: 1
+    forceToMono: 1
+  - tag: elephant
+    clips:
+    - {fileID: 8300000, guid: aa3bd933f9429e948ad6da0e5013fc11, type: 3}
+    - {fileID: 8300000, guid: 01fd65a1469240c4fba202feecb25bd3, type: 3}
+    compressionPreset: 1
+    forceToMono: 1

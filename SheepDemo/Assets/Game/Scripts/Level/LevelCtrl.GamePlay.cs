@@ -99,6 +99,109 @@ public partial class LevelCtrl : IEventSender
     }
 
     /// <summary>
+    /// BFS 寻找从 animal 当前位置到最近出口（边界或可直接出界）的路径。
+    /// 返回方向列表，找不到时返回 null。
+    /// </summary>
+    public List<DirectionEnum> FindExitPath(BaseAnimal animal)
+    {
+        if (animal == null)
+            return null;
+
+        if (!TryGetConfigDimensions(out var gridW, out var gridH))
+            return null;
+
+        var start = new Vector2Int(animal.CurrentPos.x, animal.CurrentPos.y);
+        var occupied = BuildOccupiedCellSet(animal, gridW, gridH);
+
+        var queue = new Queue<(Vector2Int pos, List<DirectionEnum> path)>();
+        var visited = new HashSet<Vector2Int>();
+        queue.Enqueue((start, new List<DirectionEnum>()));
+        visited.Add(start);
+
+        while (queue.Count > 0)
+        {
+            var (pos, path) = queue.Dequeue();
+
+            // 当前位置已在边界，可直接离开
+            if (IsBorderCell(pos.y, pos.x, gridW, gridH))
+                return path;
+
+            foreach (var dir in new[] { DirectionEnum.Up, DirectionEnum.Down, DirectionEnum.Left, DirectionEnum.Right })
+            {
+                var step = DirectionToGridStep(dir);
+                var nextPos = pos + step;
+
+                if (visited.Contains(nextPos))
+                    continue;
+
+                if (!CanAnimalAnchorMoveTo(animal, nextPos, dir, gridW, gridH, occupied, out bool allOutside))
+                    continue;
+
+                if (allOutside)
+                {
+                    var exitPath = new List<DirectionEnum>(path) { dir };
+                    return exitPath;
+                }
+
+                visited.Add(nextPos);
+                queue.Enqueue((nextPos, new List<DirectionEnum>(path) { dir }));
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 不修改 animal 状态的移动可行性检测。
+    /// </summary>
+    public bool CanMoveTo(BaseAnimal animal, DirectionEnum movingDirection)
+    {
+        if (animal == null)
+            return false;
+
+        if (!TryGetConfigDimensions(out var gridW, out var gridH))
+            return false;
+
+        if (!TryGetAnimalAnchor(animal, gridW, gridH, out var anchorRow, out var anchorCol))
+            return false;
+
+        var step = DirectionToGridStep(movingDirection);
+        if (step == Vector2Int.zero)
+            return false;
+
+        var nextAnchor = new Vector2Int(anchorCol + step.x, anchorRow + step.y);
+        var occupied = BuildOccupiedCellSet(animal, gridW, gridH);
+
+        return CanAnimalAnchorMoveTo(animal, nextAnchor, movingDirection, gridW, gridH, occupied, out _);
+    }
+
+    private bool CanAnimalAnchorMoveTo(BaseAnimal animal, Vector2Int nextAnchor, DirectionEnum dir, int gridW, int gridH, HashSet<Vector2Int> occupied, out bool allOutside)
+    {
+        allOutside = true;
+        bool hasInsideGridCell = false;
+
+        foreach (var offset in GetWorldFootprintOffsets(animal, dir))
+        {
+            int r = nextAnchor.y + offset.y;
+            int c = nextAnchor.x + offset.x;
+
+            if (!IsInsideGrid(r, c, gridW, gridH))
+                continue;
+
+            allOutside = false;
+            hasInsideGridCell = true;
+
+            if (occupied.Contains(new Vector2Int(c, r)))
+                return false;
+        }
+
+        if (allOutside)
+            return true;
+
+        return hasInsideGridCell;
+    }
+
+    /// <summary>
     /// 判断目标位置是否满足"可回收（回农场）"条件。
     /// </summary>
     public bool IsAnimCanBack(Vector3 targetPos)

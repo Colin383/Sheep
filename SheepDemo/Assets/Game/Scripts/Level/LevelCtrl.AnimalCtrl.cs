@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Bear.EventSystem;
 using Bear.Logger;
+using Game.Common;
 using Game.Events;
 using Game.Play;
 using UnityEngine;
@@ -9,6 +10,16 @@ using UnityEngine;
 public partial class LevelCtrl : IDebuger
 {
     [SerializeField] private ClickTriggerHandle clickHandle;
+
+    // 被撞击
+    [SerializeField] private ParticleSystem Stun;
+    
+    // 爆炸
+    [SerializeField] private ParticleSystem Explosion;
+
+    // 跑步
+    
+    [SerializeField] private ParticleSystem Smoke;
 
     private readonly List<Chick> chicks = new();
     private readonly List<CdSheepAnimal> cdSheeps = new();
@@ -283,6 +294,8 @@ public partial class LevelCtrl : IDebuger
 
             chick.TryMoving();
         }
+
+        VibrationManager.Instance.Vibrate();
     }
 
     #endregion

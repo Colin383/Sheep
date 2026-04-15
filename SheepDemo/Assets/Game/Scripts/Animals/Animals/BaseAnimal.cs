@@ -23,6 +23,15 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
     [Tooltip("原地旋转速度（角度/秒）")]
     [SerializeField] private float rotateSpeed = 540f;
 
+#region Partical Point
+    [SerializeField] private Transform smokePoint;
+    
+    [SerializeField] private Transform stunPoint;
+    
+    [SerializeField] private Transform exploxionPoint;
+
+#endregion 
+
     /// <summary>
     /// 位移速度（单位/秒）
     /// </summary>

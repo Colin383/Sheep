@@ -1792,6 +1792,7 @@ MonoBehaviour:
   Stun: {fileID: 19890288, guid: 775fb3e8f5df827428272416a14d9adf, type: 3}
   Explosion: {fileID: 19811046, guid: e6ea0c2b13012484ba2f5dc1054e6d75, type: 3}
   Smoke: {fileID: 19855650, guid: fe394d041df1a0547990f49cf653249f, type: 3}
+  Skills1: {fileID: 9139305265192252157, guid: 6f105a576857cfa4da8f9a65ac1f80fe, type: 3}
   pathManager: {fileID: 5053803710703968953}
   levelJson: {fileID: 4900000, guid: c71ca384b791bff4e814133e218fda8a, type: 3}
   cellSize: {x: 1, y: 1}

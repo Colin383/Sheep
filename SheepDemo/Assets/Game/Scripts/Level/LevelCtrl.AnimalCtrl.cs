@@ -14,13 +14,18 @@ public partial class LevelCtrl : IDebuger
 
     // 被撞击
     [SerializeField] private ParticleSystem Stun;
-    
+
     // 爆炸
     [SerializeField] private ParticleSystem Explosion;
 
     // 跑步
-    
+
     [SerializeField] private ParticleSystem Smoke;
+
+    /// <summary>
+    /// 技能效果
+    /// </summary>
+    [SerializeField] private ParticleSystem Skills1;
 
     private readonly List<Chick> chicks = new();
     private readonly List<CdSheepAnimal> cdSheeps = new();
@@ -60,6 +65,12 @@ public partial class LevelCtrl : IDebuger
     {
         this.Log("[AnimalCtrl] OnExitPlaying");
         UnbindClickHandle();
+    }
+
+    public void PlaySkill1()
+    {
+        this.Log("[AnimalCtrl] PlaySkill1 -> Hint");
+        this.DispatchEvent(Witness<EnterSkillEvent>._, SkillType.Hint);
     }
 
     private void OnEnterSkill(EnterSkillEvent evt)
@@ -155,6 +166,7 @@ public partial class LevelCtrl : IDebuger
         {
             var animal = candidates[i];
             RotateAnimal(animal);
+            PlaySkill1(animal.transform);
             this.Log($"[AnimalCtrl] RandomRotate5 rotated animal id={animal.Id}, type={animal.Type}");
         }
     }
@@ -256,6 +268,15 @@ public partial class LevelCtrl : IDebuger
         // Destroy(instance.gameObject, instance.main.duration);
     }
 
+    public void PlaySkill1(Transform parent)
+    {
+        if (Skills1 == null || parent == null) return;
+        var instance = Instantiate(Skills1, instancesRoot);
+        instance.transform.position = parent.position + new Vector3(0, 1f, 0);
+        instance.Play();
+        Destroy(instance.gameObject, instance.main.duration);
+    }
+
     private void EnsureStunPool()
     {
         if (_stunPoolRegistered) return;
@@ -312,6 +333,8 @@ public partial class LevelCtrl : IDebuger
                     ExitSkillMode();
                 break;
         }
+
+        PlaySkill1(animal.transform);
     }
 
     /// <summary>

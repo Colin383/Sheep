@@ -116,6 +116,8 @@ public partial class LevelCtrl
     {
         BuildPrefabMap();
         LoadConfig();
+        if (Application.isPlaying)
+            RegisterAnimalPools();
     }
 
     [Button("TestGenerate")]
@@ -289,8 +291,6 @@ public partial class LevelCtrl
 
             prefabByType[type] = prefab;
         }
-
-        RegisterAnimalPools();
     }
 
     private void LoadConfig()
@@ -713,6 +713,9 @@ public partial class LevelCtrl
 
     private void RegisterAnimalPools()
     {
+        if (!Application.isPlaying)
+            return;
+
         foreach (var kvp in prefabByType)
         {
             RegisterAnimalPool(kvp.Key, kvp.Value);
@@ -721,6 +724,9 @@ public partial class LevelCtrl
 
     private void RegisterAnimalPool(AnimalType type, BaseAnimal prefab)
     {
+        if (!Application.isPlaying)
+            return;
+
         switch (type)
         {
             case AnimalType.Sheep:

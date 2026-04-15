@@ -145,12 +145,6 @@
       "source": "embedded",
       "dependencies": {}
     },
-    "com.guru.artifact.uifx": {
-      "version": "file:com.guru.artifact.uifx",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
     "com.guru.sdk.framework.ads.max": {
       "version": "file:com.guru.sdk.framework.ads.max",
       "depth": 0,
@@ -169,7 +163,6 @@
       "source": "embedded",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.2.1",
-        "com.unity.purchasing": "4.13.0",
         "com.unity.ads.ios-support": "1.2.0",
         "com.unity.mobile.android-logcat": "1.4.6",
         "com.unity.mobile.notifications": "2.4.2"
@@ -181,11 +174,17 @@
       "source": "embedded",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.2.1",
-        "com.unity.purchasing": "4.12.2"
+        "com.unity.purchasing": "4.14.2"
       }
     },
     "com.guru.sdk.framework.guruspec": {
       "version": "file:com.guru.sdk.framework.guruspec",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.guru.sdk.framework.legacy": {
+      "version": "file:com.guru.sdk.framework.legacy",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
@@ -196,7 +195,6 @@
       "source": "embedded",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.2.1",
-        "com.unity.purchasing": "4.13.0",
         "com.unity.ads.ios-support": "1.2.0",
         "com.unity.mobile.android-logcat": "1.4.6",
         "com.unity.mobile.notifications": "2.4.2"
@@ -259,6 +257,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "com.guru.unikit.debugger": {
+      "version": "file:com.guru.unikit.debugger",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.guru.unikit.feedback.vibration": {
       "version": "file:com.guru.unikit.feedback.vibration",
       "depth": 0,
@@ -278,6 +282,12 @@
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.2.1"
       }
+    },
+    "com.guru.unikit.lifecycle": {
+      "version": "file:com.guru.unikit.lifecycle",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.guru.unikit.logger": {
       "version": "file:com.guru.unikit.logger",
@@ -309,8 +319,32 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "com.guru.unikit.websocket": {
+      "version": "file:com.guru.unikit.websocket",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.guru.unity.appsflyer": {
       "version": "file:com.guru.unity.appsflyer",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.guru.unity.buildtool": {
+      "version": "file:com.guru.unity.buildtool",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.guru.unity.chocdino.uifx": {
+      "version": "file:com.guru.unity.chocdino.uifx",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.guru.unity.debug-view": {
+      "version": "file:com.guru.unity.debug-view",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
@@ -326,15 +360,6 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
-    },
-    "com.singularitygroup.hotreload": {
-      "version": "file:com.singularitygroup.hotreload",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.unity.ugui": "1.0.0",
-        "com.unity.modules.unitywebrequest": "1.0.0"
-      }
     },
     "com.unity.2d.animation": {
       "version": "10.2.2",
@@ -525,8 +550,8 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.purchasing": {
-      "version": "4.13.0",
-      "depth": 0,
+      "version": "4.14.2",
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.ugui": "1.0.0",

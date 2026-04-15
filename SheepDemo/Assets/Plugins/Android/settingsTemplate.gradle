@@ -31,10 +31,7 @@ dependencyResolutionManagement {
             url "https://artifactory.bidmachine.io/bidmachine" // Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Mediation/BidMachine/Editor/Dependencies.xml:8
         }
         maven {
-            url "https://artifact.bytedance.com/repository/pangle" // Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Pangle/Mediation/Editor/PangleCustomDependencies.xml:9, Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Pangle/Mediation/Editor/PangleCustomDependencies.xml:16
-        }
-        maven {
-            url "https://cboost.jfrog.io/artifactory/chartboost-ads/" // Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Mediation/Chartboost/Editor/Dependencies.xml:8
+            url "https://artifact.bytedance.com/repository/pangle" // Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Mediation/ByteDance/Editor/Dependencies.xml:8
         }
         maven {
             url "https://android-sdk.is.com/" // Packages/com.guru.sdk.framework.ads.max/Runtime/Core/Mediation/IronSource/Editor/Dependencies.xml:8

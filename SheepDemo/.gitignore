@@ -106,4 +106,4 @@ crashlytics-build.properties
 #Build Gen files
 /BuildOutput
 /Bundles
-BrainPunk/Assets/Editor/FeishuDocToCsvSettings.json
+SheepDemo/Assets/Editor/FeishuDocToCsvSettings.json

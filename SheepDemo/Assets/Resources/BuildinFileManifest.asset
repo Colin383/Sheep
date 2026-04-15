@@ -27,13 +27,13 @@ MonoBehaviour:
     FileCRC32: e849d296
   - PackageName: GamePackage
     FileName: ManifestPackage_GamePackage.version
-    FileCRC32: feabc847
+    FileCRC32: a940f662
   - PackageName: GamePackage
-    FileName: ManifestPackage_GamePackage_-1871296114.bytes
-    FileCRC32: 5400bdc8
+    FileName: ManifestPackage_GamePackage_-1870284708.bytes
+    FileCRC32: be0766ce
   - PackageName: GamePackage
-    FileName: ManifestPackage_GamePackage_-1871296114.hash
-    FileCRC32: dc3aba64
+    FileName: ManifestPackage_GamePackage_-1870284708.hash
+    FileCRC32: a7a369e3
   - PackageName: GamePackage
     FileName: aa0ad25c16763239f6cd5cbf8fca1f16.bundle
     FileCRC32: ace56851

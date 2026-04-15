@@ -114,7 +114,7 @@ public partial class LevelCtrl : IEventSender
             return null;
 
         var start = new Vector2Int(animal.CurrentPos.x, animal.CurrentPos.y);
-        var occupied = BuildOccupiedCellSet(animal, gridW, gridH);
+        var occupied = BuildOccupiedCellMap(animal, gridW, gridH);
 
         var queue = new Queue<(Vector2Int pos, List<DirectionEnum> path)>();
         var visited = new HashSet<Vector2Int>();
@@ -173,12 +173,12 @@ public partial class LevelCtrl : IEventSender
             return false;
 
         var nextAnchor = new Vector2Int(anchorCol + step.x, anchorRow + step.y);
-        var occupied = BuildOccupiedCellSet(animal, gridW, gridH);
+        var occupied = BuildOccupiedCellMap(animal, gridW, gridH);
 
         return CanAnimalAnchorMoveTo(animal, nextAnchor, movingDirection, gridW, gridH, occupied, out _);
     }
 
-    private bool CanAnimalAnchorMoveTo(BaseAnimal animal, Vector2Int nextAnchor, DirectionEnum dir, int gridW, int gridH, HashSet<Vector2Int> occupied, out bool allOutside)
+    private bool CanAnimalAnchorMoveTo(BaseAnimal animal, Vector2Int nextAnchor, DirectionEnum dir, int gridW, int gridH, Dictionary<Vector2Int, BaseAnimal> occupiedMap, out bool allOutside)
     {
         allOutside = true;
         bool hasInsideGridCell = false;
@@ -194,7 +194,7 @@ public partial class LevelCtrl : IEventSender
             allOutside = false;
             hasInsideGridCell = true;
 
-            if (occupied.Contains(new Vector2Int(c, r)))
+            if (occupiedMap.ContainsKey(new Vector2Int(c, r)))
                 return false;
         }
 

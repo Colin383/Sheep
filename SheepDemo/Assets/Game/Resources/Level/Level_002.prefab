@@ -1522,7 +1522,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridWidth: 25
   gridHeight: 25
-  cellSize: 1.1
+  cellSize: 1.15
   originOffset: {x: -0.5, y: 2.5}
   endPointCell: {x: 21, y: 23}
   reachThreshold: 0.1
@@ -1536,13 +1536,6 @@ MonoBehaviour:
   - {x: 7, y: 1}
   - {x: 8, y: 1}
   - {x: 16, y: 1}
-  - {x: 9, y: 0}
-  - {x: 10, y: 0}
-  - {x: 11, y: 0}
-  - {x: 12, y: 0}
-  - {x: 13, y: 0}
-  - {x: 14, y: 0}
-  - {x: 15, y: 0}
   - {x: 17, y: 1}
   - {x: 17, y: 18}
   - {x: 7, y: 18}
@@ -1573,9 +1566,7 @@ MonoBehaviour:
   - {x: 6, y: 4}
   - {x: 6, y: 6}
   - {x: 6, y: 3}
-  - {x: 6, y: 2}
   - {x: 18, y: 1}
-  - {x: 19, y: 2}
   - {x: 19, y: 3}
   - {x: 19, y: 4}
   - {x: 19, y: 5}
@@ -1591,7 +1582,6 @@ MonoBehaviour:
   - {x: 19, y: 15}
   - {x: 19, y: 16}
   - {x: 19, y: 17}
-  - {x: 19, y: 18}
   - {x: 18, y: 18}
   - {x: 9, y: 19}
   - {x: 10, y: 19}
@@ -1600,6 +1590,17 @@ MonoBehaviour:
   - {x: 13, y: 19}
   - {x: 14, y: 19}
   - {x: 15, y: 19}
+  - {x: 9, y: 1}
+  - {x: 15, y: 1}
+  - {x: 10, y: 1}
+  - {x: 11, y: 1}
+  - {x: 12, y: 1}
+  - {x: 13, y: 1}
+  - {x: 14, y: 1}
+  - {x: 18, y: 2}
+  - {x: 7, y: 2}
+  - {x: 18, y: 17}
+  - {x: 7, y: 17}
 --- !u!1 &3845307327296321087
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,6 +25,7 @@ namespace Game.Play
         public override void OnExecute()
         {
             Debug.Log($"{nameof(PlayCtrl_Playing)} Execute");
+            this.DispatchEvent(Witness<EnterPlayingEvent>._);
         }
 
         public override void OnUpdate()

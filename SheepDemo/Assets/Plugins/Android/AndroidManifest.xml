@@ -28,6 +28,7 @@
     <meta-data android:name="com.facebook.sdk.AutoLogAppEventsEnabled" android:value="true" />
     <meta-data android:name="com.facebook.sdk.AdvertiserIDCollectionEnabled" android:value="true" />
     <provider android:name="com.facebook.FacebookContentProvider" android:authorities="com.facebook.app.FacebookContentProvider25486648387670947" android:exported="true" />
+    <meta-data android:name="com.bytedance.sdk.pangle.version" android:value="7.0.0.2" tools:replace="android:value" />
     <meta-data android:name="com.google.android.gms.ads.flag.OPTIMIZE_INITIALIZATION" android:value="true" />
     <meta-data android:name="com.google.android.gms.ads.flag.OPTIMIZE_AD_LOADING" android:value="true" />
     <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/ic_notification" />

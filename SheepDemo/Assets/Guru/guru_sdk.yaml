@@ -1,4 +1,4 @@
-guru_sdk: v3.1.0
+guru_sdk: v26.4.0
 
 integrated:
 - l10n
@@ -9,4 +9,4 @@ integrated:
 - ads_max
 - guru_core
 - guru_uiux
-
+- legacy

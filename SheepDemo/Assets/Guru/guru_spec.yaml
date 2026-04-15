@@ -63,8 +63,8 @@ remote_config:
     analytics_config: '{"cap":["firebase","facebook","guru"], "init_delay_s": 10}'
     app_rater: '{"entry_enable": false,"gap_days":0,"last_pop_gap_days":7,"validation":"2"}'
     bads_config: '{"free_s":0,"win_count":1,"amazon_enable":false}'
-    iads_config: '{"free_s":0,"validation":"3","scene":"game_start|game_continue|p_continue|p_main|game_win|star_complete","retry_min_s":10,"retry_max_s":600,"amazon_enable":false,"imp_gap_s":10,"sp_scene":"game_start:60","ignore_scene_check":true}'
-    rads_config: '{"free_s":0,"validation":"1","amazon_enable":false}'
+    iads_config: '{"free_s":0,"validation":"3","scene":"game_start|game_continue|p_continue|p_main|game_win|star_complete","retry_min_s":10,"retry_max_s":600,"amazon_enable":true,"imp_gap_s":10,"sp_scene":"game_start:60","ignore_scene_check":true}'
+    rads_config: '{"free_s":0,"validation":"1","amazon_enable":true}'
     level_config: '{"enabled":false, "showRatingLevel":4, "ad_interstitialCD":30,"ad_rewardResetInterstitialCD":60,"ad_interstitialShowMinLevel":3,"ad_interstitialShowIntervalCount":2,"ad_interstitialShowFailedCount":8,"levelsort":[10001,10002,10003,10004,10006,10007,10008,10010,10013,10019,10011,10012,10042,10014,10009,10036,10017,10021,10015,10018,10020,10016,10027,10022,10024,10023,10029,10026,10028,10025,10030,10031,10032,10033,10034,10035]}'
 
 products:

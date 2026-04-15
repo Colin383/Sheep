@@ -480,6 +480,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8400583710869271187, guid: c527d1ba78d795244a87cec04a610fe9, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: acaf60d232ecaab40b2fff2ef2976ce5, type: 3}
+    - target: {fileID: 8400583710869271187, guid: c527d1ba78d795244a87cec04a610fe9, type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 2100000, guid: d9b344c9ce855f94b8ac4ab94bf9c1c5, type: 2}

@@ -64,6 +64,7 @@ public class CdSheepAnimal : BaseAnimal, IEventSender
             this.DispatchEvent(Witness<GameFailedEvent>._, GameFailedType.Bomb);
 
             AudioManager.PlaySound("bomb");
+            PlayExplosionEffect();
         }
     }
 
@@ -71,6 +72,14 @@ public class CdSheepAnimal : BaseAnimal, IEventSender
     {
         base.OnComplete();
         _isTiming = false;
+    }
+
+    public override void OnRecycle()
+    {
+        base.OnRecycle();
+        _isTiming = false;
+        _currentTime = _targetWaitingTime;
+        SyncCdUI();
     }
 
     private void SyncCdUI()

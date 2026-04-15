@@ -62,7 +62,10 @@ public class Animal_Moving : StateNode, IDebuger
         }
 
         if (canMove)
+        {
+            owner.PlaySmokeEffect();
             PrepareCurrentStep();
+        }
 
         this.Log($"Enter {(owner != null ? owner.Id : -1)}");
     }
@@ -73,6 +76,8 @@ public class Animal_Moving : StateNode, IDebuger
         {
             // 当前不可移动，回到 Idle。
             owner?.EnterIdleState();
+            owner.StopSmoke();
+            owner.PlayStunEffect();
             return;
         }
 

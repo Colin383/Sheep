@@ -85,11 +85,14 @@ public partial class LevelCtrl : IEventSender
             return true;
 
         // 收集其他存活动物占位；若重叠则禁止移动。
-        var occupied = BuildOccupiedCellSet(animal, gridW, gridH);
+        var occupiedMap = BuildOccupiedCellMap(animal, gridW, gridH);
         for (int i = 0; i < nextFootprintCells.Count; i++)
         {
-            if (occupied.Contains(nextFootprintCells[i]))
+            if (occupiedMap.TryGetValue(nextFootprintCells[i], out var blocker))
+            {
+                blocker?.ResolveAnimCtrl()?.PlayJump();
                 return false;
+            }
         }
 
         // 确认可以移动，立即更新动物的当前网格坐标。
@@ -217,6 +220,12 @@ public partial class LevelCtrl : IEventSender
         return !IsInsideGrid(row, col, gridW, gridH) || IsBorderCell(row, col, gridW, gridH);
     }
 
+    public void UnregisterAnimalFromPathManager(BaseAnimal animal)
+    {
+        if (pathManager != null && animal != null)
+            pathManager.UnregisterMoveHandle(animal.transform);
+    }
+
     /// <summary>
     /// 返回农场。将 animal 切到 Back 状态并从缓存移除，交给 PathManager 控制移动到 EndPoint。
     /// </summary>
@@ -240,6 +249,9 @@ public partial class LevelCtrl : IEventSender
 
         if (animal is Chick chick)
             chicks.Remove(chick);
+
+        if (animal is CdSheepAnimal cdSheep)
+            cdSheeps.Remove(cdSheep);
 
         // 切到 Back 状态，并加入返回缓存
         animal.EnterBackState();
@@ -312,10 +324,10 @@ public partial class LevelCtrl : IEventSender
         if (animal is Chick chick)
             chicks.Remove(chick);
 
-        if (Application.isPlaying)
-            Destroy(animal.gameObject);
-        else
-            DestroyImmediate(animal.gameObject);
+        if (animal is CdSheepAnimal cdSheep)
+            cdSheeps.Remove(cdSheep);
+
+        RecycleAnimal(animal);
 
         CheckFinished();
     }
@@ -337,11 +349,7 @@ public partial class LevelCtrl : IEventSender
         // 从返回缓存中移除
         returningAnimals.Remove(animal);
 
-        // 直接销毁 animal
-        if (Application.isPlaying)
-            Destroy(animal.gameObject);
-        else
-            DestroyImmediate(animal.gameObject);
+        RecycleAnimal(animal);
 
         // 检查是否所有动物都已处理完毕
         CheckFinished();
@@ -364,10 +372,9 @@ public partial class LevelCtrl : IEventSender
         return false;
     }
 
-    private HashSet<Vector2Int> BuildOccupiedCellSet(BaseAnimal self, int gridW, int gridH)
+    private Dictionary<Vector2Int, BaseAnimal> BuildOccupiedCellMap(BaseAnimal self, int gridW, int gridH)
     {
-        // 占位键使用 (col,row)，与 GridToWorld 的坐标语义保持一致。
-        var cells = new HashSet<Vector2Int>();
+        var map = new Dictionary<Vector2Int, BaseAnimal>();
         for (int i = 0; i < spawned.Count; i++)
         {
             var other = spawned[i];
@@ -377,7 +384,6 @@ public partial class LevelCtrl : IEventSender
             if (!TryGetAnimalAnchor(other, gridW, gridH, out var row, out var col))
                 continue;
 
-            // 占位方向取运行时当前朝向（含 footprint 旋转结果）。
             var directions = other.GetMovableDirections();
             var direction = directions != null && directions.Count > 0 ? directions[0] : other.FacingDirection;
             foreach (var offset in GetWorldFootprintOffsets(other, direction))
@@ -387,11 +393,13 @@ public partial class LevelCtrl : IEventSender
                 if (!IsInsideGrid(r, c, gridW, gridH))
                     continue;
 
-                cells.Add(new Vector2Int(c, r));
+                var key = new Vector2Int(c, r);
+                if (!map.ContainsKey(key))
+                    map[key] = other;
             }
         }
 
-        return cells;
+        return map;
     }
 
     private bool TryGetAnimalAnchor(BaseAnimal animal, int gridW, int gridH, out int row, out int col)

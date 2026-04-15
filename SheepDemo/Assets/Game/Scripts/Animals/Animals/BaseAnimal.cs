@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using Bear.Fsm;
+using Game.Common;
 using Game.Scripts.Common;
 using UnityEngine;
 
 /// <summary>
 /// 由关卡配置生成的实体基类。具体移动、交互等逻辑写在子类。
 /// </summary>
-public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHandle
+public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHandle, Game.Common.IRecycle
 {
     private const float GizmoPrismHeight = 0.01f;
     private StateMachine _machine;
@@ -235,7 +236,7 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
             ctrl.SetWalk(walking);
     }
 
-    private AnimAnimtorCtrl ResolveAnimCtrl()
+    public AnimAnimtorCtrl ResolveAnimCtrl()
     {
         if (animAnimtorCtrl != null)
             return animAnimtorCtrl;
@@ -480,6 +481,56 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
     {
         // 路径移动完成回调，由 PathManager 调用
         // 具体的销毁逻辑已在 LevelCtrl.OnAnimalReachEndPoint 中处理
+    }
+
+    public void PlayStunEffect()
+    {
+        if (stunPoint == null) return;
+        Level?.PlayStunEffect(stunPoint);
+    }
+
+    private SmokeParticle _currentSmoke;
+
+    public void PlaySmokeEffect()
+    {
+        if (smokePoint == null) return;
+        StopSmoke();
+        _currentSmoke = Level?.PlaySmokeEffect(smokePoint);
+    }
+
+    public void StopSmoke()
+    {
+        if (_currentSmoke != null)
+        {
+            ObjectPoolManager.Instance.Recycle(_currentSmoke);
+            _currentSmoke = null;
+        }
+    }
+
+    public void PlayExplosionEffect()
+    {
+        if (exploxionPoint == null) return;
+        Level?.PlayExplosionEffect(exploxionPoint);
+    }
+
+    public virtual void OnSpawn()
+    {
+        _currentSmoke = null;
+        if (_machine == null)
+            InitStateMachine();
+        EnterState(DefaultState);
+        SetWalkAnim(false);
+    }
+
+    public virtual void OnRecycle()
+    {
+        Level?.UnregisterAnimalFromPathManager(this);
+        StopSmoke();
+        EnterState(DefaultState);
+        SetWalkAnim(false);
+        CurrentPos = Vector2Int.zero;
+        PreviousPos = Vector2Int.zero;
+        Level = null;
     }
 
     /// <summary>

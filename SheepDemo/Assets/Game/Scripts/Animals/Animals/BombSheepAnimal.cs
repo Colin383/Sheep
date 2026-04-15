@@ -49,6 +49,7 @@ public class BombSheepAnimal : BaseAnimal, IEventSender
             this.DispatchEvent(Witness<GameFailedEvent>._, GameFailedType.Bomb);
 
             AudioManager.PlaySound("bomb");
+            PlayExplosionEffect();
         }
     }
 

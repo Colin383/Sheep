@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Bear.Fsm;
+using Game.Common;
 using Game.Scripts.Common;
 using UnityEngine;
 
@@ -488,10 +489,22 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
         Level?.PlayStunEffect(stunPoint);
     }
 
+    private SmokeParticle _currentSmoke;
+
     public void PlaySmokeEffect()
     {
         if (smokePoint == null) return;
-        Level?.PlaySmokeEffect(smokePoint);
+        StopSmoke();
+        _currentSmoke = Level?.PlaySmokeEffect(smokePoint);
+    }
+
+    public void StopSmoke()
+    {
+        if (_currentSmoke != null)
+        {
+            ObjectPoolManager.Instance.Recycle(_currentSmoke);
+            _currentSmoke = null;
+        }
     }
 
     public void PlayExplosionEffect()
@@ -502,6 +515,7 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
 
     public virtual void OnSpawn()
     {
+        _currentSmoke = null;
         if (_machine == null)
             InitStateMachine();
         EnterState(DefaultState);
@@ -511,6 +525,7 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
     public virtual void OnRecycle()
     {
         Level?.UnregisterAnimalFromPathManager(this);
+        StopSmoke();
         EnterState(DefaultState);
         SetWalkAnim(false);
         CurrentPos = Vector2Int.zero;

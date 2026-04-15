@@ -237,14 +237,15 @@ public partial class LevelCtrl : IDebuger
         instance.transform.rotation = parent.rotation;
     }
 
-    public void PlaySmokeEffect(Transform parent)
+    public SmokeParticle PlaySmokeEffect(Transform parent)
     {
-        if (Smoke == null || parent == null) return;
+        if (Smoke == null || parent == null) return null;
         EnsureSmokePool();
         var instance = ObjectPoolManager.Instance.Get<SmokeParticle>();
-        if (instance == null) return;
+        if (instance == null) return null;
         instance.transform.position = parent.position;
         instance.transform.rotation = parent.rotation;
+        return instance;
     }
 
     public void PlayExplosionEffect(Transform parent)

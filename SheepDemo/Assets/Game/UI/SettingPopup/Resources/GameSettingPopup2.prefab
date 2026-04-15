@@ -3874,6 +3874,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 197450063001161355, guid: 8ec6cf0bb5dd18a45b8145e63300a56d, type: 3}
+      propertyPath: gmBtn
+      value: 
+      objectReference: {fileID: 7763058284302671859}
+    - target: {fileID: 197450063001161355, guid: 8ec6cf0bb5dd18a45b8145e63300a56d, type: 3}
       propertyPath: HomeBtn
       value: 
       objectReference: {fileID: 8099841118119219501}

@@ -232,7 +232,7 @@ namespace Game.Common
             }
             else
             {
-                if (_totalCreated >= _maxSize)
+                if (_maxSize > 0 && _totalCreated >= _maxSize)
                     return null;
                 // Debug.LogError("Pool " + _totalCreated);
                 obj = _createFunc();

@@ -20,7 +20,7 @@ namespace Game.Common
                 _particle = GetComponent<ParticleSystem>();
         }
 
-        public void OnSpawn()
+        public virtual void OnSpawn()
         {
             if (_particle == null)
                 _particle = GetComponent<ParticleSystem>();

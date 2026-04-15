@@ -15,9 +15,11 @@ public class AnimAnimtorCtrl : MonoBehaviour
     [Header("Params")]
     [SerializeField] private string walkBoolName = "walk";
     [SerializeField] private string knockTriggerName = "knock";
+    [SerializeField] private string jumpTriggerName = "jump";
 
     private int walkBoolHash;
     private int knockTriggerHash;
+    private int jumpTriggerHash;
     private bool hashReady;
 
     private void Awake()
@@ -46,6 +48,42 @@ public class AnimAnimtorCtrl : MonoBehaviour
             return false;
 
         animator.SetBool(walkBoolHash, walking);
+        return true;
+    }
+
+    /// <summary>
+    /// 触发 jump 动画。
+    /// </summary>
+    public bool PlayJump()
+    {
+        if (!TryGetAnimator(out var animator))
+            return false;
+
+        if (!hashReady)
+            CacheHashes();
+
+        if (jumpTriggerHash == 0)
+            return false;
+
+        animator.SetTrigger(jumpTriggerHash);
+        return true;
+    }
+
+    /// <summary>
+    /// 重置 jump trigger。
+    /// </summary>
+    public bool ResetJump()
+    {
+        if (!TryGetAnimator(out var animator))
+            return false;
+
+        if (!hashReady)
+            CacheHashes();
+
+        if (jumpTriggerHash == 0)
+            return false;
+
+        animator.ResetTrigger(jumpTriggerHash);
         return true;
     }
 
@@ -110,6 +148,7 @@ public class AnimAnimtorCtrl : MonoBehaviour
     {
         walkBoolHash = string.IsNullOrWhiteSpace(walkBoolName) ? 0 : Animator.StringToHash(walkBoolName);
         knockTriggerHash = string.IsNullOrWhiteSpace(knockTriggerName) ? 0 : Animator.StringToHash(knockTriggerName);
+        jumpTriggerHash = string.IsNullOrWhiteSpace(jumpTriggerName) ? 0 : Animator.StringToHash(jumpTriggerName);
         hashReady = true;
     }
 }

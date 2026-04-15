@@ -243,7 +243,8 @@ public partial class LevelCtrl : IDebuger
         EnsureSmokePool();
         var instance = ObjectPoolManager.Instance.Get<SmokeParticle>();
         if (instance == null) return null;
-        instance.transform.position = parent.position;
+        instance.transform.parent = parent;
+        instance.transform.localPosition = Vector3.zero;
         instance.transform.rotation = parent.rotation;
         return instance;
     }

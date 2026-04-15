@@ -236,7 +236,7 @@ public abstract class BaseAnimal : MonoBehaviour, IBearMachineOwner, IMovePathHa
             ctrl.SetWalk(walking);
     }
 
-    private AnimAnimtorCtrl ResolveAnimCtrl()
+    public AnimAnimtorCtrl ResolveAnimCtrl()
     {
         if (animAnimtorCtrl != null)
             return animAnimtorCtrl;

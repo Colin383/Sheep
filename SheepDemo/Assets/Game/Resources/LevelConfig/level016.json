@@ -547,22 +547,22 @@
     {
       "id": 49,
       "position": {
-        "x": 5,
+        "x": 6,
         "y": 12
       },
       "row": 12,
-      "col": 5,
+      "col": 6,
       "direction": "down",
       "type": "elephant"
     },
     {
       "id": 50,
       "position": {
-        "x": 7,
+        "x": 8,
         "y": 12
       },
       "row": 12,
-      "col": 7,
+      "col": 8,
       "direction": "down",
       "type": "elephant"
     },

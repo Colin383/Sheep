@@ -725,9 +725,9 @@
       "id": 67,
       "position": {
         "x": 7,
-        "y": 3
+        "y": 4
       },
-      "row": 3,
+      "row": 4,
       "col": 7,
       "direction": "right",
       "type": "elephant"

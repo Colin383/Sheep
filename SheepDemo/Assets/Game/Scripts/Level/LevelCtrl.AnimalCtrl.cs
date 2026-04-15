@@ -6,6 +6,7 @@ using BPGame;
 using Game.Common;
 using Game.Events;
 using Game.Play;
+using Lofelt.NiceVibrations;
 using UnityEngine;
 
 public partial class LevelCtrl : IDebuger
@@ -376,7 +377,7 @@ public partial class LevelCtrl : IDebuger
                 chick.TryMoving();
         }
 
-        VibrationManager.Instance.Vibrate();
+        HapticPatterns.PlayPreset(HapticPatterns.PresetType.MediumImpact);
     }
 
     private bool IsAnimalNearby(BaseAnimal center, BaseAnimal other, int range)

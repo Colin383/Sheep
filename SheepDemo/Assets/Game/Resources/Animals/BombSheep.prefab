@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animAnimtorCtrl: {fileID: 4154506364644812971}
-  moveSpeed: 3.5
+  moveSpeed: 7
   rotateSpeed: 360
   smokePoint: {fileID: 2970187098576109461}
   stunPoint: {fileID: 2764783083227158489}
